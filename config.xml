@@ -28,22 +28,4 @@
     <plugin name="elastos-trinity-plugins-plugindemo" spec="https://github.com/elastos/Elastos.Trinity.Runtime.Plugins.PluginDemo.git#dev" />
     <engine name="android" spec="^7.1.1" />
     <engine name="ios" spec="^4.5.5" />
-    <plugin name="cordova-plugin-camera" spec="D:\workspace\ela\Elastos.Trinity.Plugins.Camera">
-        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
-    </plugin>
-    <plugin name="cordova-plugin-device" spec="D:\workspace\ela\Elastos.Trinity.Plugins.Device" />
-    <plugin name="cordova-plugin-device-motion" spec="D:\workspace\ela\Elastos.Trinity.Plugins.DeviceMotion" />
-    <plugin name="cordova-plugin-dialogs" spec="D:\workspace\ela\Elastos.Trinity.Plugins.Dialog" />
-    <plugin name="cordova-plugin-flashlight" spec="D:\workspace\ela\Elastos.Trinity.Plugins.Flashlight" />
-    <plugin name="cordova-plugin-geolocation" spec="D:\workspace\ela\Elastos.Trinity.Plugins.Geolocation" />
-    <plugin name="cordova-plugin-media" spec="D:\workspace\ela\Elastos.Trinity.Plugins.Media">
-        <variable name="KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE" value="NO" />
-    </plugin>
-    <plugin name="cordova-plugin-media-capture" spec="D:\workspace\ela\Elastos.Trinity.Plugins.MediaCapture" />
-    <plugin name="cordova-plugin-network-information" spec="D:\workspace\ela\Elastos.Trinity.Plugins.NetWorkInformation" />
-    <plugin name="cordova-plugin-screen-orientation" spec="D:\workspace\ela\Elastos.Trinity.Plugins.ScreenOrientation" />
-    <plugin name="cordova-plugin-splashscreen" spec="D:\workspace\ela\Elastos.Trinity.Plugins.SplashScreen" />
-    <plugin name="cordova-plugin-statusbar" spec="D:\workspace\ela\Elastos.Trinity.Plugins.Statusbar" />
-    <plugin name="cordova-plugin-vibration" spec="D:\workspace\ela\Elastos.Trinity.Plugins.Vibration" />
-    <plugin name="cordova-plugin-battery-status" spec="D:\workspace\ela\Elastos.Trinity.Plugins.BatteryStatus" />
 </widget>

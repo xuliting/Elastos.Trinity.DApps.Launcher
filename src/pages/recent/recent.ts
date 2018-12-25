@@ -32,7 +32,7 @@ export class RecentPage {
                 id: appInfo.id,
                 name: appInfo.name,
                 version: appInfo.version,
-                bigIcon: appInfo.bigIcon
+                bigIcon: appInfo.icons[0].src
             });
             _this.showEmptyCard = false;
         }

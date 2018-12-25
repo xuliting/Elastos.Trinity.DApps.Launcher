@@ -9,7 +9,7 @@
         <ion-card>
             <ion-item ng-model="appInfo">
                 <ion-thumbnail item-start class="up-app">
-                    <img src="{{appInfo.smallIcon}}">
+                    <img src="{{appInfo.icons[0].src}}">
                 </ion-thumbnail>
                 <h2>{{appInfo.name}}</h2>
                 <p>{{appInfo.version}}</p>
@@ -44,9 +44,9 @@
             </ion-item>
             <ion-item class="item-text-wrap">
                 <ion-note item-start>
-                    LaunchPath
+                    startUrl
                 </ion-note>
-                <ion-label>{{appInfo.launchPath}}</ion-label>
+                <ion-label>{{appInfo.startUrl}}</ion-label>
             </ion-item>
             <ion-item class="item-text-wrap">
                 <ion-note item-start>
