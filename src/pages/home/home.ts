@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,AlertController} from 'ionic-angular';
 
 import { ManagePage } from '../manage/manage';
 import { TabsPage } from '../tabs/tabs';
@@ -11,14 +11,6 @@ let appListInfos = []; // 应用列表
 let runningList = []; // 正在运行
 let recentList = []; // 最近运行
 
-function onReceive(ret) {
-    display_msg("receive message:" + ret.message + ". from: " + ret.from);
-};
-
-function display_msg(content) {
-    console.log("ElastosJS  HomePage === msg " + content);
-};
-
 
 @Component({
     selector: 'page-home',
@@ -29,17 +21,55 @@ export class HomePage {
     public checked = false; // 删除按钮是否激活，激活时隐去跳转管理页面的按钮
     public showRecent = false;
 
-    constructor(public navCtrl: NavController) {
+    constructor(public navCtrl: NavController,
+				public alertCtrl: AlertController) {
         this.init();
     }
+	
+	onReceive(ret) {
+	    let _this = this;
+		_this.display_msg("receive message:" + ret.message + ". type: " + ret.type + ". from: " + ret.from);
+		if (ret.type == 4)	{
+			const prompt = this.alertCtrl.create({
+            title: '<div class="permission-warning">安装提示</div>',
+            message: "<div>即将安装: " + ret.message + "</div>",
+            buttons: [
+                {
+                    text: '取消',
+                    handler: data => {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: '确认',
+                    handler: data => {
+                        appManager.install(ret.message, function (ret) {
+							console.log("3: " + JSON.stringify(ret));
+							_this.refleshList();
+						}, function (err) {
+							console.log("4: " + JSON.stringify(err));
+						});
+                    }
+                }
+            ]
+			});
+			prompt.present();
+		}
+			
+	}
+
+
+	 display_msg(content) {
+		console.log("ElastosJS  HomePage === msg " + content);
+	}
 
     init() {
         let _this = this;
         document.addEventListener("deviceready", onDeviceReady, false);
 
         function onDeviceReady() {
-            display_msg(device.cordova);
-            appManager.setListener(onReceive);
+            _this.display_msg(device.cordova);
+            appManager.setListener(_this.onReceive);
             _this.refleshList();
         }
     }
@@ -50,10 +80,10 @@ export class HomePage {
         function refreshItems(appInfos) {
             if (appInfos != null) {
                 appListInfos = _this.dealData(appInfos);
-                display_msg("refreshItems " + appListInfos.toString())
+                _this.display_msg("refreshItems " + appListInfos.toString())
             }
         };
-        appManager.getAppInfos(refreshItems, display_msg);
+        appManager.getAppInfos(refreshItems, _this.display_msg);
     }
 
     dealData(data) {
@@ -74,10 +104,11 @@ export class HomePage {
     }
 
     getAppInfoList() {
+		let _this = this;
         if ('1' == window.localStorage.getItem('shouldLauncherBeRefreshed_home')) {
             this.refleshList();
         }
-        display_msg("getAppInfoList " + appListInfos);
+        _this.display_msg("getAppInfoList " + appListInfos);
         return appListInfos;
     }
 
@@ -115,6 +146,7 @@ export class HomePage {
 
     //最近运行的APP
     getRunningApp() {
+		let _this = this;
         appManager.getRunningList(function (ret1) {
             if (typeof ret1 == 'object') {
                 for (let id of ret1) {
@@ -129,19 +161,20 @@ export class HomePage {
                                 })
                             }
                         }, function (ret2) {
-                            display_msg('info failed: ' + JSON.stringify(ret2));
+                            _this.display_msg('info failed: ' + JSON.stringify(ret2));
                         });
                     }
                 }
             }
         }, function (ret1) {
-            display_msg('running failed: ' + JSON.stringify(ret1));
+            _this.display_msg('running failed: ' + JSON.stringify(ret1));
         });
         return runningList;
     }
 
     //最近运行的APP
     getRecentRunApp() {
+		let _this = this;
         appManager.getLastList(function (ret1) {
             if (typeof ret1 == 'object') {
                 for (let id of ret1) {
@@ -156,13 +189,13 @@ export class HomePage {
                                 })
                             }
                         }, function (ret2) {
-                            display_msg('info failed: ' + JSON.stringify(ret2));
+                            _this.display_msg('info failed: ' + JSON.stringify(ret2));
                         });
                     }
                 }
             }
         }, function (ret1) {
-            display_msg('recent failed: ' + JSON.stringify(ret1));
+            _this.display_msg('recent failed: ' + JSON.stringify(ret1));
         });
         return recentList;
     }
