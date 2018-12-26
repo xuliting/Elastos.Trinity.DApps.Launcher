@@ -76,7 +76,7 @@ export class ManagePage {
                     id: data[key].id,
                     name: data[key].name,
                     version: data[key].version,
-                    bigIcon: data[key].bigIcon
+                    bigIcon: data[key].icons[0].src
                 })
             }
         } else {
