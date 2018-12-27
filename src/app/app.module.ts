@@ -11,6 +11,7 @@ import {InfoPage} from '../pages/info/info';
 import {RunningPage} from '../pages/running/running';
 import {RecentPage} from '../pages/recent/recent';
 import {TabsPage} from '../pages/tabs/tabs';
+import {MyPage} from '../pages/my/my';
 import {ZipdirPage} from '../pages/zipdir/zipdir';
 
 import {File} from '@ionic-native/file';
@@ -27,6 +28,7 @@ import {StatusBar} from '@ionic-native/status-bar';
         RunningPage,
         RecentPage,
         TabsPage,
+        MyPage,
         ZipdirPage
     ],
     imports: [
@@ -47,6 +49,7 @@ import {StatusBar} from '@ionic-native/status-bar';
         RunningPage,
         RecentPage,
         TabsPage,
+        MyPage,
         ZipdirPage
     ],
     providers: [

@@ -3,6 +3,7 @@ import { NavController,AlertController} from 'ionic-angular';
 
 import { ManagePage } from '../manage/manage';
 import { TabsPage } from '../tabs/tabs';
+import { MyPage } from '../my/my';
 
 declare let appManager: any;
 declare var device: any;
@@ -116,6 +117,10 @@ export class HomePage {
 
     goTabs() {
         this.navCtrl.push(TabsPage);
+    }
+
+    goToMy() {
+        this.navCtrl.push(MyPage)
     }
 
     pressEvent() {
