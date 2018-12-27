@@ -25,10 +25,16 @@
         > git checkout -b dev_app origin/dev_app
         > cordova prepare
 
-    4.3 安装插件
+    4.3 安装插件 --等config.xml 文件同步好后就不需要这个操作了。
+	
+	    //暂时先 add这两个插件
+	    > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.Device#dev
+		> cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.SplashScreen#dev
+		
+		
+			
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.BatteryStatus#dev
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.Camera#dev
-        > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.Device#dev
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.DeviceMotion#dev
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.Dialog#dev
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.Flashlight#dev
@@ -39,13 +45,15 @@
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.NetWorkInformation#dev
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.QRScanner#dev
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.ScreenOrientation#dev
-        > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.SplashScreen#dev
+
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.Statusbar#dev
         > cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.Vibration#dev
 
     4.4 替换launcher
         把launher里编译出来的www目录拷贝到 Elastos.Trinity.Runtime\platforms\android\app\src\main\assets\www\launcher_demo
+		
     4.5 添加内置应用
-        把DApps Samples的www文件拷贝到 Elastos.Trinity.Runtime\platforms\android\app\src\main\assets\www\built-in\org.elastos.trinity.demo1
+        把DApps Samples的www文件拷贝到 Elastos.Trinity.Runtime\platforms\android\app\src\main\assets\www\built-in目录下，文件名称改成
+		org.elastos.trinity.samples  这个文件名称得和mainifest.json里面的id值相同		
 
     4.5 在Android studio 运行程序
