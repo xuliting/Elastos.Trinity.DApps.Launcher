@@ -9,6 +9,7 @@ declare let appManager: any;
 declare var device: any;
 
 let appListInfos = []; // 应用列表
+let apppath = null;
 
 
 @Component({
@@ -26,37 +27,50 @@ export class HomePage {
     }
 	
 	onReceive(ret) {
-	    let _this = this;
-		_this.display_msg("receive message:" + ret.message + ". type: " + ret.type + ". from: " + ret.from);
+	    //let _this = this;
+		console.log("ElastosJS  HomePage receive message:" + ret.message + ". type: " + ret.type + ". from: " + ret.from);
 		if (ret.type == 4)	{
-			const prompt = this.alertCtrl.create({
-            title: '<div class="permission-warning">安装提示</div>',
-            message: "<div>即将安装: " + ret.message + "</div>",
-            buttons: [
-                {
-                    text: '取消',
-                    handler: data => {
-                        console.log('Cancel clicked');
-                    }
-                },
-                {
-                    text: '确认',
-                    handler: data => {
-                        appManager.install(ret.message, function (ret) {
-							console.log("3: " + JSON.stringify(ret));
-							_this.refleshList();
-						}, function (err) {
-							console.log("4: " + JSON.stringify(err));
-						});
-                    }
-                }
-            ]
-			});
-			prompt.present();
-		}
-			
+			apppath = ret.message;
+		}			
 	}
-
+	
+	  ionViewWillEnter() {
+		console.log("===ElastosJS home page ionViewWillEnter");
+		if(apppath != null) {
+			this.showdialog();
+			apppath = null;
+			
+		}
+	  }
+	
+	showdialog(){
+		let _this = this;
+		console.log("ElastosJS  HomePage receive message:" + apppath);
+		const prompt = _this.alertCtrl.create({
+		title: '<div class="permission-warning">安装提示</div>',
+		message: "<div>即将安装: " + apppath + "</div>",
+		buttons: [
+			{
+				text: '取消',
+				handler: data => {
+					console.log('Cancel clicked');
+				}
+			},
+			{
+				text: '确认',
+				handler: data => {
+					appManager.install(apppath, function (ret) {
+						console.log("3: " + JSON.stringify(ret));
+						_this.refleshList();
+					}, function (err) {
+						console.log("4: " + JSON.stringify(err));
+					});
+				}
+			}
+		]
+		});
+		prompt.present();
+	}
 
 	 display_msg(content) {
 		console.log("ElastosJS  HomePage === msg " + content);
