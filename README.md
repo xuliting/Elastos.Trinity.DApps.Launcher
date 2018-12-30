@@ -18,9 +18,11 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 # 在nodej环境下的工程根目录下输入
 1 ionic build --prod
 
-2 拷贝 Elastos.Trinity.DApps.Launcher\www所有的文件到Elastos.Trinity.DApps.Launcher\platforms\android\app\src\main\assets\www\launcher目录下
+2 拷贝 Elastos.Trinity.DApps.Launcher\www所有的文件到Elastos.Trinity.Runtime\platforms\android\app\src\main\assets\www\launcher-demo目录下
 
-3 启动Android studio  打开Elastos.Trinity.DApps.Launcher\platforms\android的工程
+3  copy Elastos.Trinity.DApps.Launcher\demos文件夹到Elastos.Trinity.Runtime\platforms\android\app\src\main\assets\www\built-in目录下
+
+4 启动Android studio  打开Elastos.Trinity.DApps.Runtime\platforms\android的工程
 
 
 
