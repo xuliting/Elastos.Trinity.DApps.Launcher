@@ -26,12 +26,66 @@ export class InfoPage {
         function refreshItems(ret) {
             if (ret != null) {
                 _this.appInfo = ret;
-                _this.appInfo["urls"] = JSON.parse(_this.appInfo["urls"]);
-                _this.appInfo["plugins"] = JSON.parse(_this.appInfo["plugins"]);
+                _this.appInfo["urls"] = _this.dealUrlsData(_this.appInfo["urls"]);
+                _this.appInfo["plugins"] = _this.dealPluginsData(_this.appInfo["plugins"]);
                 display_msg("refreshItems " + _this.appInfo.toString())
             }
         };
         appManager.getAppInfo(appId, refreshItems, display_msg);
+    }
+
+    dealUrlsData(urls) {
+        let arr = [];
+        let data = JSON.parse(urls);
+        if (typeof data == 'object') {
+            for (const key in data) {
+                arr.push({
+                    url: data[key].url,
+                    authority: data[key].authority,
+                    checked: data[key].authority == appManager.AuthorityStatus.ALLOW
+                })
+            }
+        } else {
+            arr = data;
+        }
+        return arr;
+    }
+
+    dealPluginsData(plugins) {
+        let arr = [];
+        let data = JSON.parse(plugins);
+        if (typeof data == 'object') {
+            for (const key in data) {
+                arr.push({
+                    plugin: data[key].url,
+                    authority: data[key].authority,
+                    checked: data[key].authority == appManager.AuthorityStatus.ALLOW
+                })
+            }
+        } else {
+            arr = data;
+        }
+        return arr;
+    }
+
+    urlAuthority(item) {
+        let checked = item.checked ? appManager.AuthorityStatus.ALLOW : appManager.AuthorityStatus.DENY;
+        display_msg("appManager.setUrlAuthority(" + appId + ", " + item.url + ", " + checked + ", fun())");
+        appManager.setUrlAuthority(appId, item.url, checked, function (ret) {
+            display_msg("setUrlAuthority succeed " + JSON.stringify(item) + " -- " + JSON.stringify(ret));
+        }, function (err) {
+            display_msg("setUrlAuthority failed " + JSON.stringify(item) + " -- " + JSON.stringify(err));
+        });
+    }
+
+    pluginAuthority(item) {
+        let checked = item.checked ? appManager.AuthorityStatus.ALLOW : appManager.AuthorityStatus.DENY;
+        display_msg("appManager.setUrlAuthority(" + appId + ", " + item.plugin + ", " + checked + ", fun())");
+        appManager.setPluginAuthority(appId, item.plugin, checked, function (ret) {
+            display_msg("setPluginAuthority succeed " + JSON.stringify(item) + " -- " + JSON.stringify(ret));
+        }, function (err) {
+            display_msg("setPluginAuthority failed " + JSON.stringify(item) + " -- " + JSON.stringify(err));
+        });
     }
 
     ionViewDidLoad() {

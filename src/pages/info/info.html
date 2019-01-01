@@ -59,12 +59,7 @@
         <ion-card>
             <ion-list no-lines>
                 <ion-item class="item-text-wrap" *ngFor="let item of appInfo.urls">
-                    <ion-note item-start *ngIf="item.authority == 0">
-                        无权限
-                    </ion-note>
-                    <ion-note item-start *ngIf="item.authority != 0">
-                        有权限
-                    </ion-note>
+                    <ion-toggle [(ngModel)]="item.checked" (ionChange)="urlAuthority(item)"></ion-toggle>
                     <ion-label>{{item.url}}</ion-label>
                 </ion-item>
             </ion-list>
@@ -73,12 +68,7 @@
         <ion-card>
             <ion-list no-lines>
                 <ion-item class="item-text-wrap" *ngFor="let item of appInfo.plugins">
-                    <ion-note item-start *ngIf="item.authority == 0">
-                        无权限
-                    </ion-note>
-                    <ion-note item-start *ngIf="item.authority != 0">
-                        有权限
-                    </ion-note>
+                    <ion-toggle [(ngModel)]="item.checked" (ionChange)="pluginAuthority(item)"></ion-toggle>
                     <ion-label>{{item.plugin}}</ion-label>
                 </ion-item>
             </ion-list>
