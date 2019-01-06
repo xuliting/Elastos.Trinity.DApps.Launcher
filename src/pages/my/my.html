@@ -7,12 +7,44 @@
 <ion-header no-border class="tab-header">
 
   <ion-navbar>
-    <h2>我</h2>
+    <h2>我的</h2>
   </ion-navbar>
-  
+
 </ion-header>
 
+<ion-content class="no-padding">
+  <ion-grid class="mt-48">
 
-<ion-content padding>
+    <ion-list class="my-list">
+      <ion-item (click)="goManager()">
+        <ion-thumbnail item-start>
+          <img src="assets/icon/icon-music.png">
+        </ion-thumbnail>
+        <h2>应用管理</h2>
+        <button ion-button clear item-end class="arrow-rht"></button>
+      </ion-item>
+      <ion-item (click)="goTabs()">
+        <ion-thumbnail item-start>
+          <img src="assets/icon/icon-cal.png">
+        </ion-thumbnail>
+        <h2>运行管理</h2>
+        <button ion-button clear item-end class="arrow-rht"></button>
+      </ion-item>
+    </ion-list>
 
+    <ion-card class="home-tab">
+      <div class="tab-lt" (click)="goHome()">
+        <img src="assets/icon/icon-home.png" alt="" srcset="">
+      </div>
+      <div class="tab-lt" (click)="goManager()">
+        <img src="assets/icon/icon-music.png" alt="" srcset="">
+      </div>
+      <div class="tab-rt" (click)="goTabs()">
+        <img src="assets/icon/icon-cal.png" alt="" srcset="">
+      </div>
+      <div class="tab-rt">
+        <img src="assets/icon/icon-setting.png" alt="" srcset="">
+      </div>
+    </ion-card>
+  </ion-grid>
 </ion-content>

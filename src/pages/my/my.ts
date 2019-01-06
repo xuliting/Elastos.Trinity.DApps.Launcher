@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { HomePage } from '../home/home';
+import { ManagePage } from '../manage/manage';
+import { TabsPage } from '../tabs/tabs';
+
 /**
  * Generated class for the MyPage page.
  *
@@ -20,6 +24,18 @@ export class MyPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyPage');
+  }
+
+  goHome() {
+    this.navCtrl.push(HomePage);
+  }
+
+  goManager() {
+    this.navCtrl.push(ManagePage);
+}
+
+  goTabs() {
+    this.navCtrl.push(TabsPage);
   }
 
 }
