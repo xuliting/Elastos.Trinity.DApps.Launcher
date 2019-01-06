@@ -39,3 +39,7 @@ cordova plugin add  https://github.com/elastos/Elastos.Trinity.Plugins.Device.gi
 cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.SplashScreen.git#dev
 
 cordova plugin add https://github.com/apache/cordova-plugin-statusbar.git#dev
+
+
+cordova plugin add https://github.com/elastos/Elastos.Trinity.Plugins.QRScanner.git#dev
+

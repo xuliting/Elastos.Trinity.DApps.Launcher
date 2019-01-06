@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, AlertController} from 'ionic-angular';
-import {File} from '@ionic-native/file';
 
 import {InfoPage} from '../info/info';
 
@@ -32,7 +31,6 @@ export class ManagePage {
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
-                public file: File,
                 public alertCtrl: AlertController
     ) {
         this.refleshList();
@@ -52,18 +50,6 @@ export class ManagePage {
         };
         appManager.getAppInfos(refreshItems, display_msg);
 
-        // get built-in apps
-        let rootPath = _this.file.applicationDirectory;
-        _this.file.listDir(rootPath, _this.builtInDir)
-            .then(function (ret) {
-                _this.buildInAppIds = [];
-                ret.forEach(function (item) {
-                    _this.buildInAppIds.push("assets:/" + item.fullPath);
-                });
-            })
-            .catch(err => {
-                alert(JSON.stringify(err));
-            });
     }
 
     dealData(data) {
@@ -81,14 +67,6 @@ export class ManagePage {
             arr = data;
         }
         return arr;
-    }
-
-    addListen() {
-        var fileInput = document.getElementById('m_upload')
-        fileInput.addEventListener('change', function (el) {
-            alert('!!!!')
-            alert(el.target['value'])
-        })
     }
 
 

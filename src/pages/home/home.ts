@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, AlertController} from 'ionic-angular';
+import { Events } from 'ionic-angular';
 
 import {MyPage} from '../my/my';
 import {AppConfig} from "../../app/app.config";
@@ -9,6 +10,7 @@ declare var device: any;
 
 let appListInfos = []; // 应用列表
 let apppath = null;
+let appevent = null;
 
 
 @Component({
@@ -20,23 +22,38 @@ export class HomePage {
     public checked = false; // 删除按钮是否激活，激活时隐去跳转管理页面的按钮
 
     constructor(public navCtrl: NavController,
-                public alertCtrl: AlertController) {
+                public alertCtrl: AlertController,
+				public events: Events) {
         this.init();
+		this.listenEvents();
+		appevent = this.events;
+    }
+	
+    listenEvents() {
+		let _this = this;
+        this.events.subscribe('eventTest', function (name) {
+             console.log('ElastosJS hello!' + name);
+			 _this.showdialog();        
+        });
     }
 
     onReceive(ret) {
         console.log("ElastosJS  HomePage receive message:" + ret.message + ". type: " + ret.type + ". from: " + ret.from);
         if (ret.type == 4) {
             apppath = ret.message;
+			//this.showdialog(); 
+			if(appevent != null) {
+				console.log("ElastosJS  HomePage appevent message:" + ret.message + ". type: " + ret.type + ". from: " + ret.from);
+				appevent.publish('eventTest', 'Tester');
+			}
+
         }
     }
 
     ionViewWillEnter() {
-        console.log("===ElastosJS home page ionViewWillEnter");
+        this.display_msg("===ElastosJS home page ionViewWillEnter");
         if (apppath != null) {
             this.showdialog();
-            apppath = null;
-
         }
     }
 
@@ -51,6 +68,7 @@ export class HomePage {
                     text: '取消',
                     handler: data => {
                         console.log('Cancel clicked');
+						apppath = null;
                     }
                 },
                 {
@@ -59,8 +77,10 @@ export class HomePage {
                         appManager.install(apppath, function (ret) {
                             console.log("3: " + JSON.stringify(ret));
                             _this.refleshList();
+                            apppath = null;
                         }, function (err) {
                             console.log("4: " + JSON.stringify(err));
+							apppath = null;
                         });
                     }
                 }
