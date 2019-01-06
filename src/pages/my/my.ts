@@ -1,41 +1,50 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
 
-import { HomePage } from '../home/home';
-import { ManagePage } from '../manage/manage';
-import { TabsPage } from '../tabs/tabs';
+import {HomePage} from '../home/home';
+import {ManagePage} from '../manage/manage';
+import {TabsPage} from '../tabs/tabs';
+import {AppConfig} from "../../app/app.config";
 
-/**
- * Generated class for the MyPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+declare let appManager: any;
 
-@IonicPage()
 @Component({
-  selector: 'page-my',
-  templateUrl: 'my.html',
+    selector: 'page-my',
+    templateUrl: 'my.html',
 })
 export class MyPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MyPage');
-  }
+    display_msg(content) {
+        console.log("ElastosJS  MyPage === msg " + content);
+    }
 
-  goHome() {
-    this.navCtrl.push(HomePage);
-  }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad MyPage');
+    }
 
-  goManager() {
-    this.navCtrl.push(ManagePage);
-}
+    goHome() {
+        this.navCtrl.push(HomePage);
+    }
 
-  goTabs() {
-    this.navCtrl.push(TabsPage);
-  }
+    goManager() {
+        this.navCtrl.push(ManagePage);
+    }
+
+    goTabs() {
+        this.navCtrl.push(TabsPage);
+    }
+
+    goSamples() {
+        this.display_msg(AppConfig.SAMPLES_APP_ID);
+        appManager.start(AppConfig.SAMPLES_APP_ID);
+    }
+
+    goTodo() {
+        this.display_msg(AppConfig.TODO_APP_ID);
+        appManager.start(AppConfig.TODO_APP_ID);
+    }
 
 }

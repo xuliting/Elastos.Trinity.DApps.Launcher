@@ -10,9 +10,15 @@ page-my {
         width: 60px;
       }
       .arrow-rht {
-        .button-inner {
-          background: url(../../assets/icon/icon-rt.png) no-repeat;
-          background-size: cover;
+        // .button-inner {
+        //   background: url(../../assets/icon/icon-rt.png) no-repeat;
+        //   background-size: cover;
+        //   height: 24px;
+        //   width: 14.5px;
+        // }
+        z-index: 99;
+        img {
+          margin: 0;
           height: 24px;
           width: 14.5px;
         }

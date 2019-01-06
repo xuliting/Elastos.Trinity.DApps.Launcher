@@ -3,7 +3,6 @@ import {NavController, NavParams, AlertController} from 'ionic-angular';
 import {File} from '@ionic-native/file';
 
 import {InfoPage} from '../info/info';
-// import {ZipdirPage} from "../zipdir/zipdir";
 
 declare let appManager: any;
 
@@ -29,7 +28,6 @@ export class ManagePage {
     public buildInAppIds = [];
     public checkIndex = []; // 复选框选中的应用集合
     public isShow = false;
-    public appZipDir = "www/install-file/";
     public builtInDir = "www/built-in/";
 
     constructor(public navCtrl: NavController,
@@ -143,26 +141,6 @@ export class ManagePage {
     doDel() {
         this.showDelPrompt();
     }
-
-    // /**
-    //  *
-    //  * @desc 添加应用
-    //  */
-    // importFromEpk() {
-    //     let _this = this;
-    //     let rootPath = _this.file.applicationDirectory;
-    //     _this.file.listDir(rootPath, _this.appZipDir)
-    //         .then(function (ret) {
-    //             let zipList = [];
-    //             ret.forEach(function (item) {
-    //                 zipList.push("assets:/" + item.fullPath);
-    //             });
-    //             _this.navCtrl.push(ZipdirPage, {"zipList": zipList});
-    //         })
-    //         .catch(err => {
-    //             alert(JSON.stringify(err));
-    //         });
-    // }
 
     /**
      *

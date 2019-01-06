@@ -13,11 +13,6 @@
 
 <ion-content class="no-padding">
   <ion-grid>
-    <!--<ion-card class="import-box" (click)="importFromEpk()">-->
-      <!--<img src="assets/icon/icon-add.png" alt="">-->
-      <!--<div class="sub-ttl">从本地添加应用</div>-->
-    <!--</ion-card>-->
-
     <ion-list class="mgt-list">
       <ion-item *ngFor="let item of getAppInfoList(), let i = index">
         <ion-checkbox ng-checked="checked" (click)='checkApp(item)'></ion-checkbox>
@@ -26,7 +21,9 @@
           <div class="thum-inner">
             <h2>{{item.name}}</h2>
           </div>
-          <button ion-button clear item-end class="rt-icon"></button>
+          <button ion-button clear item-end class="rt-icon">
+            <img src="assets/icon/icon-rt.png" alt="" srcset="">
+          </button>
         </ion-thumbnail>
       </ion-item>
     </ion-list>

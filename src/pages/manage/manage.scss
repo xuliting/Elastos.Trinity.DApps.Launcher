@@ -77,11 +77,18 @@ page-manage {
   
       }
       .rt-icon {
-        margin: 27px -10px;
-        background: url(../../assets/icon/icon-rt.png) no-repeat;
-        background-size: contain;
-        height: 24px;
-        width: 13px;
+        // margin: 27px -10px;
+        // background: url(../../assets/icon/icon-rt.png) no-repeat;
+        // background-size: contain;
+        // height: 24px;
+        // width: 13px;
+        margin: 18px 0;
+        z-index: 99;
+        img {
+          margin: 0;
+          height: 24px;
+          width: 14.5px;
+        }
       }
     }
 
