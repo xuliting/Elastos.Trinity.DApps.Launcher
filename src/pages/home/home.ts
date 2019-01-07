@@ -76,6 +76,7 @@ export class HomePage {
                     handler: data => {
                         appManager.install(apppath, function (ret) {
                             console.log("3: " + JSON.stringify(ret));
+							apppath = null;
                             _this.refleshList();
                             apppath = null;
                         }, function (err) {
