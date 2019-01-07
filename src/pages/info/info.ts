@@ -14,7 +14,32 @@ function display_msg(content) {
     templateUrl: 'info.html',
 })
 export class InfoPage {
-    public appInfo:object = {};
+    public appInfo:object = {
+        "defaultLocale": "",
+        "backgroundColor": "",
+        "plugins": [{"authority": 0,"plugin": "","checked":false}],
+        "authorEmail": "",
+        "urls": [{"authority": 0,"url": "","checked":false}],
+        "startUrl": "",
+        "themeColor": "",
+        "version": "",
+        "id": "",
+        "description": "",
+        "themeDisplay": "",
+        "authorName": "",
+        "name": "",
+        "builtIn": 0,
+        "icons": [{
+            "type": "",
+            "sizes": "",
+            "src": ""
+        }, {
+            "type": "",
+            "sizes": "",
+            "src": ""
+        }],
+        "shortName": ""
+    };
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
         appId = this.navParams.get('id');
@@ -23,47 +48,45 @@ export class InfoPage {
 
     refreshAppInfo(appId) {
         let _this = this;
-        function refreshItems(ret) {
+        appManager.getAppInfo(appId, function (ret) {
             if (ret != null) {
+                display_msg("refreshItems ret: " + JSON.stringify(ret));
                 _this.appInfo = ret;
                 _this.appInfo["urls"] = _this.dealUrlsData(_this.appInfo["urls"]);
                 _this.appInfo["plugins"] = _this.dealPluginsData(_this.appInfo["plugins"]);
-                display_msg("refreshItems " + JSON.stringify(_this.appInfo));
+                display_msg("refreshItems appInfo: " + JSON.stringify(_this.appInfo));
             }
-        };
-        appManager.getAppInfo(appId, refreshItems, display_msg);
+        }, display_msg);
     }
 
     dealUrlsData(urls) {
         let arr = [];
-        let data = JSON.parse(urls);
-        if (typeof data == 'object') {
-            for (const key in data) {
+        if (typeof urls == 'object') {
+            for (const key in urls) {
                 arr.push({
-                    url: data[key].url,
-                    authority: data[key].authority,
-                    checked: data[key].authority == appManager.AuthorityStatus.ALLOW
+                    url: urls[key].url,
+                    authority: urls[key].authority,
+                    checked: urls[key].authority == appManager.AuthorityStatus.ALLOW
                 })
             }
         } else {
-            arr = data;
+            arr = urls;
         }
         return arr;
     }
 
     dealPluginsData(plugins) {
         let arr = [];
-        let data = JSON.parse(plugins);
-        if (typeof data == 'object') {
-            for (const key in data) {
+        if (typeof plugins == 'object') {
+            for (const key in plugins) {
                 arr.push({
-                    plugin: data[key].url,
-                    authority: data[key].authority,
-                    checked: data[key].authority == appManager.AuthorityStatus.ALLOW
+                    plugin: plugins[key].plugin,
+                    authority: plugins[key].authority,
+                    checked: plugins[key].authority == appManager.AuthorityStatus.ALLOW
                 })
             }
         } else {
-            arr = data;
+            arr = plugins;
         }
         return arr;
     }
