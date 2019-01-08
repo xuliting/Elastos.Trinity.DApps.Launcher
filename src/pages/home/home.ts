@@ -50,13 +50,6 @@ export class HomePage {
         }
     }
 
-    ionViewWillEnter() {
-        this.display_msg("===ElastosJS home page ionViewWillEnter");
-        if (apppath != null) {
-            this.showdialog();
-        }
-    }
-
     showdialog() {
         let _this = this;
         console.log("ElastosJS  HomePage receive message:" + apppath);
