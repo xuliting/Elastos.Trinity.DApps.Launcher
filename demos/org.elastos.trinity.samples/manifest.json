@@ -24,7 +24,7 @@
   "default_locale": "en",
   "plugins": [
       "Device",
-	  "SplashScreen",
+	  "SplashScreen"
   ],
   "urls": [
     "http://www.baidu.com/*",
