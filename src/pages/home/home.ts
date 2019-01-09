@@ -33,6 +33,7 @@ export class HomePage {
 		let _this = this;
         this.events.subscribe('eventTest', function (name) {
              console.log('ElastosJS hello!' + name);
+			 appManager.launcher();
 			 _this.showdialog();        
         });
     }
@@ -47,6 +48,13 @@ export class HomePage {
 				appevent.publish('eventTest', 'Tester');
 			}
 
+        }
+    }
+
+    ionViewWillEnter() {
+        this.display_msg("===ElastosJS home page ionViewWillEnter");
+        if (apppath != null) {
+            this.showdialog();
         }
     }
 

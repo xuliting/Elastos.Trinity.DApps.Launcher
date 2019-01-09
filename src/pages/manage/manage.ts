@@ -91,7 +91,7 @@ export class ManagePage {
      * @desc  页面跳转到详情
      */
     goInfo(item) {
-        this.navCtrl.push(InfoPage, {"id": item.id});
+        this.navCtrl.push(InfoPage, item);
     }
 
     /**
