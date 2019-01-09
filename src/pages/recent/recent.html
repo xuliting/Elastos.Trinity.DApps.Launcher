@@ -10,7 +10,7 @@
     <ion-row class="app-contain">
       <ion-col col-3 *ngFor="let item of getAppRecentList(), let i = index" (press)="pressEvent()" (click)="onClick(item)">
         <img src={{item.bigIcon}} alt="">
-        <span *ngIf="checked" class="del-ioc" (click)="delEvent(item)"></span>
+        <span *ngIf="checked" class="del-ioc" (click)="stopEvent(item)"></span>
         <h3>{{item.name}}</h3>
       </ion-col>
     </ion-row>

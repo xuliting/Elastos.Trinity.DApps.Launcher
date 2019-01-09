@@ -16,7 +16,6 @@ function display_msg(content) {
 })
 export class RunningPage {
     public showEmptyCard = true; // 是否显示空白卡片
-    public checked = false; // 删除按钮是否激活，激活时隐去跳转管理页面的按钮
 
     constructor(public navCtrl: NavController) {
         this.refleshList();
@@ -52,29 +51,26 @@ export class RunningPage {
     }
 
     getAppRunList () {
-        display_msg("getAppRunningList " + appListInfos);
+        display_msg("getAppRunningList " + JSON.stringify(appListInfos));
         return appListInfos;
     }
 
-    pressEvent() {
-        this.checked = true;
+    startApp(item) {
+        appManager.start(item.id, function (ret) {
+            display_msg("close ret: " + JSON.stringify(ret));
+        }, function (err) {
+            display_msg("close err: " + JSON.stringify(err));
+        });
     }
 
-    delEvent(item) {
-        appManager.unInstall(item.id, display_msg);
-        this.checked = false;
-    }
-
-    tapEvent() {
-        this.checked = false;
-    }
-
-    onClick(item) {
-        if (this.checked) {
-            return false;
-        } else {
-            appManager.start(item.id);
-        }
+    stopApp(item) {
+        let _this = this;
+        appManager.close(item.id, function (ret) {
+            display_msg("close ret: " + JSON.stringify(ret));
+            _this.refleshList();
+        }, function (err) {
+            display_msg("close err: " + JSON.stringify(err));
+        });
     }
 
 }

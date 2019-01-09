@@ -7,7 +7,7 @@ let appListInfos = []; // 应用列表
 
 function display_msg(content) {
     console.log("ElastosJS  RunningPage === msg " + content);
-};
+}
 
 
 @Component({
@@ -52,17 +52,24 @@ export class RecentPage {
     }
 
     getAppRecentList () {
-        display_msg("getAppRecentList " + appListInfos);
+        display_msg("getAppRecentList " + JSON.stringify(appListInfos));
         return appListInfos;
     }
 
     pressEvent() {
-        this.checked = true;
+        // this.checked = true;
     }
 
-    delEvent(item) {
-        appManager.unInstall(item.id, display_msg);
-        this.checked = false;
+    stopEvent(item) {
+        // let _this = this;
+        // appManager.close(item.id, function (ret) {
+        //     display_msg("close ret: " + JSON.stringify(ret));
+        //     _this.checked = false;
+        //     _this.refleshList();
+        // }, function (err) {
+        //     _this.checked = false;
+        //     display_msg("close err: " + JSON.stringify(err));
+        // });
     }
 
     tapEvent() {
