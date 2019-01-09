@@ -9,25 +9,15 @@ let appListInfos = []; // 应用列表
 
 function display_msg(content) {
     console.log("ElastosJS  ManagePage === msg " + content);
-};
-
-
-/**
- * Generated class for the ManagePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+}
 
 @Component({
     selector: 'page-manage',
     templateUrl: 'manage.html',
 })
 export class ManagePage {
-    public buildInAppIds = [];
     public checkIndex = []; // 复选框选中的应用集合
     public isShow = false;
-    public builtInDir = "www/built-in/";
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
@@ -40,16 +30,18 @@ export class ManagePage {
     refleshList() {
         window.localStorage.setItem('shouldLauncherBeRefreshed_manage', '0'); // manage页刷新标识: 0-不刷新, 1-刷新.
         window.localStorage.setItem('shouldLauncherBeRefreshed_home', '1'); // home页刷新标识: 0-不刷新, 1-刷新.
+
         let _this = this;
 
-        function refreshItems(appInfos) {
-            if (appInfos != null) {
-                appListInfos = _this.dealData(appInfos);
-                display_msg("refreshItems " + appListInfos.toString())
+        appManager.getAppInfos(function refreshItems(ret) {
+            display_msg("refreshItems ret: " + JSON.stringify(ret));
+            if (ret != null) {
+                appListInfos = _this.dealData(ret);
+                display_msg("refreshItems appListInfos: " + JSON.stringify(appListInfos));
             }
-        };
-        appManager.getAppInfos(refreshItems, display_msg);
-
+        }, function (err) {
+            display_msg("refreshItems err: " + JSON.stringify(err));
+        });
     }
 
     dealData(data) {
@@ -60,7 +52,8 @@ export class ManagePage {
                     id: data[key].id,
                     name: data[key].name,
                     version: data[key].version,
-                    bigIcon: data[key].icons[0].src
+                    bigIcon: data[key].icons[0].src,
+                    builtIn: data[key].builtIn
                 })
             }
         } else {
@@ -74,7 +67,7 @@ export class ManagePage {
         if ('1' == window.localStorage.getItem('shouldLauncherBeRefreshed_manage')) {
             this.refleshList();
         }
-        display_msg("getAppInfoList " + appListInfos);
+        display_msg("getAppInfoList " + JSON.stringify(appListInfos));
         return appListInfos;
     }
 
@@ -141,7 +134,7 @@ export class ManagePage {
                     handler: data => {
                         console.log('Saved clicked');
                         _this.checkIndex.forEach(function (item) {
-                            if (_this.buildInAppIds.indexOf(item.id) > -1) {
+                            if (item.builtIn == 1) {
                                 console.log("can not delete built-in app " + item.id);
                                 // _this.showCanNotDelPrompt(item);
                             } else {

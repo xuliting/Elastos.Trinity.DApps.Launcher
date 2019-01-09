@@ -15,7 +15,8 @@
   <ion-grid>
     <ion-list class="mgt-list">
       <ion-item *ngFor="let item of getAppInfoList(), let i = index">
-        <ion-checkbox ng-checked="checked" (click)='checkApp(item)'></ion-checkbox>
+        <ion-checkbox *ngIf="item.builtIn == 1" disabled></ion-checkbox>
+        <ion-checkbox *ngIf="item.builtIn != 1" ng-checked="checked" (click)='checkApp(item)'></ion-checkbox>
         <ion-thumbnail item-start class="full-row" (click)="goInfo(item)">
           <img src={{item.bigIcon}} alt="">
           <div class="thum-inner">
