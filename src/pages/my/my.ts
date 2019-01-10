@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 
-import {HomePage} from '../home/home';
+//import {HomePage} from '../home/home';
 import {ManagePage} from '../manage/manage';
 import {TabsPage} from '../tabs/tabs';
 import {AppConfig} from "../../app/app.config";
@@ -26,7 +26,8 @@ export class MyPage {
     }
 
     goHome() {
-        this.navCtrl.push(HomePage);
+        //this.navCtrl.push(HomePage);
+		this.navCtrl.pop()
     }
 
     goManager() {

@@ -61,7 +61,7 @@ export class InfoPage {
     }
 
 	 dealstartUrl(startUrl) {
-        let arr = startUrl.substr(startUrl.indexOf("/"));
+        let arr = startUrl.substr(startUrl.lastIndexOf("/"));
 		return arr;
 	 }
 	 

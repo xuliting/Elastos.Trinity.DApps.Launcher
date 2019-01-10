@@ -24,6 +24,8 @@ export class HomePage {
     constructor(public navCtrl: NavController,
                 public alertCtrl: AlertController,
 				public events: Events) {
+		
+		console.log("ElastosJS  HomePage constructor");
         this.init();
 		this.listenEvents();
 		appevent = this.events;
