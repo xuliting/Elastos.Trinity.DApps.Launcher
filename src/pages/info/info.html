@@ -1,0 +1,88 @@
+<ion-header no-border class="tab-header">
+    <ion-navbar transparent>
+        <h2>应用详情</h2>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="">
+    <ion-grid class="mt-48">
+        <ion-card>
+            <ion-item ng-model="appInfo">
+                <ion-thumbnail item-start class="up-app">
+                    <img src="{{appInfo.smallIcon}}">
+                </ion-thumbnail>
+                <h2>{{appInfo.name}}</h2>
+                <p>{{appInfo.version}}</p>
+                <p>{{appInfo.description}}</p>
+            </ion-item>
+        </ion-card>
+
+        <ion-card>
+            <ion-item class="item-text-wrap">
+                <ion-note item-start>
+                    DefaultLocale
+                </ion-note>
+                <ion-label>{{appInfo.defaultLocale}}</ion-label>
+            </ion-item>
+            <ion-item class="item-text-wrap">
+                <ion-note item-start>
+                    ID
+                </ion-note>
+                <ion-label>{{appInfo.id}}</ion-label>
+            </ion-item>
+            <ion-item class="item-text-wrap">
+                <ion-note item-start>
+                    Author
+                </ion-note>
+                <ion-label>{{appInfo.authorName}}</ion-label>
+            </ion-item>
+            <ion-item class="item-text-wrap">
+                <ion-note item-start>
+                    Email
+                </ion-note>
+                <ion-label>{{appInfo.authorEmail}}</ion-label>
+            </ion-item>
+            <ion-item class="item-text-wrap">
+                <ion-note item-start>
+                    LaunchPath
+                </ion-note>
+                <ion-label>{{appInfo.launchPath}}</ion-label>
+            </ion-item>
+            <ion-item class="item-text-wrap">
+                <ion-note item-start>
+                    BuiltIn
+                </ion-note>
+                <ion-label>{{appInfo.builtIn}}</ion-label>
+            </ion-item>
+        </ion-card>
+
+        <ion-card>
+            <ion-list no-lines>
+                <ion-item class="item-text-wrap" *ngFor="let item of appInfo.urls">
+                    <ion-note item-start *ngIf="item.authority == 0">
+                        无权限
+                    </ion-note>
+                    <ion-note item-start *ngIf="item.authority != 0">
+                        有权限
+                    </ion-note>
+                    <ion-label>{{item.url}}</ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-card>
+
+        <ion-card>
+            <ion-list no-lines>
+                <ion-item class="item-text-wrap" *ngFor="let item of appInfo.plugins">
+                    <ion-note item-start *ngIf="item.authority == 0">
+                        无权限
+                    </ion-note>
+                    <ion-note item-start *ngIf="item.authority != 0">
+                        有权限
+                    </ion-note>
+                    <ion-label>{{item.plugin}}</ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-card>
+
+    </ion-grid>
+</ion-content>

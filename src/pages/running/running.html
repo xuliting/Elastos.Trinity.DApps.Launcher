@@ -1,0 +1,38 @@
+<ion-content class="no-padding">
+  <ion-card class="card-empty" *ngIf="showEmptyCard == true">
+    <div class="icon-empty"></div>
+    <div class="empty-ttl">暂无运行中的程序</div>
+  </ion-card>
+  <ion-grid class="mt-48" >
+    <ion-row>
+      <ion-col col-21 (tap)="tapEvent($event)"></ion-col>
+    </ion-row>
+    <ion-row class="app-contain">
+      <ion-col col-3 *ngFor="let item of getAppRunList(), let i = index" (press)="pressEvent()"
+        (click)="onClick(item)">
+        <img src={{item.bigIcon}} alt="">
+        <span *ngIf="checked" class="del-ioc" (click)="delEvent(item)"></span>
+        <h3>{{item.name}}</h3>
+      </ion-col>
+    </ion-row>
+    <!--<ion-row class="app-contain">-->
+      <!--<ion-col col-3>-->
+        <!--<img src="assets/icon/icon-water.png" alt="" srcset="">-->
+        <!--<h3>水滴</h3>-->
+      <!--</ion-col>-->
+      <!--<ion-col col-3>-->
+        <!--<img src="assets/icon/icon-music.png" alt="" srcset="">-->
+        <!--<h3>蝌蚪音乐</h3>-->
+      <!--</ion-col>-->
+      <!--<ion-col col-3>-->
+        <!--<img src="assets/icon/icon-pocket.png" alt="" srcset="">-->
+        <!--<h3>口袋购物</h3>-->
+      <!--</ion-col>-->
+      <!--<ion-col col-3>-->
+        <!--<img src="assets/icon/icon-cal.png" alt="" srcset="">-->
+        <!--<h3>日历</h3>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+  </ion-grid>
+  <ion-grid class="grid-down" (tap)="tapEvent($event)"></ion-grid>
+</ion-content>

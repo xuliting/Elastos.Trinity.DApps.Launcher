@@ -1,0 +1,21 @@
+<ion-content class="no-padding">
+  <ion-grid class="mt-48" >
+    <ion-row class="main-contain">
+      <ion-col class="main-section" col-3 *ngFor="let item of getAppInfoList(), let i = index" (press)="pressEvent()"
+        (click)="onClick(item)">
+        <img src={{item.bigIcon}} alt="">
+        <span *ngIf="checked" class="del-ioc" (click)="delEvent(item)"></span>
+        <div class="app-title">{{item.name}}</div>
+      </ion-col>
+    </ion-row>
+
+    <ion-card class="home-tab">
+      <div class="tab-lt" (click)="goManager()">
+        <img src="assets/icon/icon-bag.png" alt="" srcset="">
+      </div>
+      <div class="tab-rt" (click)="goTabs()">
+          <img src="assets/icon/icon-file.png" alt="" srcset="">
+      </div>
+    </ion-card>
+  </ion-grid>
+</ion-content>
