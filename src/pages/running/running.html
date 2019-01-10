@@ -8,10 +8,8 @@
             <ion-item *ngFor="let item of getAppRunList(), let i = index">
                 <ion-thumbnail item-start class="full-row">
                     <img src={{item.bigIcon}} alt="">
-                    <div class="thum-inner">
-                        <h3>{{item.name}}</h3>
-                    </div>
                 </ion-thumbnail>
+                <h3>{{item.name}}</h3>
                 <button ion-button item-end (click)="startApp(item)">start</button>
                 <button ion-button item-end (click)="stopApp(item)">stop</button>
             </ion-item>
