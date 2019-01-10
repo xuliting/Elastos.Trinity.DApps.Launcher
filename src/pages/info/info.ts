@@ -52,6 +52,7 @@ export class InfoPage {
             if (ret != null) {
                 display_msg("refreshItems ret: " + JSON.stringify(ret));
                 _this.appInfo = ret;
+				_this.appInfo["startUrl"] = _this.dealstartUrl(_this.appInfo["startUrl"]);
                 _this.appInfo["urls"] = _this.dealUrlsData(_this.appInfo["urls"]);
                 _this.appInfo["plugins"] = _this.dealPluginsData(_this.appInfo["plugins"]);
                 display_msg("refreshItems appInfo: " + JSON.stringify(_this.appInfo));
@@ -59,6 +60,11 @@ export class InfoPage {
         }, display_msg);
     }
 
+	 dealstartUrl(startUrl) {
+        let arr = startUrl.substr(startUrl.indexOf("/"));
+		return arr;
+	 }
+	 
     dealUrlsData(urls) {
         let arr = [];
         if (typeof urls == 'object') {
