@@ -5,5 +5,10 @@ page-running {
   .mgt-list {
     margin: 0 12px;
     border-radius: 4px;
+    .item-md, .item-ios {
+      h3 {
+        margin: auto 0;
+      }
+    }
   }
 }
