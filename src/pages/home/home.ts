@@ -84,6 +84,7 @@ export class HomePage {
                         }, function (err) {
                             console.log("4: " + JSON.stringify(err));
 							apppath = null;
+							_this.showAlert(JSON.stringify(err));						
                         });
                     }
                 }
@@ -91,6 +92,22 @@ export class HomePage {
         });
         prompt.present();
     }
+	
+	    // 弹出框提示是否Did登陆
+    showAlert(info) {
+	  let _this = this;
+      const alert = _this.alertCtrl.create({
+      title: '错误信息!',
+      message: "<div>错误信息: " + info + "</div>",
+      buttons: [{
+        text: '确认',
+        handler: data => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    alert.present();
+  }
 
     display_msg(content) {
         console.log("ElastosJS  HomePage === msg " + content);
