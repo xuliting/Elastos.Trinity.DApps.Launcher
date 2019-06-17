@@ -1,0 +1,24 @@
+<div>
+    <div id="empty" *ngIf="appManager.runningList.length == 0">
+        <div>
+            <img src="assets/img/empty.png" alt="">
+            <p>{{'no-running' | translate}}</p>
+        </div>
+    </div>
+    <div *ngIf="appManager.runningList.length > 0">
+        <div id="running-title">{{'running' | translate}}</div>
+        <ul dragula="Runnings" [(dragulaModel)]="appManager.runningList">
+            <li *ngFor="let id of appManager.runningList">
+                <div (click)="onClick(id)">
+                    <img [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)" alt="">
+                    <p class="line-limit-length">{{appManager.appInfos[id].name}}</p>
+                </div>
+            </li>
+        </ul>
+        <div id="close" dragula="Runnings" [(dragulaModel)]="empty">
+            <!-- <img src="assets/icon/close.png"> -->
+            <ion-icon name="close"></ion-icon>
+            <p>{{'drag-and-close' | translate}}</p>
+        </div>
+    </div>
+</div>

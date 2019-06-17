@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="36px" viewBox="0 0 35 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <g id="UI稿" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="长按移除应用" transform="translate(-357.000000, -460.000000)">
+            <g id="Group-2" transform="translate(30.000000, 133.000000)">
+                <g id="垃圾桶" transform="translate(313.000000, 315.000000)">
+                    <g id="Group" transform="translate(14.000000, 12.000000)">
+                        <rect id="Rectangle" fill="#FFFFFF" x="0" y="8" width="35" height="5"></rect>
+                        <rect id="Rectangle-Copy-5" fill="#FFFFFF" x="12" y="0" width="11" height="5"></rect>
+                        <rect id="Rectangle" stroke="#FFFFFF" stroke-width="5" x="6.5" y="10.5" width="22" height="23"></rect>
+                        <rect id="Rectangle" fill="#FFFFFF" x="15" y="12" width="5" height="21"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

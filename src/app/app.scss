@@ -1,6 +1,13 @@
+// App Styles
+// ----------------------------------------------------------------------------
+// Put style rules here that you want to apply to the entire application. These
+// styles are for the entire app and not just one component. Additionally, this
+// file can hold Sass mixins, functions, and placeholder classes to be imported
+// and used throughout the application.
+
 // http://ionicframework.com/docs/theming/
 
-
+//TODO::
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -18,288 +25,29 @@
 $activeColor: #1b9cff;
 $defaulColor: #666666;
 
-
-
-.alert-title {
-  img {
-    height: 22px;
-  }
+:root {
+    --ion-text-color: white;
+    --ion-background-color: #161723;
 }
 
-.content-ios,
-.content-md {
-  background: url(../assets/icon/app-bg.jpg) no-repeat;
-  background-size: cover;
-}
-.fixed-content {
-  margin-top: 0 !important;
-}
-
-.permission-warning {
-  :before {
-    content: '';
-    position: relative;
-    display: block;
-    height: 20px;
-    //background: url(../assets/icon/warning-icon.png) no-repeat;
-    background-size: contain;
-  }
-}
-
-// 获取权限弹窗
-.permission-warning:before {
-  content: '';
-  position: relative;
-  display: block;
-  margin-bottom: 12px;
-  left: 45%;
-  height: 20px;
-  //background: url(../assets/icon/warning-icon.png) no-repeat;
-  background-size: contain;
-}
-
-// alert弹窗样式
-.alert-ios {
-  .alert-head {
-    padding: 15px 20px 0;
-  }
-
-  .alert-title {
-    font-size: 16px;
-    color: #333;
-  }
-
-  .alert-message {
-    padding: 15px 20px 36px;
-    text-align: left;
-    font-size: 14px;
-    line-height: 14px;
-    color: #666;
-
-    div+div {
-      margin-top: 15px;
+.my-custom-popup {
+    .popover-content {
+        width: 95%;
+        background-color: #000000;
     }
-
-    .m-center {
-      text-align: center;
-      color: #333;
-      font-weight: 600;
-    }
-  }
-
-  .alert-button {
-    color: #6f6f6f;
-    background-color: #ebebeb;
-  }
-
-  .alert-button:last-child {
-    background-color: #1b9cff;
-    color: #fff;
-    font-weight: 500;
-  }
-
-  .alert-wrapper {
-    border-radius: 5px;
-  }
 }
 
-.card-ios {
-  margin: 10px;
-}
-
-// tab页的
-.tabs-icon-top {
-  .tabbar {
-    top: 0;
-    bottom: auto !important;
-    margin: 28px 10px 10px;
-    height: 40px;
-    width: calc(100% - 25px);
-    background-color: transparent;
-    border: none;
-
-    a {
-      color: $activeColor;
-      border-top: none;
-      border-radius: 4px;
-      font-size: 16px;
-      max-height: 40px;
-    }
-
-    .tab-button[aria-selected=true] {
-      background-color: #fff;
-      min-height: 40px;
-    }
-
-    .tab-button[aria-selected=false] {
-      background-color: #9dc7f5;
-      min-height: 40px;
-    }
-
-    a+a {
-      margin-left: 10px;
-    }
-  }
-}
-
-.toolbar-md {
-  padding: 0;
-  min-height: 40px !important;
-}
-.back-button-md {
-  margin: 0;
-  min-width: auto;
-}
-
-// card空
-.card-empty {
-  margin: 48px 10px 0;
-  background-color: #fff;
-  height: 125px;
-
-  .icon-empty {
-    display: block;
-    margin: 31px auto 12px;
-    height: 30px;
-    width: 36px;
-    background: url(../assets/icon/icon-empty.png) no-repeat;
-    background-size: contain;
-  }
-
-  .empty-ttl {
+.my-custom-alert {
     text-align: center;
-    color: $defaulColor;
-  }
 }
 
-// 内容页重置padding
-.no-padding {
-  .scroll-content {
-    padding: 0 !important;
-  }
-
-  .grid {
-    margin-top: 30px;
-    padding: 0 !important;
-    // padding-top: 48px;
-    .app-contain {
-      img {
-        max-height: 82px;
-        border-radius: 8px;
-      }
-
-      .del-ioc {
-        position: absolute;
-        top: -5px;
-        left: 0;
-        width: 20px;
-        height: 20px;
-        background: url(../assets/imgs/del.png) no-repeat center;
-        background-size: cover;
-      }
-
-      h3 {
-        margin-top: 10px;
-        text-align: center;
-        width: 100%;
-        font-size: 12px;
-        color: #fff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-  }
+ion-title {
+    text-align: center;
+    --ion-background-color: #161723;
 }
 
-.mt-48 {
-  margin-top: 28px !important;
-}
-// TAB页的header
-.tab-header {
-  margin-top: 28px;
-  height: 42px;
-  background-color: transparent;
-
-  .toolbar-ios, .toolbar-md {
-    padding: 12px 10px;
-    height: 18px;
-
-    .toolbar-background-ios, .toolbar-background-md {
-      background-color: transparent;
-      border: none;
-    }
-
-    // .bar-button::after {
-    //   background: url(../assets/icon/icon-rgh.png) no-repeat;
-    // }
-    .back-button-icon-ios, .back-button-icon-md {
-      background: url(../assets/icon/icon-lt.png) no-repeat;
-      width: auto;
-      height: 18px;
-      background-size: contain;
-    }
-
-    .ion-ios-arrow-back:before, .ion-md-arrow-back:before {
-      content: '';
-    }
-  }
-
-  h2 {
-    margin: 0;
-    font-size: 18px;
-    color: #fff;
-  }
-}
-
-// TAB页的内容
-.tab-content {
-  padding: 42px 10px 0 !important;
-}
-
-// 首页的TAB
-.home-tab {
-  position: absolute;
-  bottom: 12px;
-  height: 68px;
-  width: calc(100% - 20px);
-  background: -webkit-linear-gradient(bottom, #002dd9, #1265e2);
-  background: -o-linear-gradient(top, #002dd9, #1265e2);
-  background: -moz-linear-gradient(top, #002dd9, #1265e2);
-  background: linear-gradient(to top, #002dd9, #1265e2);
-  z-index: 99999;
-
-  img {
-    margin: 16px auto;
-    height: 37px;
-    width: auto;
-  }
-
-  >div {
-    display: inline-block;
-    width: 24%;
-    height: 100%;
-  }
-
-  div + div {
-    border-left: 1px solid #0d58d8;
-  }
-}
-
-// 应用管理的删除
-.card-del {
-  position: absolute;
-  bottom: 12px;
-  width: calc(100% - 30px);
-  height: 40px;
-  font-size: 16px;
-  text-align: center;
-  line-height: 40px;
-  font-weight: 600;
-  color: #ff2222;
-  z-index: 99999;
-}
-
-.t-center {
-  text-align: center;
+.demo_line {
+    height: 1px;
+    border-top: 1px solid #ddd;
+    text-align: center;
 }

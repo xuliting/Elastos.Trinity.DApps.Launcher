@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button icon="back"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{'app-manager' | translate}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item *ngFor="let id of appManager.appList" detail [routerLink]="['/appinfo']" [queryParams]="{appid:id}"
+            routerDirection="forward">
+            <ion-thumbnail>
+                <img src={{appManager.appInfos[id].icons[0].src}} alt="">
+            </ion-thumbnail>
+            <ion-label>
+                <h2>{{appManager.appInfos[id].name}}</h2>
+                <p>{{appManager.appInfos[id].description}}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>

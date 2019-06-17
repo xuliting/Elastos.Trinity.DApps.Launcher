@@ -1,64 +1,67 @@
-import {NgModule, ErrorHandler} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
-import {MyApp} from './app.component';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouteReuseStrategy } from '@angular/router';
 
-import {ComponentsModule} from '../components/components.module'; // 引入模块
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
-import {HomePage} from '../pages/home/home';
-import {ManagePage} from '../pages/manage/manage';
-import {InfoPage} from '../pages/info/info';
-import {RunningPage} from '../pages/running/running';
-import {RecentPage} from '../pages/recent/recent';
-import {TabsPage} from '../pages/tabs/tabs';
-import {MyPage} from '../pages/my/my';
-import {ZipdirPage} from '../pages/zipdir/zipdir';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { IonicStorageModule } from "@ionic/storage";
 
-import {File} from '@ionic-native/file';
-import {SplashScreen} from '@ionic-native/splash-screen';
-import {SQLite} from '@ionic-native/sqlite';
-import {StatusBar} from '@ionic-native/status-bar';
+import { DragulaModule } from 'ng2-dragula';
+// import { CompilerConfig } from '@angular/compiler';
+
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { zh } from './../assets/i18n/zh';
+import { en } from './../assets/i18n/en';
+
+/** 通过类引用方式解析国家化文件 */
+export class CustomTranslateLoader implements TranslateLoader {
+    public getTranslation(lang: string): Observable<any> {
+        return Observable.create(observer => {
+            switch (lang) {
+                case 'zh':
+                default:
+                    observer.next(zh);
+                    break;
+                case 'en':
+                    observer.next(en);
+            }
+
+            observer.complete();
+        });
+    }
+}
+
+export function TranslateLoaderFactory() {
+    return new CustomTranslateLoader();
+}
 
 @NgModule({
     declarations: [
-        MyApp,
-        HomePage,
-        ManagePage,
-        InfoPage,
-        RunningPage,
-        RecentPage,
-        TabsPage,
-        MyPage,
-        ZipdirPage
+        AppComponent
     ],
-    imports: [
-        BrowserModule,
-        ComponentsModule,
-        // IonicModule.forRoot(MyApp)
-        IonicModule.forRoot(MyApp, {
-            tabsHideOnSubPages: 'true', //隐藏全部子页面 tabs
-            backButtonText: '' /*配置返回按钮*/
-        })
-    ],
-    bootstrap: [IonicApp],
-    entryComponents: [
-        MyApp,
-        HomePage,
-        ManagePage,
-        InfoPage,
-        RunningPage,
-        RecentPage,
-        TabsPage,
-        MyPage,
-        ZipdirPage
-    ],
+    entryComponents: [],
+    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, DragulaModule.forRoot(),
+        IonicStorageModule.forRoot({
+            name: '__launcher.db',
+            driverOrder: ['localstorage', 'indexeddb', 'sqlite', 'websql']
+        }),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (TranslateLoaderFactory)
+            }
+        })],
     providers: [
-        File,
-        SplashScreen,
-        SQLite,
         StatusBar,
-        {provide: ErrorHandler, useClass: IonicErrorHandler}
-    ]
+        SplashScreen,
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }

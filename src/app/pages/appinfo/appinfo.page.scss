@@ -1,0 +1,24 @@
+#appname {
+    margin-left: 10px;
+}
+
+.authority {
+    margin-left: 15px;
+}
+
+.authority_list {
+    img {
+        transform: scale(0.5);
+    }
+}
+
+ion-footer {
+    text-align: center;
+    ion-button {
+        height: 50px;
+        width: 94%;
+        border-radius: 2px;
+        margin-bottom: 8px;
+        --background: #ab2323;
+    }
+}

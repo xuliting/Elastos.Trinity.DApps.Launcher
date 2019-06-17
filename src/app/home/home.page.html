@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-button slot="start" fill="clear" (click)="popoRunningManager($event)">
+            <ion-icon slot="icon-only" name="switch-light" *ngIf="popup"></ion-icon>
+            <ion-icon slot="icon-only" name="switch-dark" *ngIf="!popup"></ion-icon>
+        </ion-button>
+        <span class="point" *ngIf="appManager.runningList.length > 0"></span>
+        <ion-button slot="end" fill="clear" [routerLink]="['/my']" routerDirection="forward">
+            <ion-icon slot="icon-only" name="my"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+    <div class="bg">
+        <ion-grid>
+            <ion-row *ngFor="let row of appManager.rows" align-items-center>
+                <ion-col size="3" align-self:center *ngFor="let id of row; let i = index;">
+                    <div (press)="pressEvent()" (click)="onClick(id)">
+                        <img class="aligncenter"  [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)" alt="" />
+                        <p class="line-limit-length">{{appManager.appInfos[id].name}}</p>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button icon="back"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{'app-info' | translate}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div></div>
+    <ion-list>
+        <ion-item>
+            <ion-thumbnail>
+                <img src={{appManager.appInfos[id].icons[0].src}} alt="">
+            </ion-thumbnail>
+            <ion-label id="appname">
+                <h2>{{appManager.appInfos[id].name}}</h2>
+                <p>{{appManager.appInfos[id].description}}</p>
+            </ion-label>
+        </ion-item>
+        <ion-item>
+            <ion-label>
+                {{'develepor' | translate}}
+            </ion-label>
+            <ion-note slot="end">
+                {{appManager.appInfos[id].authorName}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <ion-label>
+                {{'sign' | translate}}
+            </ion-label>
+            <ion-note slot="end">
+                123ABC
+            </ion-note>
+        </ion-item>
+    </ion-list>
+    <div *ngIf="appManager.appInfos[id].plugins.length > 0" class="authority">
+        <div>{{'plugins-authority' | translate}}</div>
+        <ion-list class="authority_list">
+            <ion-item *ngFor="let item of appManager.appInfos[id].plugins">
+                <ion-label>
+                    {{item.plugin}}
+                </ion-label>
+                <img src="assets/img/slide-open.png" *ngIf="item.authority==2" (click)="pluginAuthority(item, 3)" />
+                <img src="assets/img/slide-close.png" *ngIf="item.authority!=2" (click)="pluginAuthority(item, 2)" />
+            </ion-item>
+        </ion-list>
+    </div>
+    <div *ngIf="appManager.appInfos[id].urls.length > 0" class="authority">
+        <div>{{'urls-authority' | translate}}</div>
+        <ion-list class="authority_list">
+            <ion-item *ngFor="let item of appManager.appInfos[id].urls">
+                <ion-label>
+                    {{item.url}}
+                </ion-label>
+                <img src="assets/img/slide-open.png" *ngIf="item.authority==2" (click)="urlAuthority(item, 3)" />
+                <!-- <ion-icon name="slide-open" *ngIf="item.authority==2"></ion-icon> -->
+                <img src="assets/img/slide-close.png" *ngIf="item.authority!=2" (click)="urlAuthority(item, 2)" />
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-button id="uninstall" (click)="unInstallClick()">{{'uninstall' | translate}}</ion-button>
+    </ion-toolbar>
+</ion-footer>
