@@ -14,6 +14,7 @@ import { IonicStorageModule } from "@ionic/storage";
 
 import { DragulaModule } from 'ng2-dragula';
 // import { CompilerConfig } from '@angular/compiler';
+import { SafePipe } from './pipes/safe.pipe';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { zh } from './../assets/i18n/zh';
@@ -43,7 +44,7 @@ export function TranslateLoaderFactory() {
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent, SafePipe
     ],
     entryComponents: [],
     imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, DragulaModule.forRoot(),
