@@ -106,7 +106,7 @@ export class AppmanagerService {
 
     install(url: string) {
         var me = this;
-        appManager.unInstall(url,
+        appManager.install(url,
             ret => {
                 console.log(ret);
             },
