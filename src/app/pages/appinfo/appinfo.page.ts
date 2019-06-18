@@ -61,12 +61,12 @@ export class AppinfoPage implements OnInit {
     }
 
     pluginAuthority(item, authority) {
-        this.appManager.setPluginAuthority(this.id, item.plugin, item.authority);
+        this.appManager.setPluginAuthority(this.id, item.plugin, authority);
         item.authority = authority;
     }
 
     urlAuthority(item, authority) {
-        this.appManager.setUrlAuthority(this.id, item.url, item.authority);
+        this.appManager.setUrlAuthority(this.id, item.url, authority);
         item.authority = authority;
     }
 }
