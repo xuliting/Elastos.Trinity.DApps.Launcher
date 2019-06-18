@@ -54,9 +54,7 @@ export class AppmanagerService {
     }
 
     sanitize(url:string){
-        var abc =  this.sanitizer.bypassSecurityTrustResourceUrl(url);
-        // alert(abc);
-        return abc;
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);;
     }
 
     onLangChange(code: string) {

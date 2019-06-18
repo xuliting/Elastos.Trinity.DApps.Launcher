@@ -12,7 +12,7 @@
         <ion-item *ngFor="let id of appManager.appList" detail [routerLink]="['/appinfo']" [queryParams]="{appid:id}"
             routerDirection="forward">
             <ion-thumbnail>
-                <img src={{appManager.appInfos[id].icons[0].src}} alt="">
+                <img [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)" alt="">
             </ion-thumbnail>
             <ion-label>
                 <h2>{{appManager.appInfos[id].name}}</h2>

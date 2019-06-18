@@ -12,11 +12,11 @@
     <ion-list>
         <ion-item>
             <ion-thumbnail>
-                <img src={{appManager.appInfos[id].icons[0].src}} alt="">
+                <img [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)" alt="">
             </ion-thumbnail>
             <ion-label id="appname">
                 <h2>{{appManager.appInfos[id].name}}</h2>
-                <p>{{appManager.appInfos[id].description}}</p>
+                <p>{{appManager.appInfos[id].version}}</p>
             </ion-label>
         </ion-item>
         <ion-item>
