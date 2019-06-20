@@ -20,10 +20,11 @@ export const zh = {
 
   //app-info
   'app-info': '应用详情',
-  'develepor': '开发者：',
+  'description': '描述:',
+  'develepor': '开发者:',
   'sign': '签名：',
-  'plugins-authority': '插件权限：',
-  'urls-authority': '访问权限：',
+  'plugins-authority': '插件权限:',
+  'urls-authority': '访问权限:',
   'uninstall': '卸载应用',
   'uninstall-confirm': '确定要卸载吗？',
 

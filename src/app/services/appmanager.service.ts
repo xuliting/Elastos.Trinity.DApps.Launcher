@@ -57,6 +57,14 @@ export class AppmanagerService {
         return this.sanitizer.bypassSecurityTrustResourceUrl(url);;
     }
 
+    print_err(err) {
+        console.log("ElastosJS  Error: " + err);
+    }
+
+    display_err(err) {
+        appManager.alertPrompt("Error", err);
+    }
+
     onLangChange(code: string) {
         this.changeInfosLanguage(this.translate.currentLang)
     }
@@ -88,7 +96,7 @@ export class AppmanagerService {
                 me.setting.setDefaultLang(ret.defaultLang);
                 me.setting.setSystemLang(ret.systemLang);
             },
-            err => me.display_err(err)
+            err => me.print_err(err)
         );
     }
 
@@ -141,7 +149,10 @@ export class AppmanagerService {
     }
 
     askInstall(url: string) {
-        this.presentAlertConfirm(url).then();
+        appManager.askPrompt(this.translate.instant("install-prompt"),
+            this.translate.instant("install-soon") + ": " + url,
+            () => this.install(url));
+        // this.presentAlertConfirm(url).then();
     }
 
     unInstall(id: string, success: any, error: any) {
@@ -152,10 +163,6 @@ export class AppmanagerService {
                         error(err);
                     else
                         me.presentAlertError(err);});
-    }
-
-    display_err(err) {
-        console.log("ElastosJS  Error: " + err);
     }
 
     async presentAlertError(err: string) {

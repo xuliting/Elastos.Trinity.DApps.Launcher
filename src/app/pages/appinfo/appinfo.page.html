@@ -21,6 +21,14 @@
         </ion-item>
         <ion-item>
             <ion-label>
+                {{'description' | translate}}
+            </ion-label>
+            <ion-note slot="end">
+                {{appManager.appInfos[id].description}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <ion-label>
                 {{'develepor' | translate}}
             </ion-label>
             <ion-note slot="end">
