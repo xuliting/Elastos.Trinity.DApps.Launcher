@@ -1,24 +1,81 @@
-#appname {
-    margin-left: 10px;
+
+@import "../../functions.scss";
+
+#main {
+    margin-top: px2rem(49px);
+    margin-left: px2rem(45px);
+    margin-right: px2rem(45px);
+    margin-bottom: px2rem(44px);
+    height: px2rem(140px);
+    ion-thumbnail {
+        width: px2rem(140px);
+        height: px2rem(140px);
+        margin-right: px2rem(26px);
+        img {
+            border-radius: 8px;
+        }
+    }
+
+    ion-label {
+        h2 {
+            font-size: 18px;
+        }
+        p {
+            font-size: 13px;
+        }
+    }
+
+    ion-button {
+        width: px2rem(121px);
+        height: px2rem(60px);
+        --background: #783aff;
+    }
 }
+
+.item {
+    margin-left: px2rem(45px);
+    margin-right: px2rem(45px);
+    height: px2rem(104px);
+    // background-color: green;
+    // display: -webkit-flex;
+
+    ion-label {
+        font-size: 16px;
+    }
+    ion-note {
+        font-size: 14px;
+    }
+
+}
+
+// #appname {
+//     margin-left: 10px;
+// }
 
 .authority {
-    margin-left: 15px;
-}
 
-.authority_list {
-    img {
-        transform: scale(0.5);
+    ion-list {
+        padding: 0;
+    }
+    ion-item {
+        height: px2rem(100px);
+
+        img {
+            width: px2rem(102px);
+            height: px2rem(62px);
+        }
     }
 }
 
 ion-footer {
     text-align: center;
     ion-button {
-        height: 50px;
-        width: 94%;
+        width: px2rem(686px);
+        height: px2rem(84px);
+
         border-radius: 2px;
-        margin-bottom: 8px;
+        margin-top: px2rem(20px);
+        margin-bottom: px2rem(20px);
         --background: #ab2323;
     }
 }

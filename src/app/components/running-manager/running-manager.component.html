@@ -9,14 +9,13 @@
         <div id="running-title">{{'running' | translate}}</div>
         <ul dragula="Runnings" [(dragulaModel)]="appManager.runningList">
             <li *ngFor="let id of appManager.runningList">
-                <div (click)="onClick(id)">
+                <div class="app-layout" (click)="onClick(id)" (press)="pressed=true;">
                     <img [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)" alt="">
-                    <p class="line-limit-length">{{appManager.appInfos[id].name}}</p>
+                    <p>{{appManager.appInfos[id].name}}</p>
                 </div>
             </li>
         </ul>
-        <div id="close" dragula="Runnings" [(dragulaModel)]="empty">
-            <!-- <img src="assets/icon/close.png"> -->
+        <div id="close" dragula="Runnings" [(dragulaModel)]="empty" *ngIf="pressed">
             <ion-icon name="close"></ion-icon>
             <p>{{'drag-and-close' | translate}}</p>
         </div>

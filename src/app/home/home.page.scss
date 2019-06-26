@@ -1,21 +1,23 @@
+@import "../functions.scss";
+
 .line-limit-length {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.aligncenter {
-    clear: both;
-    display: block;
-    margin: auto;
-}
+// .aligncenter {
+    // clear: both;
+    // display: block;
+    // margin: auto;
+// }
 
 .point {
     position: absolute;
-    top: 5px;
-    left: 41px;
-    width: 10px;
-    height: 10px;
+    top: px2rem(15px);
+    left: px2rem(80px);
+    width: px2rem(14px);
+    height: px2rem(14px);
     background: url(../../assets/img/point.png) no-repeat center;
     background-size: cover;
 }
@@ -33,23 +35,22 @@
 }
 
 ion-grid {
-    margin-top: 30px;
+    margin-top: px2rem(50px);
     padding: 0 !important;
+    // background-color: red;
+    margin-left: px2rem(27px);
+    margin-right: px2rem(27px);
 
     ion-row {
         align-items: center;
+        // height: px2rem(189px);
+    }
+
+    ion-col {
+        // background-color: white;
     }
 
     div {
-        padding: 10px;
-        align-self: center;
-    }
-
-    img {
-        border-radius: 8px;
-    }
-
-    p {
-        text-align: center;
+        height: px2rem(200px);
     }
 }

@@ -20,6 +20,9 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { zh } from './../assets/i18n/zh';
 import { en } from './../assets/i18n/en';
 
+import { ComponentsModule } from './components/components.module';
+import { BackButtonComponent } from './components/back-button/back-button.component'
+
 /** 通过类引用方式解析国家化文件 */
 export class CustomTranslateLoader implements TranslateLoader {
     public getTranslation(lang: string): Observable<any> {
@@ -44,10 +47,13 @@ export function TranslateLoaderFactory() {
 
 @NgModule({
     declarations: [
-        AppComponent, SafePipe
+        AppComponent, SafePipe,
+        // BackButtonComponent
     ],
     entryComponents: [],
-    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, DragulaModule.forRoot(),
+    imports: [BrowserModule,
+        ComponentsModule,
+        IonicModule.forRoot(), AppRoutingModule, FormsModule, DragulaModule.forRoot(),
         IonicStorageModule.forRoot({
             name: '__launcher.db',
             driverOrder: ['localstorage', 'indexeddb', 'sqlite', 'websql']

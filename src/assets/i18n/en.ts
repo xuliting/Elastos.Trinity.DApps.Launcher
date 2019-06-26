@@ -19,6 +19,7 @@ export const en = {
 
    //app-info
    'app-info': 'App infomation',
+   'update': 'Update',
    'description': 'Description:',
    'develepor': 'Develepor:',
    'sign': 'Sign:',

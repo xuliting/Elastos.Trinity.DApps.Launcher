@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="100%" height="100%" viewBox="0 0 36 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
-    <title>切换</title>
+    <title>icon-切换-白</title>
     <desc>Created with Sketch.</desc>
-    <g id="UI稿" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="切换应用" transform="translate(-44.000000, -80.000000)">
-            <g id="切换" transform="translate(30.000000, 68.000000)">
-                <rect id="Rectangle-25" x="0" y="0" width="64" height="64"></rect>
-                <path d="M21,43 L21,49 L14,49 L14,41 L14,37 L50,37 L50,43 L21,43 Z M43,18 L43,12 L50,12 L50,18 L50,24 L14,24 L14,18 L43,18 Z" id="Combined-Shape" fill="#FFFFFF"></path>
-            </g>
+    <g id="icon-切换-白" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g>
+            <rect id="Rectangle-25" x="0" y="0" width="64" height="64"></rect>
+            <path d="M21,43 L21,49 L14,49 L14,41 L14,37 L50,37 L50,43 L21,43 Z M43,18 L43,12 L50,12 L50,18 L50,24 L14,24 L14,18 L43,18 Z" id="Combined-Shape" fill="#FFFFFF"></path>
         </g>
     </g>
 </svg>

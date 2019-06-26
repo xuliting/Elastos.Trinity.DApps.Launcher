@@ -22,6 +22,8 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+@import "./functions.scss";
+
 $activeColor: #1b9cff;
 $defaulColor: #666666;
 
@@ -34,7 +36,8 @@ $defaulColor: #666666;
 
 .my-custom-popup {
     .popover-content {
-        width: 95%;
+        width: 95.5%;
+        // height: px2rem(420px);
         background-color: #000000;
     }
 }
@@ -45,11 +48,46 @@ $defaulColor: #666666;
 
 ion-title {
     text-align: center;
-    --ion-background-color: #161723;
+}
+
+ion-header {
+    // height: px2rem(120px);
 }
 
 .demo_line {
     height: 1px;
     border-top: 1px solid #ddd;
     text-align: center;
+}
+
+ion-icon {
+    width: px2rem(64px);
+    height: px2rem(64px);
+}
+
+.app-layout {
+        margin: 0 auto;
+        width: px2rem(120px);
+        // height: px2rem(200px);
+        justify-content: center;
+        align-self: center;
+        // background-color: green;
+
+        img {
+            margin: 0 auto;
+            padding: 0;
+            width: px2rem(120px);
+            height: px2rem(120px);
+            border-radius: 8px;
+        }
+
+        p {
+            margin-top: px2rem(13px);
+            padding: 0;
+            height: px2rem(33px);
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 }

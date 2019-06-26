@@ -1,53 +1,67 @@
+@import "../../functions.scss";
+
 #empty {
-    height: 200px;
+    height: px2rem(330px);
     text-align: center;
 
     img {
-        margin-top: 50px;
+        width: px2rem(70px);
+        height: px2rem(56px);
+        margin-top: px2rem(113px);
+        margin-bottom: px2rem(26px);
+    }
+
+    p {
+        margin-top: 0;
+        text-align: center;
     }
 }
 
-p {
-    text-align: center;
+#running-title {
+    margin-top: px2rem(36px);
+    margin-left: px2rem(52px);
+    height: px2rem(33px);;
 }
 
 ul {
     overflow-x: auto; //设置x轴可滑动
     white-space: nowrap; //元素不换行
     list-style: none; /* 去掉li前面的符号 */
-    margin: 5px;
+    margin-top: px2rem(28px);
+    margin-left: px2rem(52px);
+    margin-right: px2rem(40px);
+    margin-bottom: px2rem(44px);
     padding: 0px;
     width: auto; /* 宽度根据元素内容调整 */
+    height: px2rem(169px);
+    // background-color: #783aff;
 }
 
 li {
-    margin: 10px;
+    // margin: 10px;
     padding: 0px;
+    margin-right: px2rem(55px);
     display: inline-block; //让所有的li在一行
     // float:left; /* 向左漂移，将竖排变为横排 */
+    // background-color: white;
 
-    img {
-        border-radius: 5px;
-    }
-
-    p {
-        margin: 2px;
-    }
-}
-
-#running-title {
-    margin: 20px;
+    // div {
+    //     height: px2rem(169px);
+    // }
 }
 
 #close {
-    height: 80px;
-    margin-top: 10px;
+    height: px2rem(122px);
+    margin: 0px;
+    padding: 0px;
     background-color: #783aff;
     text-align: center;
     ion-icon {
-        margin-top: 15px;
+        margin-top: px2rem(5px);
+        // background-color: gray;
     }
     p {
-        margin-top: 5px;
+        margin-top: 0;
+        // background-color: gray;
     }
 }

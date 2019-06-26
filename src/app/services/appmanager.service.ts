@@ -51,6 +51,7 @@ export class AppmanagerService {
         this.getAppInfos();
         this.getRunningList();
         this.getLastList();
+        // alert(screen.width + " + " + document.documentElement.clientWidth + " + " + window.innerWidth + " " + window.devicePixelRatio);
     }
 
     sanitize(url:string){

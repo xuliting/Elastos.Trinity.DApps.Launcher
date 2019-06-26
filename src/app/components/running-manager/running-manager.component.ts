@@ -11,6 +11,7 @@ import { DragulaService } from 'ng2-dragula';
 export class RunningManagerComponent implements OnInit, OnDestroy {
 
     public empty = [];
+    public pressed = false;
 
     constructor(public appManager: AppmanagerService,
         public translate: TranslateService,

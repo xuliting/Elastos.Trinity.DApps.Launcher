@@ -40,6 +40,7 @@ export class MyPage implements OnInit {
     }];
 
     public infos: any;
+    public back_touched = false;
 
     constructor(private translate: TranslateService,
         public setting: SettingService) {

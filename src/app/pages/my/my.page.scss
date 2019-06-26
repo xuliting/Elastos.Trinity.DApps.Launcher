@@ -1,21 +1,49 @@
+@import "../../functions.scss";
+
+ion-icon {
+    width: px2rem(32px);
+    height: px2rem(32px);
+}
+
 ion-label {
     margin-left: 10px;
 }
 
 #person {
-    margin-top: 30px;
-    margin: 10px;
+    margin-top: px2rem(24px);
+    margin-left: px2rem(45px);
+    margin-right: px2rem(30px);
+    margin-bottom: px2rem(44px);
+    height: px2rem(120px);
+
+    // background-color: green;
+    ion-avatar {
+        margin-right: 0;
+    }
+    ion-label {
+        margin-left: px2rem(30px);
+        font-size: 20px;
+    }
     ion-button {
-        margin-right: 20px;
+        width: px2rem(148px);
+        height: px2rem(60px);
         --background: #783aff;
     }
+
 }
 
 ion-list {
     ion-item {
-        min-height: 60px;
+        height: px2rem(104px);
     }
     ion-icon {
         margin: 10px;
     }
+    ion-label {
+        font-size: 18px;
+    }
+    ion-note {
+        font-size: 16px;
+    }
+
 }
