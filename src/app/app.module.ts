@@ -17,6 +17,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { zh } from './../assets/i18n/zh';
 import { en } from './../assets/i18n/en';
 
+import { SafePipe } from './pipes/safe.pipe';
+
 /** 通过类引用方式解析国家化文件 */
 export class CustomTranslateLoader implements TranslateLoader {
     public getTranslation(lang: string): Observable<any> {
@@ -41,7 +43,8 @@ export function TranslateLoaderFactory() {
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        SafePipe
     ],
     entryComponents: [],
     imports: [BrowserModule,
