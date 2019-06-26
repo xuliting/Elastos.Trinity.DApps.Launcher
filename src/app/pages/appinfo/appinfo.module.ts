@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { AppinfoPage } from './appinfo.page';
+import { ComponentsModule } from '../../components/components.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     TranslateModule,
+    ComponentsModule,
     RouterModule.forChild(routes)
   ],
   declarations: [AppinfoPage]

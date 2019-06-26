@@ -2,19 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { BackButtonComponent } from './back-button/back-button.component'
+import { TranslateModule } from '@ngx-translate/core';
+import { HeaderBarComponent } from './header-bar/header-bar.component'
 
 @NgModule({
-  declarations: [BackButtonComponent],
+  declarations: [HeaderBarComponent],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    TranslateModule,
   ],
-  exports: [BackButtonComponent],
+  exports: [HeaderBarComponent],
   providers: [
-    // BackButtonComponent,
   ],
-  entryComponents: [BackButtonComponent],
+  entryComponents: [],
 })
 export class ComponentsModule { }

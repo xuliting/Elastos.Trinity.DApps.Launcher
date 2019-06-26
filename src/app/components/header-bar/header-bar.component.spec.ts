@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BackButtonComponent } from './back-button.component';
+import { HeaderBarComponent } from './header-bar.component';
 
-describe('BackButtonComponent', () => {
-  let component: BackButtonComponent;
-  let fixture: ComponentFixture<BackButtonComponent>;
+describe('HeaderBarComponent', () => {
+  let component: HeaderBarComponent;
+  let fixture: ComponentFixture<HeaderBarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BackButtonComponent ],
+      declarations: [ HeaderBarComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BackButtonComponent);
+    fixture = TestBed.createComponent(HeaderBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

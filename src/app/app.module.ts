@@ -13,15 +13,9 @@ import { Observable } from 'rxjs';
 import { IonicStorageModule } from "@ionic/storage";
 
 import { DragulaModule } from 'ng2-dragula';
-// import { CompilerConfig } from '@angular/compiler';
-import { SafePipe } from './pipes/safe.pipe';
-
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { zh } from './../assets/i18n/zh';
 import { en } from './../assets/i18n/en';
-
-import { ComponentsModule } from './components/components.module';
-import { BackButtonComponent } from './components/back-button/back-button.component'
 
 /** 通过类引用方式解析国家化文件 */
 export class CustomTranslateLoader implements TranslateLoader {
@@ -47,12 +41,10 @@ export function TranslateLoaderFactory() {
 
 @NgModule({
     declarations: [
-        AppComponent, SafePipe,
-        // BackButtonComponent
+        AppComponent
     ],
     entryComponents: [],
     imports: [BrowserModule,
-        ComponentsModule,
         IonicModule.forRoot(), AppRoutingModule, FormsModule, DragulaModule.forRoot(),
         IonicStorageModule.forRoot({
             name: '__launcher.db',

@@ -4,7 +4,6 @@ import { PopoverController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
 // import { SafePipe } from '../pipes/safe.pipe';
-import { BackButtonComponent } from '../components/back-button/back-button.component';
 
 @Component({
 	selector: 'app-home',
