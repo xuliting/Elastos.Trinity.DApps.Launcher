@@ -21,6 +21,12 @@ export class RunningManagerComponent implements OnInit, OnDestroy {
             // ...
         });
 
+        this.dragulaService.drag("Runnings").subscribe(args => {
+            // alert("ok");
+            this.pressed=true;
+            console.log(args);
+        });
+
         this.dragulaService.dropModel("Runnings").subscribe(args => {
             console.log(args);
             appManager.close(args.item)
@@ -35,5 +41,10 @@ export class RunningManagerComponent implements OnInit, OnDestroy {
 
     onClick(id: string) {
         this.appManager.start(id);
+    }
+
+    onPress(): boolean {
+        // this.pressed=true;
+        return true;
     }
 }

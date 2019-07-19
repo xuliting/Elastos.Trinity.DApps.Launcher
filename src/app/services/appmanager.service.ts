@@ -66,8 +66,13 @@ export class AppmanagerService {
         appManager.alertPrompt("Error", err);
     }
 
+    setCurrentLanguage(code: string) {
+        appManager.setCurrentLocate(code);
+    }
+
     onLangChange(code: string) {
-        this.changeInfosLanguage(this.translate.currentLang)
+        this.changeInfosLanguage(this.translate.currentLang);
+        this.setCurrentLanguage(this.translate.currentLang);
     }
 
     changeInfosLanguage(lang: string) {
@@ -123,31 +128,31 @@ export class AppmanagerService {
         );
     }
 
-    async presentAlertConfirm(url: string) {
-        var me = this;
-        const alert = await this.alertController.create({
-            header: '<div class="permission-warning">' + me.translate.instant("install-prompt") + '</div>',
-            message: "<div>" + + me.translate.instant("install-soon") + ": " + url + "</div>",
-            buttons: [
-                {
-                    text: me.translate.instant("cancel"),
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: (blah) => {
-                        console.log('Confirm Cancel: blah');
-                    }
-                },
-                {
-                    text: me.translate.instant("ok"),
-                    handler: () => {
-                        me.install(url);
-                    }
-                }
-            ]
-        });
+    // async presentAlertConfirm(url: string) {
+    //     var me = this;
+    //     const alert = await this.alertController.create({
+    //         header: '<div class="permission-warning">' + me.translate.instant("install-prompt") + '</div>',
+    //         message: "<div>" + + me.translate.instant("install-soon") + ": " + url + "</div>",
+    //         buttons: [
+    //             {
+    //                 text: me.translate.instant("cancel"),
+    //                 role: 'cancel',
+    //                 cssClass: 'secondary',
+    //                 handler: (blah) => {
+    //                     console.log('Confirm Cancel: blah');
+    //                 }
+    //             },
+    //             {
+    //                 text: me.translate.instant("ok"),
+    //                 handler: () => {
+    //                     me.install(url);
+    //                 }
+    //             }
+    //         ]
+    //     });
 
-        await alert.present();
-    }
+    //     await alert.present();
+    // }
 
     askInstall(url: string) {
         appManager.askPrompt(this.translate.instant("install-prompt"),
@@ -187,13 +192,15 @@ export class AppmanagerService {
             case MessageType.IN_REFRESH:
                 switch (params.action) {
                     case "started":
-                    case "clsoed":
+                    case "closed":
                         managerService.getRunningList();
                         break;
                     case "installed":
                     case "unInstalled":
                     case "authorityChanged":
                         managerService.getAppInfos();
+                        break;
+                    case "currentLocaleChanged":
                         break;
                 }
                 break;

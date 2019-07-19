@@ -21,7 +21,7 @@ export const en = {
    'app-info': 'App infomation',
    'update': 'Update',
    'description': 'Description:',
-   'develepor': 'Develepor:',
+   'developer': 'Developer:',
    'sign': 'Sign:',
    'plugins-authority': 'Plugins authority:',
    'urls-authority': 'Urls authority',

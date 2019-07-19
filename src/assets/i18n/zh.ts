@@ -22,7 +22,7 @@ export const zh = {
   'app-info': '应用详情',
   'update': '更新',
   'description': '描述:',
-  'develepor': '开发者:',
+  'developer': '开发者:',
   'sign': '签名：',
   'plugins-authority': '插件权限:',
   'urls-authority': '访问权限:',

@@ -15,7 +15,7 @@
                 </div>
             </li>
         </ul>
-        <div id="close" dragula="Runnings" [(dragulaModel)]="empty" *ngIf="pressed">
+        <div *ngIf="pressed" id="close" dragula="Runnings" [(dragulaModel)]="empty">
             <ion-icon name="close"></ion-icon>
             <p>{{'drag-and-close' | translate}}</p>
         </div>
