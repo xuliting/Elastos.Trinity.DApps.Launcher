@@ -52,6 +52,10 @@ $defaulColor: #666666;
     text-align: center;
 }
 
+ion-button {
+    text-transform: none;
+}
+
 ion-icon {
     width: px2rem(64px);
     height: px2rem(64px);
