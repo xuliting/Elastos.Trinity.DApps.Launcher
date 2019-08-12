@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Events } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertController } from '@ionic/angular';
 import { SettingService } from "./setting.service";
@@ -48,13 +47,12 @@ export class AppmanagerService {
         console.log("AppmanagerService init");
         appManager.setListener(this.onReceive);
         this.getLanguage();
-        this.getAppInfos();
+        this.getAppInfos(true);
         this.getRunningList();
         this.getLastList();
-        // alert(screen.width + " + " + document.documentElement.clientWidth + " + " + window.innerWidth + " " + window.devicePixelRatio);
     }
 
-    sanitize(url:string){
+    sanitize(url: string) {
         return this.sanitizer.bypassSecurityTrustResourceUrl(url);;
     }
 
@@ -80,10 +78,10 @@ export class AppmanagerService {
 
         for (var id in this.appInfos) {
             var locale = this.appInfos[id].locales[this.appInfos[id].defaultLocale];
-            if (typeof(locale) != "object") continue;
+            if (typeof (locale) != "object") continue;
 
             locale = this.appInfos[id].locales[lang];
-            if (typeof(locale) != "object") {
+            if (typeof (locale) != "object") {
                 locale = this.appInfos[id].locales[this.appInfos[id].defaultLocale];
             }
             this.appInfos[id].name = locale.name;
@@ -128,53 +126,28 @@ export class AppmanagerService {
         );
     }
 
-    // async presentAlertConfirm(url: string) {
-    //     var me = this;
-    //     const alert = await this.alertController.create({
-    //         header: '<div class="permission-warning">' + me.translate.instant("install-prompt") + '</div>',
-    //         message: "<div>" + + me.translate.instant("install-soon") + ": " + url + "</div>",
-    //         buttons: [
-    //             {
-    //                 text: me.translate.instant("cancel"),
-    //                 role: 'cancel',
-    //                 cssClass: 'secondary',
-    //                 handler: (blah) => {
-    //                     console.log('Confirm Cancel: blah');
-    //                 }
-    //             },
-    //             {
-    //                 text: me.translate.instant("ok"),
-    //                 handler: () => {
-    //                     me.install(url);
-    //                 }
-    //             }
-    //         ]
-    //     });
-
-    //     await alert.present();
-    // }
-
     askInstall(url: string) {
         appManager.askPrompt(this.translate.instant("install-prompt"),
             this.translate.instant("install-soon") + ": " + url,
             () => this.install(url));
-        // this.presentAlertConfirm(url).then();
     }
 
     unInstall(id: string, success: any, error: any) {
         var me = this;
         appManager.unInstall(id,
             ret => success(ret),
-            err => {if (error != null)
-                        error(err);
-                    else
-                        me.presentAlertError(err);});
+            err => {
+                if (error != null)
+                    error(err);
+                else
+                    me.presentAlertError(err);
+            });
     }
 
     async presentAlertError(err: string) {
         const alert = await this.alertController.create({
-          message: err,
-          buttons: ['OK']
+            message: err,
+            buttons: ['OK']
         });
 
         await alert.present();
@@ -197,8 +170,10 @@ export class AppmanagerService {
                         break;
                     case "installed":
                     case "unInstalled":
+                        managerService.getAppInfos(true);
+                        break;
                     case "authorityChanged":
-                        managerService.getAppInfos();
+                        managerService.getAppInfos(false);
                         break;
                     case "currentLocaleChanged":
                         break;
@@ -217,19 +192,29 @@ export class AppmanagerService {
         }
     }
 
-    getAppInfos()/*: Promise<any> */ {
+    //TODO::
+    refresh_icons() {
+        var comment = document.getElementById('home-bg');
+        if (comment && document.createEvent) {
+            var ev = document.createEvent('TouchEvent');
+            ev.initEvent('click', false, true);
+            comment.dispatchEvent(ev);
+        }
+    }
+
+    getAppInfos(refresh: boolean = false)/*: Promise<any> */ {
         console.log("AppmanagerService getAppInfos");
         let me = this;
         appManager.getAppInfos(
             ret => {
                 console.log(ret);
                 me.appInfos = ret.infos;
-                // for (var id in me.appInfos) {
-                //     me.appInfos[id].icons[0].src = me.sanitize(me.appInfos[id].icons[0].src);
-                // }
                 me.appList = ret.list;
-                me.getRows(4);
-                me.changeInfosLanguage(this.setting.currentLang);
+                if (refresh) {
+                    me.getRows(4);
+                    me.changeInfosLanguage(this.setting.currentLang);
+                    me.refresh_icons();
+                }
             },
             err => me.display_err(err));
     }

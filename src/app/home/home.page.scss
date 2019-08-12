@@ -22,7 +22,8 @@
     background-size: cover;
 }
 
-.bg {
+
+#home-bg {
     overflow: hidden;
     position: fixed;
     padding: 0;
@@ -44,10 +45,6 @@ ion-grid {
     ion-row {
         align-items: center;
         // height: px2rem(189px);
-    }
-
-    ion-col {
-        // background-color: white;
     }
 
     div {
