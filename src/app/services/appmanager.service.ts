@@ -131,16 +131,16 @@ export class AppmanagerService {
         appManager.close(id);
     }
 
-    install(url: string) {
+    install(url: string, dev: boolean) {
         var me = this;
-        appManager.install(url,
+        appManager.install(url, dev,
             ret => {
                 console.log(ret);
             },
             err =>{
                 if (err.indexOf("App '") == 0) {
                     var arr= err.split("'");
-                    me.askInstall(url, arr[1]);
+                    me.askInstall(url, arr[1], dev);
                 }
                 else {
                     me.display_err(err)
@@ -149,10 +149,10 @@ export class AppmanagerService {
         );
     }
 
-    askInstall(url:string, id: string) {
+    askInstall(url:string, id: string, dev: boolean) {
         appManager.askPrompt(this.translate.instant("update-prompt"),
             this.translate.instant("update-ask") + ": '" + id + "'?",
-            () => this.unInstall(id, ()=>this.install(url), null));
+            () => this.unInstall(id, ()=>this.install(url, dev), null));
     }
 
     unInstall(id: string, success: any, error: any) {
@@ -204,7 +204,7 @@ export class AppmanagerService {
                 }
                 break;
             case MessageType.EX_INSTALL:
-                managerService.install(params.uri);
+                managerService.install(params.uri, params.dev);
                 break;
         }
     }
