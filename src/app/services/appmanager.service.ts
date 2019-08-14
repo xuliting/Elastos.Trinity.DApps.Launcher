@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { SettingService } from "./setting.service";
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -33,6 +33,8 @@ export class AppmanagerService {
     constructor(private translate: TranslateService,
         private setting: SettingService,
         private sanitizer: DomSanitizer,
+        public zone: NgZone,
+        public toastCtrl: ToastController,
         private alertController: AlertController) {
         managerService = this;
 
@@ -62,6 +64,19 @@ export class AppmanagerService {
 
     display_err(err) {
         appManager.alertPrompt("Error", err);
+    }
+
+    toast(msg: string = '', duration: number = 2000): void {
+        this.toastCtrl.create({
+            message: msg,
+            duration: duration,
+            position: 'top'
+        }).then(toast => toast.present());
+    }
+
+    toast_installed(id: string) {
+        var msg = "'" + id + "' " + this.translate.instant('installed');
+        this.toast(msg);
     }
 
     setCurrentLanguage(code: string) {
@@ -122,14 +137,22 @@ export class AppmanagerService {
             ret => {
                 console.log(ret);
             },
-            err => me.display_err(err)
+            err =>{
+                if (err.indexOf("App '") == 0) {
+                    var arr= err.split("'");
+                    me.askInstall(url, arr[1]);
+                }
+                else {
+                    me.display_err(err)
+                }
+            }
         );
     }
 
-    askInstall(url: string) {
-        appManager.askPrompt(this.translate.instant("install-prompt"),
-            this.translate.instant("install-soon") + ": " + url,
-            () => this.install(url));
+    askInstall(url:string, id: string) {
+        appManager.askPrompt(this.translate.instant("update-prompt"),
+            this.translate.instant("update-ask") + ": '" + id + "'?",
+            () => this.unInstall(id, ()=>this.install(url), null));
     }
 
     unInstall(id: string, success: any, error: any) {
@@ -169,6 +192,7 @@ export class AppmanagerService {
                         managerService.getRunningList();
                         break;
                     case "installed":
+                        managerService.toast_installed(params.id);
                     case "unInstalled":
                         managerService.getAppInfos(true);
                         break;
@@ -180,7 +204,7 @@ export class AppmanagerService {
                 }
                 break;
             case MessageType.EX_INSTALL:
-                managerService.askInstall(params.uri);
+                managerService.install(params.uri);
                 break;
         }
     }
@@ -189,16 +213,6 @@ export class AppmanagerService {
         this.rows = [];
         for (var i = 0; i < this.appList.length; i += size) {
             this.rows.push(this.appList.slice(i, i + size));
-        }
-    }
-
-    //TODO::
-    refresh_icons() {
-        var comment = document.getElementById('home-bg');
-        if (comment && document.createEvent) {
-            var ev = document.createEvent('TouchEvent');
-            ev.initEvent('click', false, true);
-            comment.dispatchEvent(ev);
         }
     }
 
@@ -211,9 +225,10 @@ export class AppmanagerService {
                 me.appInfos = ret.infos;
                 me.appList = ret.list;
                 if (refresh) {
-                    me.getRows(4);
-                    me.changeInfosLanguage(this.setting.currentLang);
-                    me.refresh_icons();
+                    me.zone.run(() => {
+                        me.getRows(4);
+                        me.changeInfosLanguage(me.setting.currentLang);
+                    });
                 }
             },
             err => me.display_err(err));

@@ -32,8 +32,9 @@ export const zh = {
   //
   'ok': '确定',
   'cancel': '取消',
-  'install-prompt': '安装提示',
-  'install-soon': '即将安装',
+  'update-prompt': '更新提示',
+  'update-ask': '需要更新',
+  'installed': '安装完成',
 
 
    //setting

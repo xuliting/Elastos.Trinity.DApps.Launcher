@@ -31,8 +31,9 @@ export const en = {
    //
    'ok': 'OK',
    'cancel': 'Cancel',
-   'install-prompt': 'Install prompt',
-   'install-soon': 'To be install soon',
+   'update-prompt': 'Update prompt',
+   'update-ask': 'To be update',
+   'installed': 'installed',
 
    //setting
    'system_language': 'System language',
