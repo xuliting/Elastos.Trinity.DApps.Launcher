@@ -9,7 +9,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 })
 export class AboutPage implements OnInit {
 
-    public version = "1.0.0";
+    public version = "0.5.1";
     public commitVersion = "v0.12";
 
     constructor(public translate: TranslateService,
