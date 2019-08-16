@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { IonicStorageModule } from "@ionic/storage";
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { DragulaModule } from 'ng2-dragula';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -62,6 +63,7 @@ export function TranslateLoaderFactory() {
     providers: [
         StatusBar,
         SplashScreen,
+        InAppBrowser,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],
     bootstrap: [AppComponent]

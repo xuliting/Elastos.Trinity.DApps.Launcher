@@ -1,42 +1,46 @@
 export const en = {
-   //home
-   'running': 'Running',
-   'drag-and-close': 'Drag here and close',
-   'no-running': 'No app running',
+    //home
+    'running': 'Running',
+    'drag-and-close': 'Drag here and close',
+    'no-running': 'No app running',
 
-   //my
-   'my': 'My',
-   'my-account': 'My account',
-   'app-manager': 'App manager',
-   'language-setting': 'Languages',
-   'wallpaper-setting': 'Wallpaper',
-   'icon-size': 'Icon size',
-   'about': 'About trinity',
-   'share': 'Share trinity',
+    //my
+    'my': 'My',
+    'my-account': 'My account',
+    'app-manager': 'App manager',
+    'language-setting': 'Languages',
+    'wallpaper-setting': 'Wallpaper',
+    'icon-size': 'Icon size',
+    'about': 'About trinity',
+    'share': 'Share trinity',
 
 
-   //app-manager
+    //app-manager
 
-   //app-info
-   'app-info': 'App infomation',
-   'update': 'Update',
-   'description': 'Description:',
-   'developer': 'Developer:',
-   'sign': 'Sign:',
-   'plugins-authority': 'Plugins authority:',
-   'urls-authority': 'Urls authority',
-   'uninstall': 'Uninstall',
-   'uninstall-confirm': 'Are you sure uninstall it?',
+    //app-info
+    'app-info': 'App infomation',
+    'update': 'Update',
+    'description': 'Description:',
+    'developer': 'Developer:',
+    'sign': 'Sign:',
+    'plugins-authority': 'Plugins authority:',
+    'urls-authority': 'Urls authority',
+    'uninstall': 'Uninstall',
+    'uninstall-confirm': 'Are you sure uninstall it?',
 
-   //
-   'ok': 'OK',
-   'cancel': 'Cancel',
-   'update-prompt': 'Update prompt',
-   'update-ask': 'To be update',
-   'installed': 'installed',
+    //
+    'ok': 'OK',
+    'cancel': 'Cancel',
+    'update-prompt': 'Update prompt',
+    'update-ask': 'To be update',
+    'installed': 'installed',
 
-   //setting
-   'system_language': 'System language',
+    //setting
+    'system_language': 'System language',
+
+    //about
+    'version': 'Version',
+    'website': 'Website',
 };
 
 

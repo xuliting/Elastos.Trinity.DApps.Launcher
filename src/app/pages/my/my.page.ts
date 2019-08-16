@@ -19,25 +19,29 @@ export class MyPage implements OnInit {
         label: "language-setting",
         icon: "language",
         note: "中文(简体)",
-    }, {
-        route: "/wallpaper",
-        label: "wallpaper-setting",
-        icon: "wallpaper",
-    }, {
-        route: "/iconsize",
-        label: "icon-size",
-        icon: "iconsize",
     },
+    // {
+    //     route: "/wallpaper",
+    //     label: "wallpaper-setting",
+    //     icon: "wallpaper",
+    // },
+    // {
+    //     route: "/iconsize",
+    //     label: "icon-size",
+    //     icon: "iconsize",
+    // },
     {
         route: "/about",
         label: "about",
         icon: "about",
         note: "v1.0",
-    }, {
-        route: "/share",
-        label: "share",
-        icon: "share",
-    }];
+    },
+    // {
+    //     route: "/share",
+    //     label: "share",
+    //     icon: "share",
+    // }
+    ];
 
     public infos: any;
 
