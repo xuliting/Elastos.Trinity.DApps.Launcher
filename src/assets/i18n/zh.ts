@@ -42,4 +42,5 @@ export const zh = {
     //about
     'version': '版本号',
     'website': '访问官网',
+    'remark': '备注',
 };

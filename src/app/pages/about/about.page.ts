@@ -18,8 +18,8 @@ export class AboutPage implements OnInit {
     ngOnInit() {
     }
 
-    goWebsite() {
-        const url = "http://www.elastos.org";
+    goWebsite(url: string) {
+        alert(url);
         const target = "_system";
         const options = "location=no";
         this.inappBrowser.create(url, target, options);

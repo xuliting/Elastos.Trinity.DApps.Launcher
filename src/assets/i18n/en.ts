@@ -41,6 +41,7 @@ export const en = {
     //about
     'version': 'Version',
     'website': 'Website',
+    'remark': 'Remark',
 };
 
 
