@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { SettingService } from "../../services/setting.service";
 
 @Component({
     selector: 'app-about',
@@ -9,10 +10,10 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 })
 export class AboutPage implements OnInit {
 
-    public version = "0.5.1";
     public commitVersion = "v0.12";
 
     constructor(public translate: TranslateService,
+        public setting: SettingService,
         private inappBrowser: InAppBrowser) { }
 
     ngOnInit() {

@@ -34,7 +34,7 @@ export class MyPage implements OnInit {
         route: "/about",
         label: "about",
         icon: "about",
-        note: "v1.0",
+        note: this.setting.version,
     },
     // {
     //     route: "/share",

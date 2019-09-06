@@ -22,6 +22,8 @@ export class SettingService {
     public systemLang: string = null;
     public selectLang: string = null;
 
+    public version: string = "0.5.1";
+
     constructor(private translate: TranslateService,
         private storage: Storage) {
     }
