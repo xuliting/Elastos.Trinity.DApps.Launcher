@@ -6,7 +6,7 @@ export const zh = {
     'no-running': '暂无运行应用',
 
     //my
-    'my': '个人中心',
+    'my': '设置',
     'my-account': '我的帐号',
     'app-manager': '应用管理',
     'language-setting': '语言设置',

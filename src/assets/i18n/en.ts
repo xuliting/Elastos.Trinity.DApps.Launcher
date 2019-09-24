@@ -5,14 +5,14 @@ export const en = {
     'no-running': 'No app running',
 
     //my
-    'my': 'My',
+    'my': 'Settings',
     'my-account': 'My account',
     'app-manager': 'App manager',
     'language-setting': 'Languages',
     'wallpaper-setting': 'Wallpaper',
     'icon-size': 'Icon size',
-    'about': 'About trinity',
-    'share': 'Share trinity',
+    'about': 'About Elastos Browser',
+    'share': 'Share Elastos Browser',
 
 
     //app-manager
@@ -22,9 +22,9 @@ export const en = {
     'update': 'Update',
     'description': 'Description:',
     'developer': 'Developer:',
-    'sign': 'Sign:',
-    'plugins-authority': 'Plugins authority:',
-    'urls-authority': 'Urls authority',
+    'sign': 'Signature:',
+    'plugins-authority': 'Authorized plugins:',
+    'urls-authority': 'Authorized URLs',
     'uninstall': 'Uninstall',
     'uninstall-confirm': 'Are you sure uninstall it?',
 
