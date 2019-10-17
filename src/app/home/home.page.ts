@@ -46,6 +46,6 @@ export class HomePage {
 	}
 
 	openScan() {
-		this.appManager.sendIntent('scancode', null);
+		this.appManager.sendIntent('scanqrcode', null);
 	}
 }
