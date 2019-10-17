@@ -44,4 +44,8 @@ export class HomePage {
 	onClick(id) {
 		this.appManager.start(id);
 	}
+
+	openScan() {
+		this.appManager.sendIntent('scancode', null);
+	}
 }

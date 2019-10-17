@@ -127,6 +127,10 @@ export class AppmanagerService {
         appManager.start(id);
     }
 
+    sendIntent(action: string, params: any) {
+        appManager.sendIntent(action, params);
+    }
+
     close(id: string) {
         appManager.close(id);
     }

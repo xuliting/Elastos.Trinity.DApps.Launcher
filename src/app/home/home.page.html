@@ -5,7 +5,7 @@
         </ion-button>
         <span class="point" *ngIf="appManager.runningList.length > 0"></span>
         <ion-buttons slot="end">
-            <ion-button fill="clear"  (click)="appManager.start('org.elastos.trinity.dapps.qrcodescanner')">
+            <ion-button fill="clear"  (click)="openScan()">
                 <ion-icon slot="icon-only" name='scan'> </ion-icon>
             </ion-button>
             <ion-button fill="clear" [routerLink]="['/my']" routerDirection="forward" (ionFocus)="touched=true;"
