@@ -132,7 +132,7 @@ export class AppmanagerService {
     }
 
     close(id: string) {
-        appManager.close(id);
+        appManager.closeApp(id);
     }
 
     install(url: string, dev: boolean) {
