@@ -228,6 +228,15 @@ export class AppmanagerService {
                 console.log(ret);
                 me.appInfos = ret.infos;
                 me.appList = ret.list;
+
+                let hiddenAppList: string[] = ["org.elastos.trinity.dapp.installer"];
+                for (var id of hiddenAppList) {
+                  let index = me.appList.indexOf(id, 0);
+                  if (index > -1) {
+                     me.appList.splice(index, 1);
+                  }
+                }
+
                 if (refresh) {
                     me.zone.run(() => {
                         me.getRows(4);
