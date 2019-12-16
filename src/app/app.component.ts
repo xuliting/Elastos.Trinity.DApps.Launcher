@@ -24,6 +24,7 @@ export class AppComponent {
     initializeApp() {
         this.platform.ready().then(() => {
             console.log("platform.ready");
+            screen.orientation.lock('portrait');
             this.statusBar.styleDefault();
             this.splashScreen.hide();
             this.appManager.init();
