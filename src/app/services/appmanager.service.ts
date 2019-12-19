@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { SettingService } from "./setting.service";
+import { SettingService } from './setting.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 declare let appManager: any;
@@ -16,7 +16,7 @@ enum MessageType {
     EX_LAUNCHER = 12,
     EX_INSTALL = 13,
     EX_RETURN = 14,
-};
+}
 
 @Injectable({
     providedIn: 'root'
@@ -80,7 +80,7 @@ export class AppmanagerService {
     }
 
     setCurrentLanguage(code: string) {
-        appManager.setCurrentLocate(code);
+        appManager.setCurrentLocale(code);
     }
 
     onLangChange(code: string) {
@@ -110,12 +110,11 @@ export class AppmanagerService {
     getLanguage() {
         var me = this;
         appManager.getLocale(
-            ret => {
-                console.log(ret);
-                me.setting.setDefaultLang(ret.defaultLang);
-                me.setting.setSystemLang(ret.systemLang);
-            },
-            err => me.print_err(err)
+            (defaultLang, currentLang, systemLang) => {
+                console.log('defaultLangL', defaultLang, ' currentLang:', currentLang, ' systemLang:', systemLang);
+                me.setting.setDefaultLang(defaultLang);
+                me.setting.setSystemLang(systemLang);
+            }
         );
     }
 
@@ -124,7 +123,7 @@ export class AppmanagerService {
     }
 
     start(id: string) {
-        appManager.start(id);
+        appManager.start(id, () => {});
     }
 
     sendIntent(action: string, params: any) {
@@ -215,13 +214,13 @@ export class AppmanagerService {
 
     getRows(size) {
         this.rows = [];
-        for (var i = 0; i < this.appList.length; i += size) {
+        for (let i = 0; i < this.appList.length; i += size) {
             this.rows.push(this.appList.slice(i, i + size));
         }
     }
 
     getAppInfos(refresh: boolean = false)/*: Promise<any> */ {
-        console.log("AppmanagerService getAppInfos");
+        console.log('AppmanagerService getAppInfos');
         let me = this;
         appManager.getAppInfos(
             ret => {
@@ -243,8 +242,8 @@ export class AppmanagerService {
                         me.changeInfosLanguage(me.setting.currentLang);
                     });
                 }
-            },
-            err => me.display_err(err));
+            }
+        );
     }
 
     getRunningList() {
