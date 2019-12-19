@@ -4,7 +4,7 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { SettingService } from './setting.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
-declare let appManager: any;
+declare let appManager: AppManagerPlugin.AppManager;
 let managerService = null;
 
 enum MessageType {
@@ -23,8 +23,8 @@ enum MessageType {
 })
 export class AppmanagerService {
 
-    public appInfos: any = {};
-    public appList: any = [];
+    public appInfos: AppManagerPlugin.AppInfo[] = [];
+    public appList: string[] = [];
     public runningList: any = [];
     public lastList: any = [];
     public rows: any = [];
@@ -223,10 +223,10 @@ export class AppmanagerService {
         console.log('AppmanagerService getAppInfos');
         let me = this;
         appManager.getAppInfos(
-            ret => {
-                console.log(ret);
-                me.appInfos = ret.infos;
-                me.appList = ret.list;
+            (appsInfo, idList) => {
+                // console.log('appsInfo:', appsInfo, ' idList:', idList);
+                me.appInfos = appsInfo;
+                me.appList = idList;
 
                 let hiddenAppList: string[] = ["org.elastos.trinity.dapp.installer"];
                 for (var id of hiddenAppList) {
@@ -258,17 +258,17 @@ export class AppmanagerService {
         appManager.getLastList(list => me.lastList = list);
     }
 
-    setPluginAuthority(id: string, plugin: string, authority: number) {
+    setPluginAuthority(id: string, plugin: string, authority: AppManagerPlugin.PluginAuthority) {
         var me = this;
         appManager.setPluginAuthority(id, plugin, authority,
-            ret => console.log(ret),
+            () => console.log('setPluginAuthority success'),
             err => me.display_err(err));
     }
 
-    setUrlAuthority(id: string, url: string, authority: number) {
+    setUrlAuthority(id: string, url: string, authority: AppManagerPlugin.UrlAuthority) {
         var me = this;
         appManager.setUrlAuthority(id, url, authority,
-            ret => console.log(ret),
+            () => console.log('setUrlAuthority success'),
             err => me.display_err(err));
     }
 }
