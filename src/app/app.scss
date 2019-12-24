@@ -27,11 +27,18 @@
 $activeColor: #1b9cff;
 $defaulColor: #666666;
 
+header-bar {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 10px !important;
+}
+
 :root {
     --ion-text-color: white;
     --ion-background-color: #161723;
-    --ion-toolbar-color: white;
-    --ion-toolbar-background: #161723;
+    --ion-toolbar-color: #000000;
+    --ion-toolbar-background: rgb(255, 255, 255, 0.7);
 }
 
 .my-custom-popup {

@@ -2,18 +2,18 @@
 	<header-bar title="my"></header-bar>
 </ion-header>
 
-<ion-content class="no-padding">
+<ion-content>
 
 	<div id="person">
-		<ion-toolbar>
-			<ion-avatar slot="start">
-				<img src="assets/icon/avatar.png" />
-			</ion-avatar>
-			<ion-label>My user</ion-label>
-			<!-- <ion-button slot="end" [routerLink]="['/my']" routerDirection="forward">
-				{{'my-account' | translate}}
-			</ion-button> -->
-		</ion-toolbar>
+		<ion-row>
+			<ion-avatar>
+					<img src="assets/icon/avatar.png" />
+				</ion-avatar>
+				<ion-label>My user</ion-label>
+				<!-- <ion-button slot="end" [routerLink]="['/my']" routerDirection="forward">
+					{{'my-account' | translate}}
+				</ion-button> -->
+		</ion-row>
 	</div>
 	<ion-list>
 		<ion-item *ngFor="let item of infos" detail [routerLink]="[item.route]" routerDirection="forward">

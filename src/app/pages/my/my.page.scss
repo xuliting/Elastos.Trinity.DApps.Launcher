@@ -18,6 +18,8 @@ ion-label {
     ion-label {
         margin-left: px2rem(30px);
         font-size: 20px;
+        display: flex;
+        align-items: center;
     }
     ion-button {
         width: px2rem(160px);
