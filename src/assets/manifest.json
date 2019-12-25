@@ -1,22 +1,10 @@
 {
-  "id": "org.elastos.trinity.launcher1",
+  "id": "org.elastos.trinity.launcher",
   "version": "0.0.2",
   "version_code": 1,
   "name": "launcher",
   "description": "trinity launcher",
   "start_url": "index.html",
-  "icons": [
-    {
-      "src": "assets/images/logo.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "assets/images/logo.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    }
-  ],
   "author": {
       "name": "ChenDongxiao",
       "email": "chendongxiao@elastos.org"
