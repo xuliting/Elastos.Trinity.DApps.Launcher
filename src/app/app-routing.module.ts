@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' },
   { path: 'share', loadChildren: './pages/share/share.module#SharePageModule' },
   { path: 'appinfo', loadChildren: './pages/appinfo/appinfo.module#AppinfoPageModule' },
+  { path: 'splashscreen', loadChildren: './splash/splashscreen/splashscreen.module#SplashscreenPageModule' },
 ];
 
 @NgModule({

@@ -19,6 +19,7 @@ import { zh } from './../assets/i18n/zh';
 import { en } from './../assets/i18n/en';
 
 import { SafePipe } from './pipes/safe.pipe';
+import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 
 /** 通过类引用方式解析国家化文件 */
 export class CustomTranslateLoader implements TranslateLoader {
@@ -45,9 +46,10 @@ export function TranslateLoaderFactory() {
 @NgModule({
     declarations: [
         AppComponent,
-        SafePipe
+        SafePipe,
+        SplashscreenPage
     ],
-    entryComponents: [],
+    entryComponents: [SplashscreenPage],
     imports: [BrowserModule,
         IonicModule.forRoot(), AppRoutingModule, FormsModule, DragulaModule.forRoot(),
         IonicStorageModule.forRoot({

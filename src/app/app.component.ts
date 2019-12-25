@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppmanagerService } from "./services/appmanager.service";
 import { SettingService } from "./services/setting.service";
+import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 
 @Component({
     selector: 'app-root',
@@ -13,10 +14,10 @@ import { SettingService } from "./services/setting.service";
 export class AppComponent {
     constructor(
         private platform: Platform,
-        private splashScreen: SplashScreen,
         private statusBar: StatusBar,
         public appManager: AppmanagerService,
-        public setting: SettingService
+        public setting: SettingService,
+        public modalCtrl: ModalController
     ) {
         this.initializeApp();
     }
@@ -26,9 +27,14 @@ export class AppComponent {
             console.log("platform.ready");
             screen.orientation.lock('portrait');
             this.statusBar.styleDefault();
-            this.splashScreen.hide();
+            this.splash();
             this.appManager.init();
             this.setting.init();
         });
+    }
+
+    async splash() {
+        const splash = await this.modalCtrl.create({component: SplashscreenPage});
+        return await splash.present();
     }
 }
