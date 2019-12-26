@@ -46,6 +46,6 @@ export class HomePage {
 	}
 
 	openScan() {
-		this.appManager.sendIntent('scanqrcode', null);
+		this.appManager.start("org.elastos.trinity.dapp.qrcodescanner")
 	}
 }

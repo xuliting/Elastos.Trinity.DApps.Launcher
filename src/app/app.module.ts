@@ -20,6 +20,7 @@ import { en } from './../assets/i18n/en';
 
 import { SafePipe } from './pipes/safe.pipe';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
+import { SplashscreenPageModule } from './splash/splashscreen/splashscreen.module';
 
 /** 通过类引用方式解析国家化文件 */
 export class CustomTranslateLoader implements TranslateLoader {
@@ -46,8 +47,7 @@ export function TranslateLoaderFactory() {
 @NgModule({
     declarations: [
         AppComponent,
-        SafePipe,
-        SplashscreenPage
+        SafePipe
     ],
     entryComponents: [SplashscreenPage],
     imports: [BrowserModule,
@@ -61,7 +61,9 @@ export function TranslateLoaderFactory() {
                 provide: TranslateLoader,
                 useFactory: (TranslateLoaderFactory)
             }
-        })],
+        }),
+        SplashscreenPageModule
+    ],
     providers: [
         StatusBar,
         SplashScreen,
