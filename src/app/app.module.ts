@@ -50,7 +50,8 @@ export function TranslateLoaderFactory() {
         SafePipe
     ],
     entryComponents: [SplashscreenPage],
-    imports: [BrowserModule,
+    imports: [
+        BrowserModule,
         IonicModule.forRoot(), AppRoutingModule, FormsModule, DragulaModule.forRoot(),
         IonicStorageModule.forRoot({
             name: '__launcher.db',

@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-list padding-top>
+    <ion-list>
         <ion-item *ngFor="let id of appManager.appList" detail [routerLink]="['/appinfo']" [queryParams]="{appid:id}"
             routerDirection="forward">
             <ion-thumbnail>

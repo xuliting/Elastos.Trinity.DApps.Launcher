@@ -1,32 +1,50 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-button slot="start" fill="clear" (click)="popoRunningManager($event)">
-            <ion-icon slot="icon-only" [name]="popup ? 'switch-light' : 'switch-dark'"></ion-icon>
-        </ion-button>
-        <span class="point" *ngIf="appManager.runningList.length > 0"></span>
-        <ion-buttons slot="end">
-            <ion-button fill="clear"  (click)="openScan()">
-                <ion-icon slot="icon-only" name='scan'> </ion-icon>
-            </ion-button>
-            <ion-button fill="clear" [routerLink]="['/my']" routerDirection="forward" (ionFocus)="touched=true;"
-                (ionBlur)="touched=false;">
-                <ion-icon slot="icon-only" [name]="touched ? 'my-light' :'my-dark'"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" (click)="popoRunningManager($event)">
+      <ion-icon
+        slot="icon-only"
+        [name]="popup ? 'switch-light' : 'switch-dark'"
+      ></ion-icon>
+    </ion-button>
+    <span class="point" *ngIf="appManager.runningList.length > 0"></span>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="openScan()">
+        <ion-icon slot="icon-only" name="scan"> </ion-icon>
+      </ion-button>
+      <ion-button
+        fill="clear"
+        [routerLink]="['/my']"
+        routerDirection="forward"
+        (ionFocus)="touched = true"
+        (ionBlur)="touched = false"
+      >
+        <ion-icon
+          slot="icon-only"
+          [name]="touched ? 'my-light' : 'my-dark'"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
-    <div id="home-bg">
-        <ion-grid>
-            <ion-row *ngFor="let row of appManager.rows" align-items-center>
-                <ion-col size="3" align-self:center *ngFor="let id of row; let i = index;">
-                    <div class="app-layout" (click)="onClick(id)">
-                        <img [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)" alt="" />
-                        <p>{{appManager.appInfos[id].name}}</p>
-                    </div>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-    </div>
+<ion-content>
+  <div id="home-bg">
+    <ion-grid>
+      <ion-row *ngFor="let row of appManager.rows" align-items-center>
+        <ion-col
+          size="3"
+          align-self:center
+          *ngFor="let id of row; let i = index"
+        >
+          <div class="app-layout" (click)="onClick(id)">
+            <img
+              [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)"
+              alt=""
+            />
+            <p>{{ appManager.appInfos[id].name }}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>

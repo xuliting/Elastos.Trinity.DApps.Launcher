@@ -1,4 +1,7 @@
 #splash {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
     position: fixed;
     padding: 0;
@@ -14,6 +17,11 @@
      -ms-animation: fadein 2s; /* Internet Explorer */
       -o-animation: fadein 2s; /* Opera < 12.1 */
          animation: fadein 2s;
+
+    ion-spinner {
+        margin-top: 125px;
+        color: black;
+    }
 }
 
 @keyframes fadein {
