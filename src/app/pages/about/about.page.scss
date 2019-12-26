@@ -1,5 +1,8 @@
 @import "../../functions.scss";
 
+#body {
+    margin-top: px2rem(135px);
+}
 #logo {
     text-align: center;
     img {

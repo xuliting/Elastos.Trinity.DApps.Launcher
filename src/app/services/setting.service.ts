@@ -24,8 +24,10 @@ export class SettingService {
 
     public version: string = "0.5.1";
 
-    constructor(private translate: TranslateService,
-        private storage: Storage) {
+    constructor(
+        private translate: TranslateService,
+        private storage: Storage
+    ) {
     }
 
     init() {

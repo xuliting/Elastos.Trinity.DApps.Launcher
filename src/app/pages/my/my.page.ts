@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService } from "../../services/setting.service";
+import { SettingService } from '../../services/setting.service';
 
 @Component({
     selector: 'app-my',
@@ -10,15 +10,15 @@ import { SettingService } from "../../services/setting.service";
 export class MyPage implements OnInit {
 
     myInfos = [{
-        route: "/manager",
-        label: "app-manager",
-        icon: "manager",
-        fn: "manager()",
+        route: '/manager',
+        label: 'app-manager',
+        icon: 'manager',
+        fn: 'manager()',
     }, {
-        route: "/language",
-        label: "language-setting",
-        icon: "language",
-        note: "中文(简体)",
+        route: '/language',
+        label: 'language-setting',
+        icon: 'language',
+        note: '中文(简体)',
     },
     // {
     //     route: "/wallpaper",
@@ -31,9 +31,9 @@ export class MyPage implements OnInit {
     //     icon: "iconsize",
     // },
     {
-        route: "/about",
-        label: "about",
-        icon: "about",
+        route: '/about',
+        label: 'about',
+        icon: 'about',
         note: this.setting.version,
     },
     // {
@@ -45,12 +45,14 @@ export class MyPage implements OnInit {
 
     public infos: any;
 
-    constructor(private translate: TranslateService,
-        public setting: SettingService) {
+    constructor(
+        private translate: TranslateService,
+        public setting: SettingService
+    ) {
 
         var me = this;
         this.translate.onLangChange.subscribe(data => {
-            console.log("onLangChange");
+            console.log('onLangChange');
             me.changeLangNote(data.lang);
         });
         this.changeLangNote(this.translate.currentLang);
