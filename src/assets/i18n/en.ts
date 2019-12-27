@@ -11,8 +11,8 @@ export const en = {
     'language-setting': 'Languages',
     'wallpaper-setting': 'Wallpaper',
     'icon-size': 'Icon size',
-    'about': 'About Elastos Browser',
-    'share': 'Share Elastos Browser',
+    'about': 'About elastOS',
+    'share': 'Share elastOS',
 
 
     //app-manager

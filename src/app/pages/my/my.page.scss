@@ -4,32 +4,9 @@ ion-label {
     margin-left: 10px;
 }
 
-#person {
-    margin-top: px2rem(180px);
-    margin-left: px2rem(45px);
-    margin-right: px2rem(30px);
-    margin-bottom: px2rem(44px);
-    height: px2rem(120px);
-
-    // background-color: green;
-    ion-avatar {
-        margin-right: 0;
-    }
-    ion-label {
-        margin-left: px2rem(30px);
-        font-size: 20px;
-        display: flex;
-        align-items: center;
-    }
-    ion-button {
-        width: px2rem(160px);
-        height: px2rem(60px);
-        --background: #783aff;
-    }
-
-}
-
 ion-list {
+    margin-top: px2rem(180px);
+
     ion-item {
         height: px2rem(104px);
     }
