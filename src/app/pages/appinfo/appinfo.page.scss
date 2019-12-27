@@ -1,13 +1,13 @@
 
 @import "../../functions.scss";
 
-.content-container {
-    --ion-toolbar-color: white;
-    --ion-toolbar-background: #161723
-}
-
 ion-list {
     margin-top: px2rem(108px);
+}
+
+.content-container {
+    --ion-toolbar-color: white;
+    --ion-toolbar-background: #161723;
 }
 
 #main {
@@ -16,6 +16,7 @@ ion-list {
     margin-right: px2rem(45px);
     margin-bottom: px2rem(44px);
     height: px2rem(140px);
+
     ion-thumbnail {
         width: px2rem(140px);
         height: px2rem(140px);
@@ -30,7 +31,8 @@ ion-list {
             font-size: 18px;
         }
         p {
-            font-size: 13px;
+            font-size: 12px;
+            line-height: 12px;
         }
     }
 
