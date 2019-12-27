@@ -42,7 +42,7 @@ export class SettingService {
         });
         this.storage.get("selectLang").then(code => {
             console.log(code);
-            if (typeof (code) == "string" && code != null) {
+            if (typeof (code) === "string" && code != null) {
                 me.setSelectLang(code);
             }
         });
@@ -50,57 +50,57 @@ export class SettingService {
 
     onLangChange(code: string) {
         this.currentLang = this.translate.currentLang;
-        this.setSystemLangName()
+        this.setSystemLangName();
     }
 
     getLanguageName(code: string) {
         for (var i = 0; i < this.languages.length; i++) {
-            if (this.languages[i].code == code) {
+            if (this.languages[i].code === code) {
                 return this.languages[i].name;
             }
         }
     }
 
     setDefaultLang(code: string) {
-        if (this.selectLang == null) {
+        if (this.selectLang === null) {
             this.selectLang = code;
         }
 
-        if (this.translate.defaultLang != code) {
+        if (this.translate.defaultLang !== code) {
             this.translate.setDefaultLang(code);
         }
 
-        if (this.currentLang == null) {
+        if (this.currentLang === null) {
             this.setCurrentLang(code);
         }
     }
 
     setSystemLangName() {
         this.languages[0].name = this.translate.instant("system_language");
-        if (this.systemLang != null) {
+        if (this.systemLang !== null) {
             this.languages[0].name += ": " + this.getLanguageName(this.systemLang);
         }
     }
 
     setSystemLang(code: string) {
-        if (this.systemLang == null) {
-            this.setSystemLangName()
+        if (this.systemLang === null) {
+            this.setSystemLangName();
         }
         this.systemLang = code;
     }
 
     setCurrentLang(code: string) {
-        if (this.currentLang != code) {
+        if (this.currentLang !== code) {
             this.translate.use(code);
         }
     }
 
     setSelectLang(code: string) {
-        if (this.selectLang != code) {
+        if (this.selectLang !== code) {
             this.selectLang = code;
             this.storage.set("selectLang", this.selectLang).then();
         }
-        if (code == "system") {
+        if (code === "system") {
             code = this.systemLang;
         }
         this.setCurrentLang(code);

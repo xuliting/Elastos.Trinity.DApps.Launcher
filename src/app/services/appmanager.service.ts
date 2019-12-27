@@ -93,10 +93,10 @@ export class AppmanagerService {
 
         for (var id in this.appInfos) {
             var locale = this.appInfos[id].locales[this.appInfos[id].defaultLocale];
-            if (typeof (locale) != "object") continue;
+            if (typeof (locale) !== "object") continue;
 
             locale = this.appInfos[id].locales[lang];
-            if (typeof (locale) != "object") {
+            if (typeof (locale) !== "object") {
                 locale = this.appInfos[id].locales[this.appInfos[id].defaultLocale];
             }
             this.appInfos[id].name = locale.name;
@@ -140,19 +140,18 @@ export class AppmanagerService {
             ret => {
                 console.log(ret);
             },
-            err =>{
-                if (err.indexOf("App '") == 0) {
-                    var arr= err.split("'");
+            err => {
+                if (err.indexOf("App '") === 0) {
+                    var arr = err.split("'");
                     me.askInstall(url, arr[1], dev);
-                }
-                else {
-                    me.display_err(err)
+                } else {
+                    me.display_err(err);
                 }
             }
         );
     }
 
-    askInstall(url:string, id: string, dev: boolean) {
+    askInstall(url: string, id: string, dev: boolean) {
         appManager.askPrompt(this.translate.instant("update-prompt"),
             this.translate.instant("update-ask") + ": '" + id + "'?",
             () => this.unInstall(id, ()=>this.install(url, dev), null));
@@ -163,10 +162,11 @@ export class AppmanagerService {
         appManager.unInstall(id,
             ret => success(ret),
             err => {
-                if (error != null)
+                if (error !== null) {
                     error(err);
-                else
+                }  else {
                     me.presentAlertError(err);
+                }
             });
     }
 
@@ -183,7 +183,7 @@ export class AppmanagerService {
     onReceive(ret) {
         console.log("ElastosJS  HomePage receive message:" + ret.message + ". type: " + ret.type + ". from: " + ret.from);
         var params: any = ret.message;
-        if (typeof (params) == "string") {
+        if (typeof (params) === "string") {
             params = JSON.parse(params);
         }
         console.log(params);

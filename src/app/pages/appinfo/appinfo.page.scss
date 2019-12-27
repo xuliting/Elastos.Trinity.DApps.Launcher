@@ -21,18 +21,20 @@ ion-list {
         width: px2rem(140px);
         height: px2rem(140px);
         margin-right: px2rem(26px);
+
         img {
             border-radius: 8px;
         }
     }
 
     ion-label {
+
         h2 {
-            font-size: 18px;
+            font-size: 18px !important;
         }
         p {
-            font-size: 12px;
-            line-height: 12px;
+            font-size: 12px !important;
+            line-height: 12px !important;
         }
     }
 
@@ -61,15 +63,12 @@ ion-list {
 
 }
 
-// #appname {
-//     margin-left: 10px;
-// }
-
 .authority {
 
     ion-list {
         padding: 0;
     }
+
     ion-item {
         height: px2rem(100px);
 
@@ -82,6 +81,7 @@ ion-list {
 
 ion-footer {
     text-align: center;
+    
     ion-button {
         width: px2rem(686px);
         height: px2rem(84px);
