@@ -1,6 +1,15 @@
 
 @import "../../functions.scss";
 
+.content-container {
+    --ion-toolbar-color: white;
+    --ion-toolbar-background: #161723
+}
+
+ion-list {
+    margin-top: px2rem(108px);
+}
+
 #main {
     margin-top: px2rem(49px);
     margin-left: px2rem(45px);
@@ -33,6 +42,8 @@
 }
 
 .item {
+    position: relative;
+    z-index: 0;
     margin-left: px2rem(45px);
     margin-right: px2rem(45px);
     height: px2rem(104px);

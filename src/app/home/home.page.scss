@@ -34,6 +34,12 @@
     background-size: 100% 100%;
 }
 
+.app-layout {
+    p {
+        color: black !important;
+    }
+}
+
 ion-toolbar{
     position: fixed;
     left: 0;
@@ -48,9 +54,8 @@ ion-button {
 }
 
 ion-grid {
-    margin-top: px2rem(120px);
+    margin-top: 2.1rem;
     padding: 0 !important;
-    // background-color: red;
     margin-left: px2rem(27px);
     margin-right: px2rem(27px);
 

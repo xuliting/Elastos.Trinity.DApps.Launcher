@@ -6,7 +6,7 @@
     <div></div>
     <ion-list>
         <div id="main">
-            <ion-toolbar>
+            <ion-toolbar class="content-container">
                 <ion-thumbnail slot="start">
                     <img [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)" alt="">
                 </ion-thumbnail>
@@ -29,13 +29,13 @@
             </ion-note>
         </ion-item> -->
         <div class="item">
-            <ion-toolbar>
+            <ion-toolbar class="content-container">
                 <ion-label>{{'developer' | translate}}</ion-label>
                 <ion-note slot="end">{{appManager.appInfos[id].authorName}}</ion-note>
             </ion-toolbar>
         </div>
         <div class="item">
-            <ion-toolbar>
+            <ion-toolbar class="content-container">
                 <ion-label>{{'sign' | translate}}</ion-label>
                 <ion-note slot="end">123ABC</ion-note>
             </ion-toolbar>
@@ -43,7 +43,7 @@
     </ion-list>
     <div *ngIf="appManager.appInfos[id].plugins.length > 0" class="authority">
         <div class="item">
-            <ion-toolbar>
+            <ion-toolbar class="content-container">
                 <ion-label>{{'plugins-authority' | translate}}</ion-label>
             </ion-toolbar>
         </div>
@@ -59,7 +59,7 @@
     </div>
     <div *ngIf="appManager.appInfos[id].urls.length > 0" class="authority">
         <div class="item">
-            <ion-toolbar>
+            <ion-toolbar class="content-container">
                 <ion-label>{{'urls-authority' | translate}}</ion-label>
             </ion-toolbar>
         </div>
@@ -76,7 +76,7 @@
 </ion-content>
 
 <ion-footer>
-    <ion-toolbar>
+    <ion-toolbar class="content-container">
         <ion-button id="uninstall" (click)="unInstallClick()">{{'uninstall' | translate}}</ion-button>
     </ion-toolbar>
 </ion-footer>
