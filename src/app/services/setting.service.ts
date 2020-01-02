@@ -22,7 +22,7 @@ export class SettingService {
     public systemLang: string = null;
     public selectLang: string = null;
 
-    public version: string = "0.5.1";
+    public version: string = "1.0.0";
 
     constructor(
         private translate: TranslateService,

@@ -10,8 +10,6 @@ import { SettingService } from "../../services/setting.service";
 })
 export class AboutPage implements OnInit {
 
-    public commitVersion = "v0.12";
-
     constructor(public translate: TranslateService,
         public setting: SettingService,
         private inappBrowser: InAppBrowser) { }
