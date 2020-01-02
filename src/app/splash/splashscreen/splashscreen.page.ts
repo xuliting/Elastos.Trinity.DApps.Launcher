@@ -20,6 +20,6 @@ export class SplashscreenPage implements OnInit {
     this.splashScreen.hide();
     setTimeout(() => {
       this.modalCtrl.dismiss();
-    }, 4000);
+    }, 2000);
   }
 }
