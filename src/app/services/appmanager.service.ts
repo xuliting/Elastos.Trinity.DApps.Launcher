@@ -52,6 +52,7 @@ export class AppmanagerService {
         this.getAppInfos(true);
         this.getRunningList();
         this.getLastList();
+        this.getRuntimeVersion();
     }
 
     sanitize(url: string) {
@@ -270,5 +271,11 @@ export class AppmanagerService {
         appManager.setUrlAuthority(id, url, authority,
             () => console.log('setUrlAuthority success'),
             err => me.display_err(err));
+    }
+
+    getRuntimeVersion() {
+        appManager.getVersion( (val) => {
+            this.setting.version = val;
+        });
     }
 }
