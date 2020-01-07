@@ -198,6 +198,7 @@ export class AppmanagerService {
                     case "installed":
                         managerService.toast_installed(params.id);
                     case "unInstalled":
+                    case "initiated":
                         managerService.getAppInfos(true);
                         break;
                     case "authorityChanged":
