@@ -113,7 +113,10 @@ export class AppmanagerService {
         appManager.getLocale(
             (defaultLang, currentLang, systemLang) => {
                 console.log('defaultLangL', defaultLang, ' currentLang:', currentLang, ' systemLang:', systemLang);
-                me.setting.setDefaultLang(defaultLang);
+                if (systemLang !== 'zh') {
+                    systemLang = 'en';
+                }
+                me.setting.setDefaultLang(systemLang);
                 me.setting.setSystemLang(systemLang);
             }
         );
