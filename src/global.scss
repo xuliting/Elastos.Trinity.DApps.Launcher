@@ -10,8 +10,65 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+@font-face {
+    font-family: 'Raleway';
+    font-weight: 300;
+    font-style: normal;
+    src: url('assets/fonts/Raleway-Light.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-style: normal;
+    src: url('assets/fonts/Raleway-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Raleway';
+    font-weight: 500;
+    font-style: normal;
+    src: url('assets/fonts/Raleway-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Raleway';
+    font-weight: 600;
+    font-style: normal;
+    src: url('assets/fonts/Raleway-SemiBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Raleway';
+    font-weight: 700;
+    font-style: normal;
+    src: url('assets/fonts/Raleway-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Raleway';
+    font-weight: 800;
+    font-style: normal;
+    src: url('assets/fonts/Raleway-ExtraBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Raleway';
+    font-weight: 900;
+    font-style: normal;
+    src: url('assets/fonts/Raleway-Black.ttf') format('truetype');
+}
+
 * {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Raleway' !important;
+}
+
+ion-header {
+    ion-toolbar {
+      .header-btns {
+        font-size: 20px;
+        padding: 8px;
+      }
+  
+      ion-title {
+        font-size: 23px;
+        font-weight: 700;
+      }
+    }
 }
 
 /* in-flight clone */

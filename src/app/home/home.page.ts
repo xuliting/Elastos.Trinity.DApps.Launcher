@@ -11,10 +11,17 @@ import { RunningManagerComponent } from '../components/running-manager/running-m
 	styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+	
 	@ViewChild("drag") drag1: any;
+
 	public list:any[]=[];
 	public popup = false;
 	public touched = false;
+	public sections = [
+		'Browsing History',
+		'Bookmarked Apps',
+		'Contacts',
+	];
 
 	constructor(
 		public popoverController: PopoverController,

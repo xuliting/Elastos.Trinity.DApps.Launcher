@@ -23,41 +23,150 @@ enum MessageType {
 })
 export class AppmanagerService {
 
+    /* Declared */
     public appInfos: AppManagerPlugin.AppInfo[] = [];
+    public nativeApps: AppManagerPlugin.AppInfo[] = [];
     public appList: string[] = [];
+
+    /* TO DO */
     public runningList: any = [];
     public lastList: any = [];
     public rows: any = [];
     private currentLang: string = null;
 
-    constructor(private translate: TranslateService,
+    constructor(
+        private translate: TranslateService,
         private setting: SettingService,
         private sanitizer: DomSanitizer,
         public zone: NgZone,
         public toastCtrl: ToastController,
-        private alertController: AlertController) {
+        private alertController: AlertController
+    ) {
         managerService = this;
 
-        var me = this;
         this.translate.onLangChange.subscribe(data => {
-            console.log("onLangChange");
-            me.onLangChange(data.lang);
+            console.log('onLangChange');
+            this.onLangChange(data.lang);
         });
     }
 
-    init() {
-        console.log("AppmanagerService init");
-        appManager.setListener(this.onReceive);
-        this.getLanguage();
-        this.getAppInfos(true);
-        this.getRunningList();
-        this.getLastList();
-        this.getRuntimeVersion();
+    get apps() {
+        return [...this.appInfos];
     }
 
-    sanitize(url: string) {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(url);;
+    get _nativeApps() {
+        return [...this.nativeApps];
     }
+
+    init() {
+        console.log('AppmanagerService init');
+        appManager.setListener(this.onReceive);
+        this.getAppInfos();
+
+        // this.getLanguage();
+        // this.getRunningList();
+        // this.getLastList();
+        // this.getRuntimeVersion();
+    }
+
+    ////////////////////////////// Fetch Installed Apps //////////////////////////////
+
+    // Get app info
+    getAppInfos() {
+        appManager.getAppInfos((info) => {
+            console.log('App infos', info);
+            this.appInfos = Object.values(info);
+            console.log('Installed apps', this.appInfos);
+
+            this.appInfos.map(app => {
+                if (
+                    app.id === 'org.elastos.trinity.dapp.did' ||
+                    app.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
+                    app.id === 'org.elastos.trinity.dapp.wallet'
+                ) {
+                    this.nativeApps.push(app);
+                }
+                console.log(this.nativeApps);
+            });
+
+            const hiddenAppList: string[] = ['org.elastos.trinity.dapp.installer'];
+            for (const id of hiddenAppList) {
+                const index: number = this.appList.indexOf(id, 0);
+                if (index > -1) {
+                    this.appList.splice(index, 1);
+                }
+            }
+        });
+    }
+
+    // Get app icon
+    sanitize(url: string) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
+
+     /*  getAppInfos(refresh: boolean = false) {
+        console.log('AppmanagerService getAppInfos');
+        appManager.getAppInfos(
+            (appsInfo, idList) => {
+                this.appInfos = appsInfo;
+                this.appList = idList;
+
+                let hiddenAppList: string[] = ["org.elastos.trinity.dapp.installer"];
+                for (var id of hiddenAppList) {
+                  let index = me.appList.indexOf(id, 0);
+                  if (index > -1) {
+                     this.appList.splice(index, 1);
+                  }
+                }
+
+                if (refresh) {
+                    this.zone.run(() => {
+                        this.getRows(4);
+                        this.changeInfosLanguage(this.setting.currentLang);
+                    });
+                }
+            }
+        );
+    } */
+
+    ////////////////////////////// Handle Intent //////////////////////////////
+
+    onReceive(ret) {
+        console.log('ElastosJS  HomePage receive message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
+
+        let params: any = ret.message;
+        if (typeof (params) === 'string') {
+            params = JSON.parse(params);
+        }
+        console.log(params);
+        switch (ret.type) {
+            case MessageType.IN_REFRESH:
+                switch (params.action) {
+                    case 'started':
+                    case 'closed':
+                        managerService.getRunningList();
+                        break;
+                    case 'installed':
+                        managerService.toast_installed(params.id);
+                    case 'unInstalled':
+                    case 'initiated':
+                        managerService.getAppInfos(true);
+                        break;
+                    case 'authorityChanged':
+                        managerService.getAppInfos(false);
+                        break;
+                    case 'currentLocaleChanged':
+                        break;
+                    case 'app':
+                }
+                break;
+            case MessageType.EX_INSTALL:
+                managerService.install(params.uri, params.dev);
+                break;
+        }
+    }
+
+    /*****************************TO DO*********************************/
 
     print_err(err) {
         console.log("ElastosJS  Error: " + err);
@@ -180,72 +289,11 @@ export class AppmanagerService {
         await alert.present();
     }
 
-
-    onReceive(ret) {
-        console.log("ElastosJS  HomePage receive message:" + ret.message + ". type: " + ret.type + ". from: " + ret.from);
-        var params: any = ret.message;
-        if (typeof (params) === "string") {
-            params = JSON.parse(params);
-        }
-        console.log(params);
-        switch (ret.type) {
-            case MessageType.IN_REFRESH:
-                switch (params.action) {
-                    case "started":
-                    case "closed":
-                        managerService.getRunningList();
-                        break;
-                    case "installed":
-                        managerService.toast_installed(params.id);
-                    case "unInstalled":
-                    case "initiated":
-                        managerService.getAppInfos(true);
-                        break;
-                    case "authorityChanged":
-                        managerService.getAppInfos(false);
-                        break;
-                    case "currentLocaleChanged":
-                        break;
-                }
-                break;
-            case MessageType.EX_INSTALL:
-                managerService.install(params.uri, params.dev);
-                break;
-        }
-    }
-
     getRows(size) {
         this.rows = [];
         for (let i = 0; i < this.appList.length; i += size) {
             this.rows.push(this.appList.slice(i, i + size));
         }
-    }
-
-    getAppInfos(refresh: boolean = false)/*: Promise<any> */ {
-        console.log('AppmanagerService getAppInfos');
-        let me = this;
-        appManager.getAppInfos(
-            (appsInfo, idList) => {
-                // console.log('appsInfo:', appsInfo, ' idList:', idList);
-                me.appInfos = appsInfo;
-                me.appList = idList;
-
-                let hiddenAppList: string[] = ["org.elastos.trinity.dapp.installer"];
-                for (var id of hiddenAppList) {
-                  let index = me.appList.indexOf(id, 0);
-                  if (index > -1) {
-                     me.appList.splice(index, 1);
-                  }
-                }
-
-                if (refresh) {
-                    me.zone.run(() => {
-                        me.getRows(4);
-                        me.changeInfosLanguage(me.setting.currentLang);
-                    });
-                }
-            }
-        );
     }
 
     getRunningList() {
