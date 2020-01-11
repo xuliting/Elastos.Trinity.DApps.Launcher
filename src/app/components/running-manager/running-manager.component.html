@@ -8,10 +8,10 @@
     <div *ngIf="appManager.runningList.length > 0">
         <div id="running-title">{{'running' | translate}}</div>
         <ul dragula="Runnings" [(dragulaModel)]="appManager.runningList">
-            <li *ngFor="let id of appManager.runningList">
-                <div class="app-layout" (click)="onClick(id)" (press)="pressed=true;">
-                    <img [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)" alt="">
-                    <p>{{appManager.appInfos[id].name}}</p>
+            <li *ngFor="let app of runningApps">
+                <div class="app-layout" (click)="onClick(app.id)" (press)="pressed=true;">
+                    <img [src]="appManager.sanitize(app.icons[0].src)" />
+                    <p>{{ app.name }}</p>
                 </div>
             </li>
         </ul>

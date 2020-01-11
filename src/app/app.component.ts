@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AppmanagerService } from "./services/appmanager.service";
-import { SettingService } from "./services/setting.service";
+import { AppmanagerService } from './services/appmanager.service';
+import { SettingService } from './services/setting.service';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 
 @Component({
@@ -29,7 +29,7 @@ export class AppComponent {
 
     initializeApp() {
         this.platform.ready().then(() => {
-            console.log("platform.ready");
+            console.log('platform.ready');
             screen.orientation.lock('portrait');
             this.statusBar.styleDefault();
            // this.splash();
@@ -43,5 +43,9 @@ export class AppComponent {
     async splash() {
         const splash = await this.modalCtrl.create({component: SplashscreenPage});
         return await splash.present();
+    }
+
+    appInstall() {
+        this.appManager.fetchDappId();
     }
 }

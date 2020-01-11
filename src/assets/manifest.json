@@ -28,5 +28,16 @@
       "sizes": "128x128",
       "type": "image/png"
     }
+  ],
+  "urls": [
+    "http://www.baidu.com/*",
+    "https://www.google.com",
+    "http://192.168.31.103:21636/*",
+    "https://dapp-store.elastos.org/apps/*"
+  ],
+  "intent_filters": [
+    {
+      "action": "app"
+    }
   ]
 }

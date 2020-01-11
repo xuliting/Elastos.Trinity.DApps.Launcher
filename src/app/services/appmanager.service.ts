@@ -3,6 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { SettingService } from './setting.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Platform } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+import { Dapp } from '../models/dapps.model';
 
 declare let appManager: AppManagerPlugin.AppManager;
 let managerService = null;
@@ -27,14 +30,17 @@ export class AppmanagerService {
     public appInfos: AppManagerPlugin.AppInfo[] = [];
     public nativeApps: AppManagerPlugin.AppInfo[] = [];
     public appList: string[] = [];
-
-    /* TO DO */
     public runningList: any = [];
     public lastList: any = [];
+    private handledIntentId: number;
+
+    /* TO DO */
     public rows: any = [];
     private currentLang: string = null;
 
     constructor(
+        private platform: Platform,
+        private http: HttpClient,
         private translate: TranslateService,
         private setting: SettingService,
         private sanitizer: DomSanitizer,
@@ -61,75 +67,139 @@ export class AppmanagerService {
     init() {
         console.log('AppmanagerService init');
         appManager.setListener(this.onReceive);
-        this.getAppInfos();
 
+        if (this.platform.platforms().indexOf('cordova') >= 0) {
+            console.log('Listening to intent events');
+            appManager.setIntentListener(
+              this.onReceiveIntent
+            );
+        }
+
+        // this.fakeIntentInstall();
+
+        this.getAppInfos();
+        this.getRunningList();
+        this.getLastList();
         // this.getLanguage();
-        // this.getRunningList();
-        // this.getLastList();
         // this.getRuntimeVersion();
     }
 
-    ////////////////////////////// Fetch Installed Apps //////////////////////////////
+    ////////////////////////////// App install //////////////////////////////
 
-    // Get app info
-    getAppInfos() {
-        appManager.getAppInfos((info) => {
-            console.log('App infos', info);
-            this.appInfos = Object.values(info);
-            console.log('Installed apps', this.appInfos);
-
-            this.appInfos.map(app => {
-                if (
-                    app.id === 'org.elastos.trinity.dapp.did' ||
-                    app.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
-                    app.id === 'org.elastos.trinity.dapp.wallet'
-                ) {
-                    this.nativeApps.push(app);
+    fetchDappId() {
+        console.log("Fetching DApps");
+        let dapps: Dapp[] = [];
+        this.http.get<[]>('https://dapp-store.elastos.org/apps/list').subscribe((response: Dapp[]) => {
+            dapps = dapps.concat(response);
+            console.log("DApps from store server", dapps);
+            dapps.map(dapp => {
+                if (dapp.packageName === "org.elastos.trinity.dapp.dposvoting") {
+                    console.log("App matches", + dapp);
+                    this.fakeIntentInstall(dapp);
                 }
-                console.log(this.nativeApps);
             });
-
-            const hiddenAppList: string[] = ['org.elastos.trinity.dapp.installer'];
-            for (const id of hiddenAppList) {
-                const index: number = this.appList.indexOf(id, 0);
-                if (index > -1) {
-                    this.appList.splice(index, 1);
-                }
-            }
         });
     }
 
-    // Get app icon
-    sanitize(url: string) {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    // Test Install
+    async fakeIntentInstall(dapp) {
+        const epkPath = await this.downloadDapp(dapp);
+        console.log('EPK file downloaded and saved to ' + epkPath);
+        this.installApp(epkPath, dapp);
     }
 
-     /*  getAppInfos(refresh: boolean = false) {
-        console.log('AppmanagerService getAppInfos');
-        appManager.getAppInfos(
-            (appsInfo, idList) => {
-                this.appInfos = appsInfo;
-                this.appList = idList;
-
-                let hiddenAppList: string[] = ["org.elastos.trinity.dapp.installer"];
-                for (var id of hiddenAppList) {
-                  let index = me.appList.indexOf(id, 0);
-                  if (index > -1) {
-                     this.appList.splice(index, 1);
-                  }
-                }
-
-                if (refresh) {
-                    this.zone.run(() => {
-                        this.getRows(4);
-                        this.changeInfosLanguage(this.setting.currentLang);
-                    });
-                }
+    installApp(epk, dapp) {
+        console.log('Installing ' + dapp.packageName);
+        appManager.install(
+            epk, true,
+            (ret) => {
+                console.log(ret);
+                this.installSuccess(dapp.name);
+            },
+            (err) => {
+                console.log(err);
+                this.installFailed(err, dapp.name);
             }
         );
-    } */
+    }
 
-    ////////////////////////////// Handle Intent //////////////////////////////
+    async installSuccess(appName) {
+        const toast = await this.toastCtrl.create({
+          mode: 'ios',
+          message: 'Installed ' + appName,
+          color: 'primary',
+          duration: 2000
+        });
+        toast.present();
+    }
+
+    async installFailed(err, appName) {
+        const toast = await this.toastCtrl.create({
+          mode: 'ios',
+          header: 'Failed to install ' + appName,
+          message: err,
+          color: 'primary',
+          duration: 2000
+        });
+        toast.present();
+    }
+
+    downloadDapp(dapp) {
+        console.log('App download starting for', + dapp.packageName);
+
+        return new Promise((resolve, reject) => {
+            // Download EPK file as blob
+            this.http.get('https://dapp-store.elastos.org/apps/' + dapp._id + '/download', {
+                responseType: 'arraybuffer'} ).subscribe(async response => {
+                console.log('Downloaded', response);
+                let blob = new Blob([response], { type: 'application/octet-stream' });
+                console.log('Blob', blob);
+
+                // Save to a temporary location
+                let filePath = await this._savedDownloadedBlobToTempLocation(blob);
+
+                resolve(filePath);
+            });
+        });
+    }
+
+    _savedDownloadedBlobToTempLocation(blob) {
+        let fileName = 'appinstall.epk';
+
+        return new Promise((resolve, reject) => {
+            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dirEntry: CordovaFilePlugin.DirectoryEntry) => {
+                dirEntry.getFile(fileName, { create: true, exclusive: false }, (fileEntry) => {
+                    console.log('Downloaded file entry', fileEntry);
+                    fileEntry.createWriter((fileWriter) => {
+                    fileWriter.write(blob);
+                    resolve('trinity:///data/' + fileName);
+                    }, (err) => {
+                    console.error('createWriter ERROR - ' + JSON.stringify(err));
+                    reject(err);
+                    });
+                }, (err) => {
+                    console.error('getFile ERROR - ' + JSON.stringify(err));
+                    reject(err);
+                });
+            }, (err) => {
+                console.error('resolveLocalFileSystemURL ERROR - ' + JSON.stringify(err));
+                reject(err);
+            });
+        });
+    }
+
+    ////////////////////////////// Listener //////////////////////////////
+
+    // Intent listener
+    onReceiveIntent = (ret) => {
+        console.log('Intent received', ret);
+
+        switch (ret.action) {
+            case 'app':
+                console.log('app intent recieved', ret);
+                this.handledIntentId = ret.intentId;
+        }
+    }
 
     onReceive(ret) {
         console.log('ElastosJS  HomePage receive message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
@@ -157,13 +227,56 @@ export class AppmanagerService {
                         break;
                     case 'currentLocaleChanged':
                         break;
-                    case 'app':
                 }
                 break;
             case MessageType.EX_INSTALL:
                 managerService.install(params.uri, params.dev);
                 break;
         }
+    }
+
+    ////////////////////////////// Fetch Installed Apps //////////////////////////////
+
+    // Get app info
+    getAppInfos() {
+        appManager.getAppInfos((info) => {
+            console.log('App infos', info);
+            this.appInfos = Object.values(info);
+            console.log('Installed apps', this.appInfos);
+
+            this.appInfos.map(app => {
+                if (
+                    app.id === 'org.elastos.trinity.dapp.did' ||
+                    app.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
+                    app.id === 'org.elastos.trinity.dapp.wallet'
+                ) {
+                    this.nativeApps.push(app);
+                }
+            });
+
+            const hiddenAppList: string[] = ['org.elastos.trinity.dapp.installer'];
+            for (const id of hiddenAppList) {
+                const index: number = this.appList.indexOf(id, 0);
+                if (index > -1) {
+                    this.appList.splice(index, 1);
+                }
+            }
+        });
+    }
+
+    // Get app icon
+    sanitize(url: string) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
+
+    getRunningList() {
+        console.log('AppmanagerService getRunningList');
+        appManager.getRunningList(list => this.runningList = list);
+    }
+
+    getLastList() {
+        console.log('AppmanagerService getLastList');
+        appManager.getLastList(list => this.lastList = list);
     }
 
     /*****************************TO DO*********************************/
@@ -294,18 +407,6 @@ export class AppmanagerService {
         for (let i = 0; i < this.appList.length; i += size) {
             this.rows.push(this.appList.slice(i, i + size));
         }
-    }
-
-    getRunningList() {
-        console.log("AppmanagerService getRunningList");
-        let me = this;
-        appManager.getRunningList(list => me.runningList = list);
-    }
-
-    getLastList() {
-        console.log("AppmanagerService getLastList");
-        let me = this;
-        appManager.getLastList(list => me.lastList = list);
     }
 
     setPluginAuthority(id: string, plugin: string, authority: AppManagerPlugin.PluginAuthority) {

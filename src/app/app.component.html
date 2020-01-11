@@ -16,8 +16,11 @@
               <ion-label>{{ app.name }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
-          <ion-menu-toggle>
 
+          <ion-menu-toggle>
+            <ion-button (click)="appInstall()">
+              <ion-label>Test App Install</ion-label>
+            </ion-button>
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
