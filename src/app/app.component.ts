@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppmanagerService } from './services/appmanager.service';
 import { SettingService } from './services/setting.service';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
+import { Dapp } from './models/dapps.model';
 
 @Component({
     selector: 'app-root',
@@ -14,7 +15,7 @@ import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 })
 export class AppComponent {
 
-    nativeApps: AppManagerPlugin.AppInfo[] = [];
+    nativeApps: Dapp[] = [];
 
     constructor(
         private platform: Platform,

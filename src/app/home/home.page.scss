@@ -106,21 +106,13 @@ ion-card {
         }
     }
 
-    .btn-container {
+    .checkbox-container {
       display: flex;
-      justify-content: center;
       align-items: center;
 
-      ion-button {
-        --border-radius: 30px;
-        --box-shadow: none;
-        width: 80px;
-
-        ion-label {
-          font-size: 9px;
-          font-weight: 700;
-          padding: 0;
-        }
+      ion-checkbox {
+        --border-color: black !important;
+        --border-color-checked: black !important;
       }
     }
   }
