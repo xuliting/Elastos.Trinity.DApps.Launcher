@@ -139,16 +139,16 @@ export class AppmanagerService {
         appManager.closeApp(id);
     }
 
-    install(url: string, dev: boolean) {
+    install(url: string, update: boolean) {
         var me = this;
-        appManager.install(url, dev,
+        appManager.install(url, update,
             ret => {
                 console.log(ret);
             },
             err => {
                 if (err.indexOf("App '") === 0) {
                     var arr = err.split("'");
-                    me.askInstall(url, arr[1], dev);
+                    me.askInstall(url, arr[1]);
                 } else {
                     me.display_err(err);
                 }
@@ -156,10 +156,10 @@ export class AppmanagerService {
         );
     }
 
-    askInstall(url: string, id: string, dev: boolean) {
+    askInstall(url: string, id: string) {
         appManager.askPrompt(this.translate.instant("update-prompt"),
             this.translate.instant("update-ask") + ": '" + id + "'?",
-            () => this.unInstall(id, ()=>this.install(url, dev), null));
+            ()=>this.install(url, true));
     }
 
     unInstall(id: string, success: any, error: any) {
@@ -210,10 +210,12 @@ export class AppmanagerService {
                         break;
                     case "currentLocaleChanged":
                         break;
+                    case "launcher_upgraded":
+                        managerService.toast("Launcher have upgraded, please restart.");
                 }
                 break;
             case MessageType.EX_INSTALL:
-                managerService.install(params.uri, params.dev);
+                managerService.install(params.uri, false);
                 break;
         }
     }
