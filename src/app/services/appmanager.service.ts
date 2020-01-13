@@ -29,6 +29,7 @@ export class AppmanagerService {
     public lastList: any = [];
     public rows: any = [];
     private currentLang: string = null;
+    private supportedLanguage: string[] = ['en', 'zh'];
 
     constructor(private translate: TranslateService,
         private setting: SettingService,
@@ -113,7 +114,7 @@ export class AppmanagerService {
         appManager.getLocale(
             (defaultLang, currentLang, systemLang) => {
                 console.log('defaultLangL', defaultLang, ' currentLang:', currentLang, ' systemLang:', systemLang);
-                if (systemLang !== 'zh') {
+                if (!this.isSupportedLanguage(systemLang)) {
                     systemLang = 'en';
                 }
                 me.setting.setDefaultLang(systemLang);
@@ -281,5 +282,9 @@ export class AppmanagerService {
         appManager.getVersion( (val) => {
             this.setting.version = val;
         });
+    }
+
+    isSupportedLanguage(lang: string) {
+        return this.supportedLanguage.indexOf(lang) === -1 ? false : true;
     }
 }
