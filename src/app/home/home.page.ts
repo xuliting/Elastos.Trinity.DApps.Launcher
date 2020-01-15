@@ -32,18 +32,9 @@ export class HomePage {
     public toastCtrl: ToastController,
     public storage: StorageService,
   ) {
-   /*  let favApps: number = 0;
-    this.installedApps.map(app => {
-      if (app.isFav) {
-        favApps++;
-      }
-    });
-    if (favApps === 0) {
-      this.noFavApps = true;
-    } */
   }
 
-  ionViewWillEnter() {
+  /* ionViewWillEnter() {
     this.installedApps = this.appManager.installedApps.filter((app) =>
       app.id !== 'org.elastos.trinity.dapp.installer' &&
       app.id !== 'org.elastos.trinity.dapp.did' &&
@@ -52,11 +43,11 @@ export class HomePage {
       app.id !== 'org.elastos.trinity.blockchain'
     );
     console.log('Apps from home', this.installedApps);
-  }
+  } */
 
   getFavApps() {
     let favApps: Dapp[] = [];
-    this.installedApps.map(app => {
+    this.appManager.installedApps.map(app => {
       if (app.isFav) {
         favApps.push(app);
       }
@@ -69,20 +60,26 @@ export class HomePage {
       this.appRemovedFromFav(app);
     } else {
       let favApps: string[] = [];
-      this.installedApps.map((dapp) => {
-        if (dapp.isFav) {
-          favApps = favApps.concat(dapp.id);
-          this.appAddedToFav(dapp.name);
+      this.appManager.installedApps.map((installedApp) => {
+        if (installedApp.isFav) {
+          favApps = favApps.concat(installedApp.id);
+          this.appAddedToFav(installedApp.name);
         }
+
+        /* this.appManager.browsedApps.map(browsedApp => {
+          if (browsedApp.id === installedApp.id) {
+            browsedApp.isFav = true;
+          }
+        }); */
+
       });
       this.storage.setFavApps(favApps);
     }
-
-    this.uninstallApp(this.installedApps);
+    this.uninstallApp();
   }
 
-  async uninstallApp(apps: Dapp[]) {
-    let appId: string = await this.appManager.uninstallApp(apps);
+  async uninstallApp() {
+    let appId: string = await this.appManager.uninstallApp();
     this.installedApps = this.installedApps.filter(app => app.id !== appId);
     console.log('Apps Remaining', this.installedApps);
   }

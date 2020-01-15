@@ -12,7 +12,7 @@
       <ion-content>
         <ion-list padding-start>
           <ion-menu-toggle>
-            <ion-item *ngFor="let app of nativeApps">
+            <ion-item *ngFor="let app of appManager.nativeApps">
               <ion-label>{{ app.name }}</ion-label>
             </ion-item>
           </ion-menu-toggle>

@@ -21,4 +21,17 @@ export class StorageService {
       return JSON.parse(data);
     });
   }
+
+  public setBrowsedApps(value: any) {
+    return this.storage.set("history", JSON.stringify(value)).then((data) => {
+      console.log('Stored Browsed Apps', data);
+    });
+  }
+
+  public getBrowsedApps(): Promise<any> {
+    return this.storage.get("history").then((data) => {
+      console.log(data);
+      return JSON.parse(data);
+    });
+  }
 }

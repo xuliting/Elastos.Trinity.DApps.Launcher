@@ -8,8 +8,6 @@ import { HttpClient } from '@angular/common/http';
 import { DappStoreApp, Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
 import { Observable } from 'rxjs';
-import { BrowserPlatformLocation } from '@angular/platform-browser/src/browser/location/browser_platform_location';
-import { CurrencyIndex } from '@angular/common/src/i18n/locale_data';
 
 declare let appManager: AppManagerPlugin.AppManager;
 let managerService = null;
@@ -37,6 +35,7 @@ export class AppmanagerService {
     public browsedApps: Dapp[] = [];
 
     public appList: string[] = [];
+    public favApps: string[] = [];
 
     public runningList: any = [];
     public lastList: any = [];
@@ -124,18 +123,13 @@ export class AppmanagerService {
                 switch (params.action) {
                     case 'started':
                         managerService.addToHistory(params.id);
-                        break;
                     case 'closed':
                         managerService.getRunningList();
                         break;
-                    case 'unInstalled':
-                        managerService.appUninstalled(params.id);
-                        managerService.getAppInfos(true);
-                        break;
                     case 'installed':
                         managerService.appInstalled(params.id);
-                        managerService.getAppInfos(true);
-                        break;
+                    case 'unInstalled':
+                        managerService.appUninstalled(params.id);
                     case 'initiated':
                         managerService.getAppInfos(true);
                         break;
@@ -162,7 +156,7 @@ export class AppmanagerService {
             dapps = dapps.concat(response);
             console.log("DApps from store server", dapps);
             dapps.map(dapp => {
-                if (dapp.packageName === "anders.contentcommons") {
+                if (dapp.packageName === "org.elastos.trinity.dapp.dposvoting") {
                     console.log(dapp, 'App matches');
                     this.intentInstall(dapp);
                 }
@@ -182,12 +176,12 @@ export class AppmanagerService {
         appManager.install(
             epk, true,
             (ret) => {
-                console.log('Success', ret);
-                this.installSuccess(dapp.packageName);
+                console.log(ret);
+                this.installSuccess(dapp.name);
             },
             (err) => {
-                console.log('Error', err);
-                this.installFailed(err, dapp.packageName);
+                console.log(err);
+                this.installFailed(err, dapp.name);
             }
         );
     }
@@ -261,7 +255,7 @@ export class AppmanagerService {
         this.toastCtrl.create({
             mode: 'ios',
             message: msg,
-            color: 'success',
+            color: '',
             duration: 4000,
             position: 'top'
         }).then(toast => toast.present());
@@ -293,16 +287,7 @@ export class AppmanagerService {
     getFavApps(): Promise<string[]> {
         return new Promise((resolve, reject) => {
             this.storage.getFavApps().then(apps => {
-                console.log('Fetched favorite apps', apps);
-                resolve(apps);
-            });
-        });
-    }
-
-    getBrowsedApps(): Promise<Dapp[]> {
-        return new Promise((resolve, reject) => {
-            this.storage.getBrowsedApps().then(apps => {
-                console.log('Fetched browsing history', apps);
+                console.log('Fetching favorite apps');
                 resolve(apps);
             });
         });
@@ -310,9 +295,7 @@ export class AppmanagerService {
 
     // Get installed app info
     async getAppInfos() {
-        let favorites: string[] = await this.getFavApps();
-        let history: Dapp[] = await this.getBrowsedApps();
-
+        this.favApps = await this.getFavApps();
         let apps: Dapp[] = [];
         this.installedApps = [];
         this.nativeApps = [];
@@ -371,14 +354,20 @@ export class AppmanagerService {
                         authorEmail: app.authorEmail,
                         category: app.category,
                         urls: app.urls,
-                        isFav: favorites.includes(app.id) ? true : false,
+                        isFav: false,
                     });
                 }
             });
         });
 
-        if (history.length > 0) {
-            this.browsedApps = history;
+        if (this.favApps.length > 0) {
+            this.favApps.map(favApp => {
+                this.installedApps.map(installedApp => {
+                    if (installedApp.id === favApp) {
+                        installedApp.isFav = true;
+                    }
+                });
+            });
         }
     }
 
@@ -426,27 +415,15 @@ export class AppmanagerService {
 
     ////////////////////////////// Browsing history  //////////////////////////////
     addToHistory(paramsId) {
-        console.log('Adding to browsing history', paramsId);
-        this.installedApps.map(installedApp => {
-            if (installedApp.id === paramsId) {
-                this.browsedApps.unshift(installedApp);
+        console.log('Adding to browsing history');
+        this.installedApps.map(app => {
+            if (app.id === paramsId) {
+                this.browsedApps.unshift(app);
             }
         });
 
-        this.removeDuplicates(this.browsedApps);
-    }
-
-    // Remove any duplicated objects and sort list by latest viewed app
-    removeDuplicates(apps) {
-        this.browsedApps = apps.reduce((_apps, current) => {
-            const x = _apps.find(app => app.id === current.id);
-            if (!x) {
-                return _apps.concat([current]);
-            } else {
-                return _apps;
-            }
-        }, []);
-        this.storage.setBrowsedApps(this.browsedApps);
+        // Remove any duplicated apps + sort browsing list by latest viewed apps;
+        this.browsedApps = this.browsedApps.filter((app, index) => this.browsedApps.indexOf(app) === index);
     }
 
     ////////////////////////////// Intent actions //////////////////////////////
@@ -535,7 +512,3 @@ export class AppmanagerService {
         });
     }
 }
-
-
-
-

@@ -37,7 +37,6 @@ export class AppComponent {
             this.splashScreen.hide();
             this.appManager.init();
             this.setting.init();
-            this.nativeApps = this.appManager.nativeApps;
         });
     }
 

@@ -25,7 +25,7 @@ export class AppinfoPage implements OnInit {
         })
     }
 
-    async presentAlertConfirm() {
+   /*  async presentAlertConfirm() {
         var me = this;
         const alert = await this.alertController.create({
             message: me.translate.instant("uninstall-confirm"),
@@ -58,7 +58,7 @@ export class AppinfoPage implements OnInit {
 
     unInstall() {
         this.appManager.unInstall(this.id, () => this.navCtrl.pop(), null);
-    }
+    } */
 
     pluginAuthority(item, authority) {
         this.appManager.setPluginAuthority(this.id, item.plugin, authority);
