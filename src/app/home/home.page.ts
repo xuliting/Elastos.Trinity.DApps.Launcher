@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
 import { Dapp } from '../models/dapps.model';
 import { StorageService } from '../services/storage.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',

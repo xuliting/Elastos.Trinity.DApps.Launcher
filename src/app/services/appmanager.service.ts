@@ -7,9 +7,7 @@ import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { DappStoreApp, Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
-import { Observable } from 'rxjs';
-import { BrowserPlatformLocation } from '@angular/platform-browser/src/browser/location/browser_platform_location';
-import { CurrencyIndex } from '@angular/common/src/i18n/locale_data';
+import { store } from '@angular/core/src/render3';
 
 declare let appManager: AppManagerPlugin.AppManager;
 let managerService = null;
@@ -65,19 +63,7 @@ export class AppmanagerService {
         });
     }
 
-    get apps() {
-        return [...this.appInfos];
-    }
-
-    get _nativeApps() {
-        return [...this.nativeApps];
-    }
-
     init() {
-        /* this.http.get<any>('https://dapp-store.elastos.org/apps/' + 'org.elastos.trinity.dapp.friends' + '/manifest').subscribe((manifest: any) => {
-            console.log('Got app!', manifest);
-        }); */
-
         console.log('AppmanagerService init');
         appManager.setListener(this.onReceive);
 
@@ -101,13 +87,12 @@ export class AppmanagerService {
 
     // Intent listener
     onReceiveIntent = (ret) => {
-        console.log('Intent received', ret);
-
         switch (ret.action) {
             case 'app':
-                console.log('app intent recieved', ret);
+                console.log('App intent recieved', ret);
                 this.handledIntentId = ret.intentId;
-                this.intentInstall(ret.params.app);
+                this.findApp(ret.params.app);
+                // this.intentInstall(ret.params.app);
         }
     }
 
@@ -170,55 +155,59 @@ export class AppmanagerService {
         });
     }
 
-    // Test Install
-    async intentInstall(dapp) {
-        const epkPath = await this.downloadDapp(dapp);
-        console.log('EPK file downloaded and saved to ' + epkPath);
-        this.installApp(epkPath, dapp);
+    findApp(dapp: DappStoreApp) {
+        console.log('From app store', + dapp);
+        let targetApp: Dapp = this.installedApps.find(app => app.id === dapp.packageName);
+        if (targetApp) {
+            this.http.get<any>('https://dapp-store.elastos.org/apps/' + targetApp.id + '/manifest').subscribe((storeApp: any) => {
+                console.log('Got app!', storeApp);
+                if (storeApp.version === targetApp.version) {
+                    console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
+                    appManager.start(targetApp.id);
+                } else {
+                    console.log(
+                        'Update available for', storeApp.id +
+                        ' Old Version:' + targetApp.version +
+                        ' New version:' + storeApp.version
+                    );
+                    this.intentInstall(dapp);
+                }
+            });
+        } else {
+            console.log(dapp.packageName + ' is not installed');
+            this.intentInstall(dapp);
+        }
     }
 
-    installApp(epk, dapp) {
-        console.log('Installing ' + dapp.packageName);
+    // Test Install
+    async intentInstall(dApp) {
+        console.log('Downloading...' + dApp);
+        const epkPath = await this.downloadDapp(dApp);
+        console.log('EPK file downloaded and saved to ' + epkPath);
+        this.installApp(epkPath, dApp);
+    }
+
+    installApp(epk, dApp) {
+        console.log('Installing...' + dApp.packageName);
+
+        /* BUG TRACED HERE: After inquiring app for install, appManager installs the WRONG APP */
         appManager.install(
             epk, true,
             (ret) => {
                 console.log('Success', ret);
-                this.installSuccess(dapp.packageName);
             },
             (err) => {
                 console.log('Error', err);
-                this.installFailed(err, dapp.packageName);
             }
         );
     }
 
-    async installSuccess(appName) {
-        const toast = await this.toastCtrl.create({
-          mode: 'ios',
-          message: 'Installed ' + appName,
-          color: 'primary',
-          duration: 2000
-        });
-        toast.present();
-    }
-
-    async installFailed(err, appName) {
-        const toast = await this.toastCtrl.create({
-          mode: 'ios',
-          header: 'Failed to install ' + appName,
-          message: err,
-          color: 'primary',
-          duration: 2000
-        });
-        toast.present();
-    }
-
-    downloadDapp(dapp) {
-        console.log(dapp, 'App download starting...');
+    downloadDapp(dApp) {
+        console.log('App download starting...' + dApp);
 
         return new Promise((resolve, reject) => {
             // Download EPK file as blob
-            this.http.get('https://dapp-store.elastos.org/apps/' + dapp._id + '/download', {
+            this.http.get('https://dapp-store.elastos.org/apps/' + dApp._id + '/download', {
                 responseType: 'arraybuffer'} ).subscribe(async response => {
                 console.log('Downloaded', response);
                 let blob = new Blob([response], { type: 'application/octet-stream' });
@@ -255,36 +244,6 @@ export class AppmanagerService {
                 reject(err);
             });
         });
-    }
-
-    installToast(msg: string = ''): void {
-        this.toastCtrl.create({
-            mode: 'ios',
-            message: msg,
-            color: 'success',
-            duration: 4000,
-            position: 'top'
-        }).then(toast => toast.present());
-    }
-
-    uninstallToast(msg: string = ''): void {
-        this.toastCtrl.create({
-            mode: 'ios',
-            message: msg,
-            color: 'danger',
-            duration: 4000,
-            position: 'top'
-        }).then(toast => toast.present());
-    }
-
-    appInstalled(id: string) {
-        let msg = "'" + id + "' " + this.translate.instant('installed');
-        this.installToast(msg);
-    }
-
-    appUninstalled(id: string) {
-        let msg = "'" + id + "' " + this.translate.instant('uninstalled');
-        this.uninstallToast(msg);
     }
 
     ////////////////////////////// Fetch Installed Apps //////////////////////////////
@@ -464,6 +423,38 @@ export class AppmanagerService {
 
     close(id: string) {
         appManager.closeApp(id);
+    }
+
+     ////////////////////////////// Alerts //////////////////////////////
+
+    installToast(msg: string = ''): void {
+        this.toastCtrl.create({
+            mode: 'ios',
+            message: msg,
+            color: 'success',
+            duration: 4000,
+            position: 'top'
+        }).then(toast => toast.present());
+    }
+
+    uninstallToast(msg: string = ''): void {
+        this.toastCtrl.create({
+            mode: 'ios',
+            message: msg,
+            color: 'danger',
+            duration: 4000,
+            position: 'top'
+        }).then(toast => toast.present());
+    }
+
+    appInstalled(id: string) {
+        let msg = "'" + id + "' " + this.translate.instant('installed');
+        this.installToast(msg);
+    }
+
+    appUninstalled(id: string) {
+        let msg = "'" + id + "' " + this.translate.instant('uninstalled');
+        this.uninstallToast(msg);
     }
 
     /*****************************TO DO*********************************/
