@@ -7,7 +7,6 @@ import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { DappStoreApp, Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
-import { store } from '@angular/core/src/render3';
 
 declare let appManager: AppManagerPlugin.AppManager;
 let managerService = null;
@@ -35,6 +34,8 @@ export class AppmanagerService {
     public browsedApps: Dapp[] = [];
 
     public appList: string[] = [];
+
+    public installing = false;
 
     public runningList: any = [];
     public lastList: any = [];
@@ -91,7 +92,7 @@ export class AppmanagerService {
             case 'app':
                 console.log('App intent recieved', ret);
                 this.handledIntentId = ret.intentId;
-                this.findApp(ret.params.app);
+                this.findAppFromIntent(ret.params.app);
                 // this.intentInstall(ret.params.app);
         }
     }
@@ -155,9 +156,40 @@ export class AppmanagerService {
         });
     }
 
-    findApp(dapp: DappStoreApp) {
-        console.log('From app store', + dapp);
-        let targetApp: Dapp = this.installedApps.find(app => app.id === dapp.packageName);
+    // Check if app recieved from intent is installed or needs updating before starting app
+    findAppFromIntent(dapp: DappStoreApp) {
+        this.zone.run(() => {
+            console.log('From intent', + dapp);
+            this.installing = true;
+            let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === dapp.packageName);
+            if (targetApp) {
+                this.http.get<any>('https://dapp-store.elastos.org/apps/' + targetApp.id + '/manifest').subscribe((storeApp: any) => {
+                    console.log('Got app!', storeApp);
+                    if (storeApp.version === targetApp.version) {
+                        console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
+                        this.installing = false;
+                        appManager.start(targetApp.id);
+                    } else {
+                        console.log(
+                            'Update available for', storeApp.id +
+                            ' Old Version:' + targetApp.version +
+                            ' New version:' + storeApp.version
+                        );
+                        this.intentInstall(dapp);
+                    }
+                });
+            } else {
+                console.log(dapp.packageName + ' is not installed');
+                this.intentInstall(dapp);
+            }
+        });
+    }
+
+    // Check if app clicked from browser is installed or needs updating before starting app
+    // Waiting on Ben to provide id ex: "5e19e87a9c3b5c723847886d" from store server before proceeding
+    findAppFromBrowser(dapp: Dapp) {
+        console.log('From browser' + dapp);
+        let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === dapp.id);
         if (targetApp) {
             this.http.get<any>('https://dapp-store.elastos.org/apps/' + targetApp.id + '/manifest').subscribe((storeApp: any) => {
                 console.log('Got app!', storeApp);
@@ -174,7 +206,7 @@ export class AppmanagerService {
                 }
             });
         } else {
-            console.log(dapp.packageName + ' is not installed');
+            console.log(dapp.id + ' is not installed');
             this.intentInstall(dapp);
         }
     }
@@ -194,9 +226,12 @@ export class AppmanagerService {
         appManager.install(
             epk, true,
             (ret) => {
+                this.installing = false;
+                appManager.start(dApp.packageName);
                 console.log('Success', ret);
             },
             (err) => {
+                this.installing = false;
                 console.log('Error', err);
             }
         );

@@ -14,6 +14,8 @@
       </ion-button>
       <span class="point" *ngIf="appManager.runningList.length > 0"></span>
     </ion-buttons>
+    
+    <ion-progress-bar *ngIf="appManager.installing" type="indeterminate"></ion-progress-bar>
 
    <!--    <ion-button fill="clear" (click)="openScan()">
         <ion-icon slot="icon-only" name="scan"> </ion-icon>
@@ -71,14 +73,14 @@
         <ion-col size="3" class="section-btn" padding><p> View All</p></ion-col>
       </ion-row>
 
-      <div *ngIf="section === 'Browsing History'">
+      <div *ngIf="section === 'Browsed'">
         <ion-grid no-padding>
           <ion-row *ngFor="let app of appManager.browsedApps">
-            <ion-col size="2.25" size-lg="2.25" class="img-container" (click)="startApp(app.id)">
+            <ion-col size="2.25" size-lg="2.25" class="img-container" (click)="findApp(app)">
             <img [src]="appManager.sanitize(app.icons[0].src)"/>
             </ion-col>
 
-            <ion-col size="8" size-xs="8" class="dapp-content" (click)="startApp(app.id)">
+            <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app)">
               <ion-label>
                 <h2>{{ app.name }}</h2>
                 <p>{{ app.description.slice(0,70) }}...</p>
@@ -92,7 +94,7 @@
         </ion-grid>
       </div>
 
-      <div *ngIf="section === 'Bookmarked Apps'">
+      <div *ngIf="section === 'Installed'">
         <ion-grid no-padding>
           <ion-row *ngFor="let app of appManager.installedApps">
             <ion-col size="2.25" size-lg="2.25" class="img-container" (click)="startApp(app.id)">
@@ -113,7 +115,7 @@
         </ion-grid>
       </div>
 
-      <div *ngIf="section === 'Favorite Apps'">
+      <div *ngIf="section === 'Bookmarked'">
         <ion-grid no-padding>
           <ion-row *ngFor="let app of getFavApps()">
 

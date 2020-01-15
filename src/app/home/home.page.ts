@@ -18,9 +18,9 @@ export class HomePage {
   public noFavApps = false;
   public installedApps: Dapp[] = [];
   public sections = [
-    'Browsing History',
-    'Bookmarked Apps',
-    'Favorite Apps',
+    'Browsed',
+    'Installed',
+    'Bookmarked',
     'Contacts',
   ];
 
@@ -101,6 +101,10 @@ export class HomePage {
       duration: 2000
     });
     toast.present();
+  }
+
+  findApp(app: Dapp) {
+    this.appManager.findAppFromBrowser(app);
   }
 
   startApp(id) {
