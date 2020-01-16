@@ -103,8 +103,8 @@ export class HomePage {
     toast.present();
   }
 
-  findApp(app: Dapp) {
-    this.appManager.findAppFromBrowser(app);
+  findApp(id: string) {
+    this.appManager.findApp(id);
   }
 
   startApp(id) {

@@ -15,8 +15,6 @@ import { Dapp } from './models/dapps.model';
 })
 export class AppComponent {
 
-    nativeApps: Dapp[] = [];
-
     constructor(
         private platform: Platform,
         private statusBar: StatusBar,

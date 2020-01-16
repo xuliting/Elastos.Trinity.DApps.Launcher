@@ -27,7 +27,7 @@ enum MessageType {
 })
 export class AppmanagerService {
 
-    /* Declared */
+    /* Apps list */
     public appInfos: AppManagerPlugin.AppInfo[] = [];
     public installedApps: Dapp[] = [];
     public nativeApps: Dapp[] = [];
@@ -35,6 +35,7 @@ export class AppmanagerService {
 
     public appList: string[] = [];
 
+    /* For install progress bar */
     public installing = false;
 
     public runningList: any = [];
@@ -65,6 +66,10 @@ export class AppmanagerService {
     }
 
     init() {
+        this.getAppInfos();
+        this.getRunningList();
+        this.getLastList();
+
         console.log('AppmanagerService init');
         appManager.setListener(this.onReceive);
 
@@ -74,12 +79,6 @@ export class AppmanagerService {
               this.onReceiveIntent
             );
         }
-
-        // this.fakeIntentInstall();
-
-        this.getAppInfos();
-        this.getRunningList();
-        this.getLastList();
         // this.getLanguage();
         // this.getRuntimeVersion();
     }
@@ -92,8 +91,7 @@ export class AppmanagerService {
             case 'app':
                 console.log('App intent recieved', ret);
                 this.handledIntentId = ret.intentId;
-                this.findAppFromIntent(ret.params.app);
-                // this.intentInstall(ret.params.app);
+                this.findApp(ret.params.id);
         }
     }
 
@@ -136,149 +134,6 @@ export class AppmanagerService {
                 managerService.install(params.uri, params.dev);
                 break;
         }
-    }
-
-    ////////////////////////////// App install //////////////////////////////
-
-    // Only used to fetch app id ex: "5e19e87a9c3b5c723847886d" if intent doesn't provide it
-    fetchDappId() {
-        console.log("Fetching DApps");
-        let dapps: DappStoreApp[] = [];
-        this.http.get<[]>('https://dapp-store.elastos.org/apps/list').subscribe((response: DappStoreApp[]) => {
-            dapps = dapps.concat(response);
-            console.log("DApps from store server", dapps);
-            dapps.map(dapp => {
-                if (dapp.packageName === "anders.contentcommons") {
-                    console.log(dapp, 'App matches');
-                    this.intentInstall(dapp);
-                }
-            });
-        });
-    }
-
-    // Check if app recieved from intent is installed or needs updating before starting app
-    findAppFromIntent(dapp: DappStoreApp) {
-        this.zone.run(() => {
-            console.log('From intent', + dapp);
-            this.installing = true;
-            let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === dapp.packageName);
-            if (targetApp) {
-                this.http.get<any>('https://dapp-store.elastos.org/apps/' + targetApp.id + '/manifest').subscribe((storeApp: any) => {
-                    console.log('Got app!', storeApp);
-                    if (storeApp.version === targetApp.version) {
-                        console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
-                        this.installing = false;
-                        appManager.start(targetApp.id);
-                    } else {
-                        console.log(
-                            'Update available for', storeApp.id +
-                            ' Old Version:' + targetApp.version +
-                            ' New version:' + storeApp.version
-                        );
-                        this.intentInstall(dapp);
-                    }
-                });
-            } else {
-                console.log(dapp.packageName + ' is not installed');
-                this.intentInstall(dapp);
-            }
-        });
-    }
-
-    // Check if app clicked from browser is installed or needs updating before starting app
-    // Waiting on Ben to provide id ex: "5e19e87a9c3b5c723847886d" from store server before proceeding
-    findAppFromBrowser(dapp: Dapp) {
-        console.log('From browser' + dapp);
-        let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === dapp.id);
-        if (targetApp) {
-            this.http.get<any>('https://dapp-store.elastos.org/apps/' + targetApp.id + '/manifest').subscribe((storeApp: any) => {
-                console.log('Got app!', storeApp);
-                if (storeApp.version === targetApp.version) {
-                    console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
-                    appManager.start(targetApp.id);
-                } else {
-                    console.log(
-                        'Update available for', storeApp.id +
-                        ' Old Version:' + targetApp.version +
-                        ' New version:' + storeApp.version
-                    );
-                    this.intentInstall(dapp);
-                }
-            });
-        } else {
-            console.log(dapp.id + ' is not installed');
-            this.intentInstall(dapp);
-        }
-    }
-
-    // Test Install
-    async intentInstall(dApp) {
-        console.log('Downloading...' + dApp);
-        const epkPath = await this.downloadDapp(dApp);
-        console.log('EPK file downloaded and saved to ' + epkPath);
-        this.installApp(epkPath, dApp);
-    }
-
-    installApp(epk, dApp) {
-        console.log('Installing...' + dApp.packageName);
-
-        /* BUG TRACED HERE: After inquiring app for install, appManager installs the WRONG APP */
-        appManager.install(
-            epk, true,
-            (ret) => {
-                this.installing = false;
-                appManager.start(dApp.packageName);
-                console.log('Success', ret);
-            },
-            (err) => {
-                this.installing = false;
-                console.log('Error', err);
-            }
-        );
-    }
-
-    downloadDapp(dApp) {
-        console.log('App download starting...' + dApp);
-
-        return new Promise((resolve, reject) => {
-            // Download EPK file as blob
-            this.http.get('https://dapp-store.elastos.org/apps/' + dApp._id + '/download', {
-                responseType: 'arraybuffer'} ).subscribe(async response => {
-                console.log('Downloaded', response);
-                let blob = new Blob([response], { type: 'application/octet-stream' });
-                console.log('Blob', blob);
-
-                // Save to a temporary location
-                let filePath = await this._savedDownloadedBlobToTempLocation(blob);
-
-                resolve(filePath);
-            });
-        });
-    }
-
-    _savedDownloadedBlobToTempLocation(blob) {
-        let fileName = 'appinstall.epk';
-
-        return new Promise((resolve, reject) => {
-            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dirEntry: CordovaFilePlugin.DirectoryEntry) => {
-                dirEntry.getFile(fileName, { create: true, exclusive: false }, (fileEntry) => {
-                    console.log('Downloaded file entry', fileEntry);
-                    fileEntry.createWriter((fileWriter) => {
-                    fileWriter.write(blob);
-                    resolve('trinity:///data/' + fileName);
-                    }, (err) => {
-                    console.error('createWriter ERROR - ' + JSON.stringify(err));
-                    reject(err);
-                    });
-                }, (err) => {
-                    console.error('getFile ERROR - ' + JSON.stringify(err));
-                    reject(err);
-                });
-            }, (err) => {
-                console.error('resolveLocalFileSystemURL ERROR - ' + JSON.stringify(err));
-                reject(err);
-            });
-        });
     }
 
     ////////////////////////////// Fetch Installed Apps //////////////////////////////
@@ -391,6 +246,123 @@ export class AppmanagerService {
         appManager.getLastList(list => this.lastList = list);
     }
 
+    ////////////////////////////// App install //////////////////////////////
+
+    // Only used to fetch app id ex: "5e19e87a9c3b5c723847886d" if intent doesn't provide it
+    fetchDappId() {
+        console.log("Fetching DApps");
+        let dapps: DappStoreApp[] = [];
+        this.http.get<[]>('https://dapp-store.elastos.org/apps/list').subscribe((response: DappStoreApp[]) => {
+            dapps = dapps.concat(response);
+            console.log("DApps from store server", dapps);
+            dapps.map(dapp => {
+                if (dapp.packageName === "anders.contentcommons") {
+                    console.log(dapp, 'App matches');
+                    this.intentInstall(dapp);
+                }
+            });
+        });
+    }
+
+    // Check if app recieved from intent is installed or needs updating before starting app
+    findApp(id: string) {
+        this.zone.run(() => {
+            console.log('From intent', + id);
+            this.installing = true;
+            let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
+            if (targetApp) {
+                this.http.get<any>('https://dapp-store.elastos.org/apps/' + id + '/manifest').subscribe((storeApp: any) => {
+                    console.log('Got app!', storeApp);
+                    if (storeApp.version === targetApp.version) {
+                        console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
+                        this.installing = false;
+                        appManager.start(id);
+                    } else {
+                        console.log(
+                            'Update available for', id +
+                            ' Old Version:' + targetApp.version +
+                            ' New version:' + storeApp.version
+                        );
+                        this.intentInstall(id);
+                    }
+                });
+            } else {
+                console.log(id + ' is not installed');
+                this.intentInstall(id);
+            }
+        });
+    }
+
+    // Test Install
+    async intentInstall(id) {
+        console.log('Downloading...' + id);
+        const epkPath = await this.downloadDapp(id);
+        console.log('EPK file downloaded and saved to ' + epkPath);
+        this.installApp(epkPath, id);
+    }
+
+    installApp(epk, id) {
+        console.log('Installing...' + id);
+
+        /* BUG TRACED HERE: After inquiring app for install, appManager installs the WRONG APP */
+        appManager.install(
+            epk, true,
+            (ret) => {
+                this.installing = false;
+                appManager.start(id);
+                console.log('Success', ret);
+            },
+            (err) => {
+                this.installing = false;
+                console.log('Error', err);
+            }
+        );
+    }
+
+    downloadDapp(id) {
+        console.log('App download starting...' + id);
+
+        return new Promise((resolve, reject) => {
+            // Download EPK file as blob
+            this.http.get('https://dapp-store.elastos.org/apps/' + id + '/download', {
+                responseType: 'arraybuffer'} ).subscribe(async response => {
+                console.log('Downloaded', response);
+                let blob = new Blob([response], { type: 'application/octet-stream' });
+                console.log('Blob', blob);
+
+                // Save to a temporary location
+                let filePath = await this._savedDownloadedBlobToTempLocation(blob);
+
+                resolve(filePath);
+            });
+        });
+    }
+
+    _savedDownloadedBlobToTempLocation(blob) {
+        let fileName = 'appinstall.epk';
+
+        return new Promise((resolve, reject) => {
+            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dirEntry: CordovaFilePlugin.DirectoryEntry) => {
+                dirEntry.getFile(fileName, { create: true, exclusive: false }, (fileEntry) => {
+                    console.log('Downloaded file entry', fileEntry);
+                    fileEntry.createWriter((fileWriter) => {
+                    fileWriter.write(blob);
+                    resolve('trinity:///data/' + fileName);
+                    }, (err) => {
+                    console.error('createWriter ERROR - ' + JSON.stringify(err));
+                    reject(err);
+                    });
+                }, (err) => {
+                    console.error('getFile ERROR - ' + JSON.stringify(err));
+                    reject(err);
+                });
+            }, (err) => {
+                console.error('resolveLocalFileSystemURL ERROR - ' + JSON.stringify(err));
+                reject(err);
+            });
+        });
+    }
+
     ////////////////////////////// Uninstall last bookmarked app //////////////////////////////
     uninstallApp(): Promise<string> {
         let bookmarkedApps: Dapp[] = [];
@@ -404,7 +376,7 @@ export class AppmanagerService {
         console.log('Candidates for uninstall', bookmarkedApps, bookmarkedApps.length);
 
         return new Promise((resolve, reject) => {
-            if (bookmarkedApps.length > 4) {
+            if (bookmarkedApps.length > 10) {
                 console.log('Uninstalling..', bookmarkedApps[bookmarkedApps.length - 1]);
                 appManager.unInstall(
                     bookmarkedApps[bookmarkedApps.length - 1].id,
@@ -421,12 +393,8 @@ export class AppmanagerService {
     ////////////////////////////// Browsing history  //////////////////////////////
     addToHistory(paramsId) {
         console.log('Adding to browsing history', paramsId);
-        this.installedApps.map(installedApp => {
-            if (installedApp.id === paramsId) {
-                this.browsedApps.unshift(installedApp);
-            }
-        });
-
+        let targetApp: Dapp = this.installedApps.find(app => app.id === paramsId);
+        this.browsedApps.unshift(targetApp);
         this.removeDuplicates(this.browsedApps);
     }
 
