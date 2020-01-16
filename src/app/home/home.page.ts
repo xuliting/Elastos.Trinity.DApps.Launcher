@@ -18,8 +18,9 @@ export class HomePage {
   public noFavApps = false;
   public installedApps: Dapp[] = [];
   public sections = [
-    'Browsed',
+    'Browsing History',
     'Installed',
+    'Bookmarks',
     'Favorites',
     'Contacts',
   ];
@@ -33,14 +34,24 @@ export class HomePage {
   ) {
   }
 
-  getFavApps() {
-    let favApps: Dapp[] = [];
+  getFavorites() {
+    let favorites: Dapp[] = [];
     this.appManager.installedApps.map(app => {
       if (app.isFav) {
-        favApps.push(app);
+        favorites.push(app);
       }
     });
-    return favApps;
+    return favorites;
+  }
+
+  getBookmarks() {
+    let bookmarks: Dapp[] = [];
+    this.appManager.installedApps.map(app => {
+      if (app.isBookmarked) {
+        bookmarks.push(app);
+      }
+    });
+    return bookmarks;
   }
 
   favApp(app: Dapp) {
@@ -53,13 +64,6 @@ export class HomePage {
           favApps = favApps.concat(installedApp.id);
           this.appAddedToFav(installedApp.name);
         }
-
-        /* this.appManager.browsedApps.map(browsedApp => {
-          if (browsedApp.id === installedApp.id) {
-            browsedApp.isFav = true;
-          }
-        }); */
-
       });
       this.storage.setFavApps(favApps);
     }

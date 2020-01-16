@@ -35,5 +35,6 @@ export class Dapp {
     public category: string,
     public urls: any[],
     public isFav: boolean,
+    public isBookmarked: boolean
   ) {}
 }

@@ -33,6 +33,7 @@ export class AppmanagerService {
     public installedApps: Dapp[] = [];
     public nativeApps: Dapp[] = [];
     public browsedApps: Dapp[] = [];
+    public bookmarkedApps: Dapp[] = [];
 
     public appList: string[] = [];
 
@@ -119,6 +120,7 @@ export class AppmanagerService {
                         break;
                     case 'closed':
                         managerService.getRunningList();
+                        managerService.getBookmarks(params.id);
                         break;
                     case 'unInstalled':
                         managerService.appUninstalled(params.id);
@@ -156,6 +158,15 @@ export class AppmanagerService {
         });
     }
 
+    getBookmarkedApps(): Promise<string[]> {
+        return new Promise((resolve, reject) => {
+            this.storage.getBookmarkedApps().then(apps => {
+                console.log('Fetched bookmarked apps', apps);
+                resolve(apps || []);
+            });
+        });
+    }
+
     getBrowsedApps(): Promise<Dapp[]> {
         return new Promise((resolve, reject) => {
             this.storage.getBrowsedApps().then(apps => {
@@ -168,6 +179,7 @@ export class AppmanagerService {
     // Get installed app info
     async getAppInfos() {
         let favorites: string[] = await this.getFavApps();
+        let bookmarks: string[] = await this.getBookmarkedApps();
         let history: Dapp[] = await this.getBrowsedApps();
 
         this.installedApps = [];
@@ -191,6 +203,7 @@ export class AppmanagerService {
                     category: app.category,
                     urls: app.urls,
                     isFav: favorites.includes(app.id) ? true : false,
+                    isBookmarked: bookmarks.includes(app.id) ? true : false
                 });
 
                 if (
@@ -213,6 +226,7 @@ export class AppmanagerService {
                         category: app.category,
                         urls: app.urls,
                         isFav: false,
+                        isBookmarked: false,
                     });
                 } else {
                     this.installedApps.unshift({
@@ -228,6 +242,7 @@ export class AppmanagerService {
                         category: app.category,
                         urls: app.urls,
                         isFav: favorites.includes(app.id) ? true : false,
+                        isBookmarked: bookmarks.includes(app.id) ? true : false
                     });
                 }
             });
@@ -263,12 +278,12 @@ export class AppmanagerService {
             this.storeFetched = false;
 
             // TMP BPI TEST
-            let fakeProgressValue = 0;
+          /*   let fakeProgressValue = 0;
             appManager.setTitleBarProgress(0);
             let fakeProgressTimer = setInterval(()=>{
                 fakeProgressValue += 4;
                 appManager.setTitleBarProgress(fakeProgressValue);
-            }, 50);
+            }, 50); */
             
             let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
             if (targetApp) {
@@ -276,8 +291,8 @@ export class AppmanagerService {
                     console.log('Got app!', storeApp);
 
                     // TMP BPI TEST
-                    clearInterval(fakeProgressTimer);
-                    appManager.hideTitleBarProgress();
+                    /* clearInterval(fakeProgressTimer);
+                    appManager.hideTitleBarProgress(); */
                     
                     if (storeApp.version === targetApp.version) {
                         console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
@@ -379,31 +394,90 @@ export class AppmanagerService {
         });
     }
 
-    ////////////////////////////// Uninstall last bookmarked app //////////////////////////////
+    ////////////////////////////// Uninstall last installed app //////////////////////////////
     uninstallApp(): Promise<string> {
-        let bookmarkedApps: Dapp[] = [];
+        let uninstallApps: Dapp[] = [];
         this.installedApps.map(app => {
             if (app.isFav) {
                 return;
             } else {
-                bookmarkedApps.push(app);
+                uninstallApps.push(app);
             }
         });
-        console.log('Candidates for uninstall', bookmarkedApps, bookmarkedApps.length);
+        console.log('Candidates for uninstall', uninstallApps, uninstallApps.length);
 
         return new Promise((resolve, reject) => {
-            if (bookmarkedApps.length > 10) {
-                console.log('Uninstalling..', bookmarkedApps[bookmarkedApps.length - 1]);
+            if (uninstallApps.length > 10) {
+                console.log('Uninstalling..', uninstallApps[uninstallApps.length - 1]);
                 appManager.unInstall(
-                    bookmarkedApps[bookmarkedApps.length - 1].id,
+                    uninstallApps[uninstallApps.length - 1].id,
                     (res) => {
-                        console.log('Uninstall Success', bookmarkedApps[bookmarkedApps.length - 1].id);
-                        this.installedApps.filter(app => app.id === bookmarkedApps[bookmarkedApps.length - 1].id);
-                        resolve(bookmarkedApps[bookmarkedApps.length - 1].id);
+                        console.log('Uninstall Success', uninstallApps[uninstallApps.length - 1].id);
+                        this.installedApps.filter(app => app.id === uninstallApps[uninstallApps.length - 1].id);
+                        resolve(uninstallApps[uninstallApps.length - 1].id);
                     },
                     (err) => console.log(err));
             }
         });
+    }
+
+    ////////////////////////////// Bookmarks //////////////////////////////
+    /* getBookmarks(id) {
+        console.log('Bookmarks', this.bookmarkedApps);
+        let targetApp = this.bookmarkedApps.find(app => app.id === id);
+        let appInfo = this.allApps.find(app => app.id === id);
+        if(!targetApp) {
+            this.askBookmark(appInfo);
+        }
+    } */
+
+    getBookmarks(id) {
+        this.installedApps.map(app => {
+            if(app.id === id && app.isBookmarked === false) {
+                this.askBookmark(app);
+            }
+        })
+    }
+
+
+    async askBookmark(app) {
+        const alert = await this.alertController.create({
+          header: 'Do you want add ' + app.name + ' to your bookmarks?',
+          mode: 'ios',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+            }, {
+              text: 'Okay',
+              handler: () => {
+                this.addBookmark(app);
+              }
+            }
+          ]
+        });
+    
+        await alert.present();
+    }
+/* 
+    addBookmark(id) {
+        let targetApp: Dapp = this.allApps.find(app => app.id === id);
+        this.bookmarkedApps.unshift(targetApp);
+    } */
+
+    addBookmark(app) {
+        let bookmarks: string[] = [];
+        this.installedApps.map(_app => {
+            if(_app.id === app.id) {
+                _app.isBookmarked = true;
+            }
+
+            if(_app.isBookmarked === true) {
+                bookmarks.push(app.id);
+            }
+        });
+        this.storage.setBookmarkedApps(bookmarks);
     }
 
     ////////////////////////////// Browsing history  //////////////////////////////
@@ -444,7 +518,7 @@ export class AppmanagerService {
         appManager.closeApp(id);
     }
 
-     ////////////////////////////// Alerts //////////////////////////////
+    ////////////////////////////// Alerts //////////////////////////////
 
     installToast(msg: string = ''): void {
         this.toastCtrl.create({
