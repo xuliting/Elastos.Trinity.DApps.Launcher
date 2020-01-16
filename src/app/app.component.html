@@ -4,7 +4,7 @@
       <ion-header no-border>
         <ion-toolbar>
           <ion-title>
-            elastOS
+            elastOS Browser
           </ion-title>
         </ion-toolbar>
       </ion-header>
@@ -13,14 +13,21 @@
         <ion-list padding-start>
           <ion-menu-toggle>
             <ion-item *ngFor="let app of appManager.nativeApps">
-              <ion-label>{{ app.name }}</ion-label>
+              <ion-grid>
+                <ion-row (click)="findApp(app.id)">
+                  <ion-col size="2.75" class="img-container">
+                    <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                  </ion-col>
+        
+                  <ion-col size="9.25" class="dapp-content">
+                    <ion-label>
+                      <h2>{{ app.name }}</h2>
+                     <!--  <p>{{ app.description.slice(0,70) }}...</p> -->
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
             </ion-item>
-          </ion-menu-toggle>
-
-          <ion-menu-toggle>
-            <ion-button (click)="appInstall()">
-              <ion-label>Test App Install</ion-label>
-            </ion-button>
           </ion-menu-toggle>
         </ion-list>
       </ion-content>

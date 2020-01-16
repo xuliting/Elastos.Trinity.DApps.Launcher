@@ -76,7 +76,8 @@ ion-card {
 
     .img-container {
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
+      align-items: center;
 
       img {
         border-radius: 15px !important;
@@ -89,6 +90,7 @@ ion-card {
 
     .dapp-content {
       display: flex;
+      justify-content: flex-start;
       align-items: center;
 
         h2 {

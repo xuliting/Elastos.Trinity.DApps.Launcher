@@ -4,9 +4,6 @@
 
 <ion-content>
 	<ion-list>
-		<ion-button [routerLink]="['/home']">
-			<ion-icon name="arrow-back"></ion-icon>
-		</ion-button>
 		<ion-item *ngFor="let item of infos" detail [routerLink]="[item.route]" routerDirection="forward">
 			<ion-icon name="{{item.icon}}"></ion-icon>
 			<ion-label>{{item.label | translate}}</ion-label>

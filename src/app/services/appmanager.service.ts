@@ -29,6 +29,7 @@ export class AppmanagerService {
 
     /* Apps list */
     public appInfos: AppManagerPlugin.AppInfo[] = [];
+    public allApps: Dapp[] = [];
     public installedApps: Dapp[] = [];
     public nativeApps: Dapp[] = [];
     public browsedApps: Dapp[] = [];
@@ -37,6 +38,7 @@ export class AppmanagerService {
 
     /* For install progress bar */
     public installing = false;
+    private storeFetched = false;
 
     public runningList: any = [];
     public lastList: any = [];
@@ -162,7 +164,6 @@ export class AppmanagerService {
         let favorites: string[] = await this.getFavApps();
         let history: Dapp[] = await this.getBrowsedApps();
 
-        let apps: Dapp[] = [];
         this.installedApps = [];
         this.nativeApps = [];
 
@@ -171,7 +172,7 @@ export class AppmanagerService {
             this.appInfos = Object.values(info);
             this.appInfos.map(app => {
 
-                apps.push({
+                this.allApps.push({
                     id: app.id,
                     version: app.version,
                     name: app.name,
@@ -183,7 +184,7 @@ export class AppmanagerService {
                     authorEmail: app.authorEmail,
                     category: app.category,
                     urls: app.urls,
-                    isFav: false,
+                    isFav: favorites.includes(app.id) ? true : false,
                 });
 
                 if (
@@ -248,27 +249,12 @@ export class AppmanagerService {
 
     ////////////////////////////// App install //////////////////////////////
 
-    // Only used to fetch app id ex: "5e19e87a9c3b5c723847886d" if intent doesn't provide it
-    fetchDappId() {
-        console.log("Fetching DApps");
-        let dapps: DappStoreApp[] = [];
-        this.http.get<[]>('https://dapp-store.elastos.org/apps/list').subscribe((response: DappStoreApp[]) => {
-            dapps = dapps.concat(response);
-            console.log("DApps from store server", dapps);
-            dapps.map(dapp => {
-                if (dapp.packageName === "anders.contentcommons") {
-                    console.log(dapp, 'App matches');
-                    this.intentInstall(dapp);
-                }
-            });
-        });
-    }
-
     // Check if app recieved from intent is installed or needs updating before starting app
     findApp(id: string) {
         this.zone.run(() => {
             console.log('From intent', + id);
             this.installing = true;
+            this.storeFetched = false;
             let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
             if (targetApp) {
                 this.http.get<any>('https://dapp-store.elastos.org/apps/' + id + '/manifest').subscribe((storeApp: any) => {
@@ -276,6 +262,7 @@ export class AppmanagerService {
                     if (storeApp.version === targetApp.version) {
                         console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
                         this.installing = false;
+                        this.storeFetched = true;
                         appManager.start(id);
                     } else {
                         console.log(
@@ -290,6 +277,13 @@ export class AppmanagerService {
                 console.log(id + ' is not installed');
                 this.intentInstall(id);
             }
+
+            setTimeout(() => {
+                if (!this.storeFetched) {
+                    console.log('Store server failed to respond');
+                    this.installing = false;
+                }
+            }, 10000);
         });
     }
 
@@ -309,11 +303,13 @@ export class AppmanagerService {
             epk, true,
             (ret) => {
                 this.installing = false;
+                this.storeFetched = true;
                 appManager.start(id);
                 console.log('Success', ret);
             },
             (err) => {
                 this.installing = false;
+                this.storeFetched = true;
                 console.log('Error', err);
             }
         );
@@ -393,7 +389,7 @@ export class AppmanagerService {
     ////////////////////////////// Browsing history  //////////////////////////////
     addToHistory(paramsId) {
         console.log('Adding to browsing history', paramsId);
-        let targetApp: Dapp = this.installedApps.find(app => app.id === paramsId);
+        let targetApp: Dapp = this.allApps.find(app => app.id === paramsId);
         this.browsedApps.unshift(targetApp);
         this.removeDuplicates(this.browsedApps);
     }

@@ -11,7 +11,6 @@ import { Dapp } from './models/dapps.model';
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
-   // styleUrls: ['./app.scss'],
 })
 export class AppComponent {
 
@@ -43,7 +42,18 @@ export class AppComponent {
         return await splash.present();
     }
 
-    appInstall() {
-        this.appManager.fetchDappId();
+    startApp(id) {
+        this.appManager.start(id);
+    }
+
+    findApp(id: string) {
+        if (this.appManager.installing) {
+          return;
+        } else if (id === 'org.elastos.trinity.blockchain') {
+            this.appManager.start(id);
+        } else {
+          console.log('Finding...', id);
+          this.appManager.findApp(id);
+        }
     }
 }

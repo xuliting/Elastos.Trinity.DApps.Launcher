@@ -20,7 +20,7 @@ export class HomePage {
   public sections = [
     'Browsed',
     'Installed',
-    'Bookmarked',
+    'Favorites',
     'Contacts',
   ];
 
@@ -32,17 +32,6 @@ export class HomePage {
     public storage: StorageService,
   ) {
   }
-
-  /* ionViewWillEnter() {
-    this.installedApps = this.appManager.installedApps.filter((app) =>
-      app.id !== 'org.elastos.trinity.dapp.installer' &&
-      app.id !== 'org.elastos.trinity.dapp.did' &&
-      app.id !== 'org.elastos.trinity.dapp.qrcodescanner' &&
-      app.id !== 'org.elastos.trinity.dapp.wallet' &&
-      app.id !== 'org.elastos.trinity.blockchain'
-    );
-    console.log('Apps from home', this.installedApps);
-  } */
 
   getFavApps() {
     let favApps: Dapp[] = [];
@@ -104,7 +93,14 @@ export class HomePage {
   }
 
   findApp(id: string) {
-    this.appManager.findApp(id);
+    if (this.appManager.installing) {
+      return;
+    } else if (id === 'org.elastos.trinity.blockchain') {
+        this.appManager.start(id);
+    } else {
+      console.log('Finding...', id);
+      this.appManager.findApp(id);
+    }
   }
 
   startApp(id) {
