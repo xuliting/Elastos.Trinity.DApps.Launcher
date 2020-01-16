@@ -102,7 +102,13 @@ export class AppmanagerService {
 
         let params: any = ret.message;
         if (typeof (params) === 'string') {
-            params = JSON.parse(params);
+            try {
+                params = JSON.parse(params);
+            }
+            catch (e) {
+                // JSON exception? Not JSON format?
+                console.log("Params are not JSON format: ", params);
+            }
         }
         console.log(params);
         switch (ret.type) {
@@ -145,7 +151,7 @@ export class AppmanagerService {
         return new Promise((resolve, reject) => {
             this.storage.getFavApps().then(apps => {
                 console.log('Fetched favorite apps', apps);
-                resolve(apps);
+                resolve(apps || []);
             });
         });
     }
@@ -154,7 +160,7 @@ export class AppmanagerService {
         return new Promise((resolve, reject) => {
             this.storage.getBrowsedApps().then(apps => {
                 console.log('Fetched browsing history', apps);
-                resolve(apps);
+                resolve(apps || []);
             });
         });
     }
@@ -255,10 +261,24 @@ export class AppmanagerService {
             console.log('From intent', + id);
             this.installing = true;
             this.storeFetched = false;
+
+            // TMP BPI TEST
+            let fakeProgressValue = 0;
+            appManager.setTitleBarProgress(0);
+            let fakeProgressTimer = setInterval(()=>{
+                fakeProgressValue += 4;
+                appManager.setTitleBarProgress(fakeProgressValue);
+            }, 50);
+            
             let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
             if (targetApp) {
                 this.http.get<any>('https://dapp-store.elastos.org/apps/' + id + '/manifest').subscribe((storeApp: any) => {
                     console.log('Got app!', storeApp);
+
+                    // TMP BPI TEST
+                    clearInterval(fakeProgressTimer);
+                    appManager.hideTitleBarProgress();
+                    
                     if (storeApp.version === targetApp.version) {
                         console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
                         this.installing = false;
