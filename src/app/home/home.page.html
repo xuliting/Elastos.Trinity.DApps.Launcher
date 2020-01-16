@@ -75,7 +75,7 @@
         <ion-col size="3" class="section-btn" padding><p> View All</p></ion-col>
       </ion-row>
 
-      <div *ngIf="section === 'Browsed'">
+      <div *ngIf="section === 'Browsing History'">
         <ion-grid no-padding>
           <ion-row *ngFor="let app of appManager.browsedApps">
             <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
