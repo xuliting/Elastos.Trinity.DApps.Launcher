@@ -6,6 +6,8 @@ import { RunningManagerComponent } from '../components/running-manager/running-m
 import { Dapp } from '../models/dapps.model';
 import { StorageService } from '../services/storage.service';
 
+declare let appManager: AppManagerPlugin.AppManager;
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -34,7 +36,8 @@ export class HomePage {
   ) {
   }
 
-  getFavorites() {
+  // Fetch favorite apps
+  getFavorites(): Dapp[] {
     let favorites: Dapp[] = [];
     this.appManager.installedApps.map(app => {
       if (app.isFav) {
@@ -44,7 +47,8 @@ export class HomePage {
     return favorites;
   }
 
-  getBookmarks() {
+  // Fetch bookmarked apps
+  getBookmarks(): Dapp[] {
     let bookmarks: Dapp[] = [];
     this.appManager.installedApps.map(app => {
       if (app.isBookmarked) {
@@ -54,32 +58,70 @@ export class HomePage {
     return bookmarks;
   }
 
+  // Favorites
   favApp(app: Dapp) {
-    if (!app.isFav) {
-      this.appRemovedFromFav(app);
+    if (app.isFav) {
+      return;
     } else {
-      let favApps: string[] = [];
-      this.appManager.installedApps.map((installedApp) => {
-        if (installedApp.isFav) {
-          favApps = favApps.concat(installedApp.id);
-          this.appAddedToFav(installedApp.name);
-        }
-      });
-      this.storage.setFavApps(favApps);
+      app.isFav = true;
+      this.appAddedToFav(app);
+      this.storeFavorites();
     }
-    this.uninstallApp();
   }
 
-  async uninstallApp() {
-    let appId: string = await this.appManager.uninstallApp();
-    this.installedApps = this.installedApps.filter(app => app.id !== appId);
-    console.log('Apps Remaining', this.installedApps);
+  removeFavorite(app: Dapp) {
+    app.isFav = false;
+    this.appRemovedFromFav(app);
+    this.storeFavorites();
+    this.appManager.uninstallApp();
   }
 
-  async appAddedToFav(dappName: string) {
+  storeFavorites() {
+    let favorites: string[] = [];
+    this.appManager.installedApps.map(dapp => {
+      if (dapp.isFav) {
+        favorites.push(dapp.id);
+      }
+    });
+
+    this.storage.setFavApps(favorites);
+  }
+
+  // Bookmarks
+  bookmarkApp(app: Dapp) {
+    if (app.isBookmarked) {
+      return;
+    } else {
+      app.isBookmarked = true;
+      this.appManager.storeBookmarks();
+    }
+  }
+
+  removeBookmark(app: Dapp) {
+    app.isBookmarked = false;
+    this.appManager.storeBookmarks();
+    this.appManager.uninstallApp();
+  }
+
+  // Check app if installed or needs updating before opening
+  findApp(id: string) {
+    console.log('Finding app');
+    if (this.appManager.installing) {
+      console.log('Installation in progress');
+      return;
+    } else if (id === 'org.elastos.trinity.blockchain' || id === 'org.elastos.trinity.dapp.dappstore1') {
+        this.appManager.start(id);
+    } else {
+      console.log('Finding...', id);
+      this.appManager.findApp(id);
+    }
+  }
+
+  // Alerts
+  async appAddedToFav(app: Dapp) {
     const toast = await this.toastCtrl.create({
       mode: 'ios',
-      message: dappName + ' added to favorites',
+      message: app.name + ' added to favorites',
       color: 'primary',
       duration: 2000
     });
@@ -96,19 +138,15 @@ export class HomePage {
     toast.present();
   }
 
-  findApp(id: string) {
-    if (this.appManager.installing) {
-      return;
-    } else if (id === 'org.elastos.trinity.blockchain') {
-        this.appManager.start(id);
-    } else {
-      console.log('Finding...', id);
-      this.appManager.findApp(id);
-    }
-  }
-
-  startApp(id) {
-    this.appManager.start(id);
+  async appIsNative(app: Dapp) {
+    const toast = await this.toastCtrl.create({
+      mode: 'ios',
+      header: app.name,
+      message: 'You cannot add a native application of elastOS to your favorites',
+      color: 'primary',
+      duration: 4000
+    });
+    toast.present();
   }
 
   popRunningManager(event: any) {
@@ -127,4 +165,46 @@ export class HomePage {
     popover.onDidDismiss().then(() => { this.popup = false; });
     return await popover.present();
   }
+
+  // Only used to manually uninstall apps for testing
+  removeApp(app: Dapp) {
+    console.log('Uninstalling app.. this manual uninstall is only used for testing');
+    this.appManager.removeApp(app);
+  }
 }
+
+/**
+   * Used to try and fav apps from browsing
+   * history whether they are installed or not.
+   * Currently fav mechanism only works for installed apps
+   **/
+
+  /* favApp(app: Dapp) {
+    console.log('Favoriting app..', app.id);
+    let targetApp: Dapp = this.appManager.allApps.find(dapp => dapp.id === app.id);
+
+    if (targetApp) {
+      console.log('Target app found', targetApp);
+      this.appManager.installedApps.map(dapp => {
+        if (dapp.id === app.id && !dapp.isFav) {
+          dapp.isFav = true;
+          console.log(dapp.id + ' added to favorites');
+          this.appAddedToFav(dapp);
+        }
+      });
+
+      this.appManager.nativeApps.map(dapp => {
+        if (dapp.id === app.id) {
+          console.log('This is a native app', dapp.id);
+          this.appIsNative(dapp);
+        }
+      });
+
+    } else {
+      console.log('App is not installed');
+      this.appManager.appPendingInstallBeforeFav = app;
+      this.appManager.intentInstall(app.id);
+    }
+
+    this.storeFavorites();
+  } */

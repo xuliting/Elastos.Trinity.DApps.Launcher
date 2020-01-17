@@ -47,26 +47,6 @@
 </ion-header>
 
 <ion-content no-margin no-padding>
-  
-  <!-- <div class="sidenav" padding-top>
-    <ion-grid>
-      <ion-row *ngFor="let row of appManager.rows" align-items-center>
-        <ion-col
-          size="3"
-          align-self:center
-          *ngFor="let id of row; let i = index"
-        >
-          <div class="app-layout" (click)="onClick(id)">
-            <img
-              [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)"
-              alt=""
-            />
-            <p>{{ appManager.appInfos[id].name }}</p>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div> -->
 
   <div id="home-bg" padding>
     <ion-card class="apps-card" *ngFor="let section of sections">
@@ -76,89 +56,140 @@
       </ion-row>
 
       <div *ngIf="section === 'Browsing History'">
-        <ion-grid no-padding>
-          <ion-row *ngFor="let app of appManager.browsedApps">
-            <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-            <img [src]="appManager.sanitize(app.icons[0].src)"/>
-            </ion-col>
-
-            <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
-              <ion-label>
-                <h2>{{ app.name }}</h2>
-                <p>{{ app.description.slice(0,70) }}...</p>
-              </ion-label>
-            </ion-col>
-
-           <!--  <ion-col size="1.75" class="checkbox-container">
-              <ion-checkbox value="app" [(ngModel)]="app.isFav" (ngModelChange)="favApp(app)" mode="ios"></ion-checkbox>
-            </ion-col> -->
-          </ion-row>
-        </ion-grid>
+        <ion-item-sliding *ngFor="let app of appManager.browsedApps">
+          <ion-item>
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+                <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                </ion-col>
+    
+                <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+                  <ion-label>
+                    <h2>{{ app.name }}</h2>
+                    <p>{{ app.description.slice(0,70) }}...</p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-item-sliding>
       </div>
 
       <div *ngIf="section === 'Installed'">
-        <ion-grid no-padding>
-          <ion-row *ngFor="let app of appManager.installedApps">
-            <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-            <img [src]="appManager.sanitize(app.icons[0].src)"/>
-            </ion-col>
-
-            <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
-              <ion-label>
-                <h2>{{ app.name }}</h2>
-                <p>{{ app.description.slice(0,70) }}...</p>
-              </ion-label>
-            </ion-col>
-
-            <ion-col size="1.5" class="checkbox-container">
-              <ion-checkbox value="app" [(ngModel)]="app.isFav" (ngModelChange)="favApp(app)" mode="ios"></ion-checkbox>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <ion-item-sliding *ngFor="let app of appManager.installedApps">
+          <ion-item>
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+                <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                </ion-col>
+    
+                <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+                  <ion-label>
+                    <h2>{{ app.name }}</h2>
+                    <p>{{ app.description.slice(0,70) }}...</p>
+                  </ion-label>
+                </ion-col>
+  
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+          <ion-item-options side="start">
+            <ion-item-option class="itemOption">
+              <div padding-horizontal (click)="favApp(app)">
+                  <div text-center><ion-icon mode="ios" name="star"></ion-icon></div>
+                <ion-label>Favorite</ion-label>
+              </div>
+            </ion-item-option>
+          </ion-item-options>
+          <ion-item-options side="end">
+            <ion-item-option class="itemOption" color="danger">
+              <div padding-horizontal (click)="removeApp(app)">
+                <div text-center><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
+                <ion-label>Uninstall</ion-label>
+              </div>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
       </div>
 
       <div *ngIf="section === 'Bookmarks'">
-        <ion-grid no-padding>
-          <ion-row *ngFor="let app of getBookmarks()">
-            <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-            <img [src]="appManager.sanitize(app.icons[0].src)"/>
-            </ion-col>
+        <ion-item-sliding *ngFor="let app of getBookmarks()">
+          <ion-item>
+            <ion-grid no-padding>
+              <ion-row>
 
-            <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
-              <ion-label>
-                <h2>{{ app.name }}</h2>
-                <p>{{ app.description.slice(0,70) }}...</p>
-              </ion-label>
-            </ion-col>
-
-            <ion-col size="1.5" class="checkbox-container">
-              <ion-checkbox value="app" [(ngModel)]="app.isFav" (ngModelChange)="favApp(app)" mode="ios"></ion-checkbox>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+                <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+                <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                </ion-col>
+    
+                <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+                  <ion-label>
+                    <h2>{{ app.name }}</h2>
+                    <p>{{ app.description.slice(0,70) }}...</p>
+                  </ion-label>
+                </ion-col>
+    
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+          <ion-item-options side="start">
+            <ion-item-option class="itemOption">
+              <div padding-horizontal (click)="favApp(app)">
+                <div text-center><ion-icon mode="ios" name="star"></ion-icon></div>
+                <ion-label>Favorite</ion-label>
+              </div>
+            </ion-item-option>
+          </ion-item-options>
+          <ion-item-options side="end">
+            <ion-item-option class="itemOption" color="danger">
+              <div padding-horizontal (click)="removeBookmark(app)">
+                  <div text-center><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
+                  <ion-label>Unbookmark</ion-label>
+              </div>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
       </div>
 
       <div *ngIf="section === 'Favorites'">
-        <ion-grid no-padding>
-          <ion-row *ngFor="let app of getFavorites()">
+        <ion-item-sliding *ngFor="let app of getFavorites()">
+          <ion-item>
+            <ion-grid no-padding>
+              <ion-row>
 
-            <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-              <img [src]="appManager.sanitize(app.icons[0].src)"/>
-            </ion-col>
+                <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+                  <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                </ion-col>
 
-            <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
-              <ion-label>
-                <h2>{{ app.name }}</h2>
-                <p>{{ app.description.slice(0,70) }}...</p>
-              </ion-label>
-            </ion-col>
-
-            <ion-col size="1.50" class="checkbox-container">
-              <ion-checkbox [(ngModel)]="app.isFav" (ngModelChange)="favApp(app)" mode="ios"></ion-checkbox>
-            </ion-col>
-
-          </ion-row>
-        </ion-grid>
+                <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+                  <ion-label>
+                    <h2>{{ app.name }}</h2>
+                    <p>{{ app.description.slice(0,70) }}...</p>
+                  </ion-label>
+                </ion-col>
+    
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+          <ion-item-options side="start">
+            <ion-item-option class="itemOption">
+              <div padding-horizontal (click)="bookmarkApp(app)">
+                <div text-center><ion-icon mode="ios" name="star"></ion-icon></div>
+                <ion-label>Bookmark</ion-label>
+              </div>
+            </ion-item-option>
+          </ion-item-options>
+          <ion-item-options side="end">
+            <ion-item-option class="itemOption" color="danger">
+              <div padding-horizontal (click)="removeFavorite(app)">
+                <div text-center><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
+                <ion-label>Unfavorite</ion-label>
+              </div>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
       </div>
     </ion-card>
   </div>
