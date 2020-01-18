@@ -4,7 +4,6 @@ import { Platform, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppmanagerService } from './services/appmanager.service';
-import { SettingService } from './services/setting.service';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 import { Dapp } from './models/dapps.model';
 
@@ -18,7 +17,6 @@ export class AppComponent {
         private platform: Platform,
         private statusBar: StatusBar,
         public appManager: AppmanagerService,
-        public setting: SettingService,
         public modalCtrl: ModalController,
         public splashScreen: SplashScreen
     ) {
@@ -33,7 +31,6 @@ export class AppComponent {
            // this.splash();
             this.splashScreen.hide();
             this.appManager.init();
-            this.setting.init();
         });
     }
 

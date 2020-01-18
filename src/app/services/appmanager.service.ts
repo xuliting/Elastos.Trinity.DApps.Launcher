@@ -1,7 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { SettingService } from './setting.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
@@ -48,7 +47,6 @@ export class AppmanagerService {
         private platform: Platform,
         private http: HttpClient,
         private translate: TranslateService,
-        private setting: SettingService,
         private storage: StorageService,
         private sanitizer: DomSanitizer,
         public zone: NgZone,
