@@ -44,10 +44,6 @@ export class AppmanagerService {
     public lastList: any = [];
     private handledIntentId: number;
 
-    /* TO DO */
-    public rows: any = [];
-    private currentLang: string = null;
-
     constructor(
         private platform: Platform,
         private http: HttpClient,
@@ -60,11 +56,6 @@ export class AppmanagerService {
         private alertController: AlertController
     ) {
         managerService = this;
-
-        this.translate.onLangChange.subscribe(data => {
-            console.log('onLangChange');
-            this.onLangChange(data.lang);
-        });
     }
 
     init() {
@@ -81,8 +72,6 @@ export class AppmanagerService {
               this.onReceiveIntent
             );
         }
-        // this.getLanguage();
-        // this.getRuntimeVersion();
     }
 
     ////////////////////////////// Listener //////////////////////////////
@@ -283,7 +272,7 @@ export class AppmanagerService {
                 fakeProgressValue += 4;
                 appManager.setTitleBarProgress(fakeProgressValue);
             }, 50); */
-            
+
             let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
             if (targetApp) {
                 this.http.get<any>('https://dapp-store.elastos.org/apps/' + id + '/manifest').subscribe((storeApp: any) => {
@@ -292,7 +281,7 @@ export class AppmanagerService {
                     // TMP BPI TEST
                     /* clearInterval(fakeProgressTimer);
                     appManager.hideTitleBarProgress(); */
-                    
+
                     if (storeApp.version === targetApp.version) {
                         console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
                         this.installing = false;
@@ -404,7 +393,7 @@ export class AppmanagerService {
             }
         });
         console.log('Candidates for uninstall', uninstallApps, uninstallApps.length);
-    
+
         if (uninstallApps.length > 10) {
             console.log('Uninstalling..', uninstallApps[uninstallApps.length - 1]);
             appManager.unInstall(
@@ -423,7 +412,7 @@ export class AppmanagerService {
             if(app.id === id && app.isBookmarked === false) {
                 this.addBookmark(app);
             }
-        })
+        });
     }
 
     async addBookmark(app: Dapp) {
@@ -445,7 +434,7 @@ export class AppmanagerService {
             }
           ]
         });
-    
+
         await alert.present();
     }
 
@@ -456,7 +445,7 @@ export class AppmanagerService {
             bookmarks.push(dapp.id);
           }
         });
-    
+
         this.storage.setBookmarkedApps(bookmarks);
     }
 
@@ -531,75 +520,11 @@ export class AppmanagerService {
         this.uninstallToast(msg);
     }
 
-    /*****************************TO DO*********************************/
-
     print_err(err) {
         console.log("ElastosJS  Error: " + err);
     }
 
-    display_err(err) {
-        appManager.alertPrompt("Error", err);
-    }
-
-    setCurrentLanguage(code: string) {
-        appManager.setCurrentLocale(code);
-    }
-
-    onLangChange(code: string) {
-        this.changeInfosLanguage(this.translate.currentLang);
-        this.setCurrentLanguage(this.translate.currentLang);
-    }
-
-    changeInfosLanguage(lang: string) {
-        if (this.currentLang == lang || lang == null || this.appList.length < 1) return;
-
-        for (var id in this.appInfos) {
-            var locale = this.appInfos[id].locales[this.appInfos[id].defaultLocale];
-            if (typeof (locale) !== "object") continue;
-
-            locale = this.appInfos[id].locales[lang];
-            if (typeof (locale) !== "object") {
-                locale = this.appInfos[id].locales[this.appInfos[id].defaultLocale];
-            }
-            this.appInfos[id].name = locale.name;
-            this.appInfos[id].shortName = locale.shortName;
-            this.appInfos[id].description = locale.description;
-            this.appInfos[id].authorName = locale.authorName;
-        }
-        this.currentLang = lang;
-    }
-
-    getLanguage() {
-        var me = this;
-        appManager.getLocale(
-            (defaultLang, currentLang, systemLang) => {
-                console.log('defaultLangL', defaultLang, ' currentLang:', currentLang, ' systemLang:', systemLang);
-                me.setting.setDefaultLang(defaultLang);
-                me.setting.setSystemLang(systemLang);
-            }
-        );
-    }
-
-    setPluginAuthority(id: string, plugin: string, authority: AppManagerPlugin.PluginAuthority) {
-        var me = this;
-        appManager.setPluginAuthority(id, plugin, authority,
-            () => console.log('setPluginAuthority success'),
-            err => me.display_err(err));
-    }
-
-    setUrlAuthority(id: string, url: string, authority: AppManagerPlugin.UrlAuthority) {
-        var me = this;
-        appManager.setUrlAuthority(id, url, authority,
-            () => console.log('setUrlAuthority success'),
-            err => me.display_err(err));
-    }
-
-    getRuntimeVersion() {
-        appManager.getVersion( (val) => {
-            this.setting.version = val;
-        });
-    }
-
+    ////////////////////////////// For Testing //////////////////////////////
     removeApp(app) {
         appManager.unInstall(
             app.id,
@@ -609,7 +534,7 @@ export class AppmanagerService {
                 this.allApps = this.allApps.filter(dapp => dapp.id === app.id);
             },
             (err) => console.log(err)
-        )
+        );
     }
 }
 
