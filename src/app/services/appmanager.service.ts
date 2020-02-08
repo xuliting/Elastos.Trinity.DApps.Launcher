@@ -68,12 +68,12 @@ export class AppmanagerService {
         this.getLastList();
 
         console.log('AppmanagerService init');
-        appManager.setListener(this.onReceiveExternal);
+        appManager.setListener(this.onReceiveInternal);
 
         if (this.platform.platforms().indexOf('cordova') >= 0) {
             console.log('Listening to intent events');
             appManager.setIntentListener(
-              this.onReceiveInternal
+              this.onReceiveExternal
             );
         }
     }
