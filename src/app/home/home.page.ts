@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
     'Installed',
     'Bookmarks',
     'Favorites',
-    'Contacts',
+    // 'Contacts',
   ];
 
   constructor(

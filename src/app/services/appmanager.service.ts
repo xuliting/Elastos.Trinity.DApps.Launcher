@@ -486,9 +486,11 @@ export class AppmanagerService {
     /******************************** Running Manager ********************************/
     getRunningList(): Promise<void> {
         return new Promise((resolve, reject) => {
-            appManager.getRunningList(list => this.runningList = list);
-            console.log('Getting running apps', this.runningList);
-            resolve();
+            appManager.getRunningList((list) => {
+                console.log('Got running apps', list);
+                this.runningList = list;
+                resolve();
+            });
         });
     }
 

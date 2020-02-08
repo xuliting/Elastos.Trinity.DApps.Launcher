@@ -1,31 +1,17 @@
 @import "../../functions.scss";
 
-#empty {
-    height: px2rem(330px);
-    text-align: center;
+ion-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     img {
         width: px2rem(70px);
         height: px2rem(56px);
-        margin-top: px2rem(113px);
-        margin-bottom: px2rem(26px);
     }
 
     ion-label {
         margin-top: 0;
-        text-align: center;
-        font-weight: 700;
-        font-size: 14px;
-    }
-}
-
-#running-title {
-    margin-top: px2rem(36px);
-    height: px2rem(33px);
-    display: flex;
-    justify-content: center;
-    
-    ion-label {
         text-align: center;
         font-weight: 700;
         font-size: 14px;

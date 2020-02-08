@@ -1,14 +1,23 @@
 <div>
-    <div id="empty" *ngIf="runningList.length == 0">
-        <div>
-            <img src="assets/img/empty.png" alt="">
-            <ion-label>No apps are currently running!</ion-label>
-        </div>
+    <div id="empty" *ngIf="runningList.length == 0" padding>
+        <ion-row padding-top>
+            <ion-col size="12">
+                <img src="assets/img/empty.png" alt="">
+            </ion-col>
+        </ion-row>
+        <ion-row padding-bottom>
+            <ion-col size="12">
+                <ion-label>No apps are currently running!</ion-label>
+            </ion-col>
+        </ion-row>
     </div>
+
     <div *ngIf="runningApps.length > 0">
-        <div id="running-title">
-            <ion-label>Running</ion-label>
-        </div>
+        <ion-row padding-top>
+            <ion-col size="12">
+                <ion-label>Running</ion-label>
+            </ion-col>
+        </ion-row>
         <ul>
             <li *ngFor="let app of runningApps">
                 <div class="app-layout" (click)="startApp(app.id)">
@@ -18,4 +27,5 @@
             </li>
         </ul>
     </div>
+
 </div>
