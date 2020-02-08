@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppmanagerService } from 'src/app/services/appmanager.service';
 import { NavParams } from '@ionic/angular';
-import { ifStmt } from '@angular/compiler/src/output/output_ast';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare let appManager: AppManagerPlugin.AppManager;
 
@@ -15,12 +15,19 @@ export class RunningAppsComponent implements OnInit {
   runningList: any[] = [];
   runningApps: any[] = [];
 
-  constructor(private navParams: NavParams) { }
+  constructor(
+    private navParams: NavParams,
+    private sanitizer: DomSanitizer
+  ) { }
 
   ngOnInit() {
     this.runningList = this.navParams.get('apps');
     console.log('App ids running', this.runningList);
     this.getAppInfo();
+  }
+
+  ionViewWillEnter() {
+    console.log('ENTERING');
   }
 
   getAppInfo() {
@@ -33,5 +40,13 @@ export class RunningAppsComponent implements OnInit {
       });
       console.log('Apps running', this.runningApps);
     });
+  }
+
+  sanitize(url: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  startApp(id: string) {
+    appManager.start(id);
   }
 }

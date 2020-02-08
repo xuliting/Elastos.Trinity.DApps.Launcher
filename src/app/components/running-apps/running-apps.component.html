@@ -2,15 +2,17 @@
     <div id="empty" *ngIf="runningList.length == 0">
         <div>
             <img src="assets/img/empty.png" alt="">
-            <p>No apps are currently running!</p>
+            <ion-label>No apps are currently running!</ion-label>
         </div>
     </div>
-    <div *ngIf="runningList.length > 0">
-        <div id="running-title">Running</div>
+    <div *ngIf="runningApps.length > 0">
+        <div id="running-title">
+            <ion-label>Running</ion-label>
+        </div>
         <ul>
-            <li *ngFor="let app of runningList">
-                <div class="app-layout">
-                    <img/>
+            <li *ngFor="let app of runningApps">
+                <div class="app-layout" (click)="startApp(app.id)">
+                    <img [src]="sanitize(app.icons[0].src)"/>
                     <p>{{ app.name }}</p>
                 </div>
             </li>

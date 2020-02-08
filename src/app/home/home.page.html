@@ -1,47 +1,5 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start" class="header-btns">
-      <ion-menu-toggle>
-          <ion-icon mode="ios" name="bookmarks"></ion-icon>
-      </ion-menu-toggle>
-    </ion-buttons>
-    <ion-buttons slot="end" class="header-btns">
-      <ion-button fill="clear">
-        <ion-icon mode="ios" name="pulse"></ion-icon>
-      </ion-button>
-      <span class="point" *ngIf="appManagerService.runningList.length > 0"></span>
-    </ion-buttons>
-    
-    <ion-progress-bar *ngIf="appManagerService.installing" type="indeterminate"></ion-progress-bar>
-
-   <!--    <ion-button fill="clear" (click)="openScan()">
-        <ion-icon slot="icon-only" name="scan"> </ion-icon>
-      </ion-button>
-
-      <ion-button
-        fill="clear"
-        [routerLink]="['/my']"
-        routerDirection="forward"
-        (ionFocus)="touched = true"
-        (ionBlur)="touched = false"
-      >
-        <ion-icon
-          slot="icon-only"
-          [name]="touched ? 'my-light' : 'my-dark'"
-        ></ion-icon>
-      </ion-button> -->
-
-    <!--   <ion-button slot="start" fill="clear" (click)="popoRunningManager($event)">
-        <ion-icon
-          slot="icon-only"
-          [name]="popup ? 'switch-light' : 'switch-dark'"
-        ></ion-icon>
-      </ion-button> -->
-  </ion-toolbar>
-
-</ion-header>
-
 <ion-content no-margin no-padding>
+  <ion-progress-bar *ngIf="appManagerService.installing" type="indeterminate"></ion-progress-bar>
 
   <div id="home-bg" padding>
 

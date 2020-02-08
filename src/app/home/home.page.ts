@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppmanagerService } from '../services/appmanager.service';
-import { PopoverController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
 import { Dapp } from '../models/dapps.model';
 import { StorageService } from '../services/storage.service';
 
@@ -31,7 +30,6 @@ export class HomePage implements OnInit {
     public appManagerService: AppmanagerService,
     public toastCtrl: ToastController,
     public storage: StorageService,
-    public popoverController: PopoverController
   ) {
   }
 

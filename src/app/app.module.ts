@@ -18,11 +18,10 @@ import { DragulaModule } from 'ng2-dragula';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { zh } from './../assets/i18n/zh';
 import { en } from './../assets/i18n/en';
-
 import { SafePipe } from './pipes/safe.pipe';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 import { SplashscreenPageModule } from './splash/splashscreen/splashscreen.module';
-import { RunningManagerComponent } from './components/running-manager/running-manager.component';
+
 import { RunningAppsComponent } from './components/running-apps/running-apps.component';
 import { AppmanagerService } from './services/appmanager.service';
 
@@ -51,10 +50,9 @@ export function TranslateLoaderFactory() {
     declarations: [
         AppComponent,
         RunningAppsComponent,
-        // RunningManagerComponent,
         SafePipe,
     ],
-entryComponents: [SplashscreenPage, RunningAppsComponent /*RunningManagerComponent */],
+entryComponents: [SplashscreenPage, RunningAppsComponent],
     imports: [
         BrowserModule,
         HttpClientModule,

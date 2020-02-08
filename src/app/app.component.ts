@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppmanagerService } from './services/appmanager.service';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
-import { Dapp } from './models/dapps.model';
 
 @Component({
     selector: 'app-root',
@@ -28,8 +27,8 @@ export class AppComponent {
             console.log('platform.ready');
             screen.orientation.lock('portrait');
             this.statusBar.styleDefault();
-           // this.splash();
-            this.splashScreen.hide();
+            this.splash();
+            //  this.splashScreen.hide();
             this.appManager.init();
         });
     }

@@ -11,57 +11,67 @@
         margin-bottom: px2rem(26px);
     }
 
-    p {
+    ion-label {
         margin-top: 0;
         text-align: center;
+        font-weight: 700;
+        font-size: 14px;
     }
 }
 
 #running-title {
     margin-top: px2rem(36px);
-    margin-left: px2rem(52px);
-    height: px2rem(33px);;
+    height: px2rem(33px);
+    display: flex;
+    justify-content: center;
+    
+    ion-label {
+        text-align: center;
+        font-weight: 700;
+        font-size: 14px;
+    }
 }
 
 ul {
-    overflow-x: auto; //设置x轴可滑动
-    white-space: nowrap; //元素不换行
-    list-style: none; /* 去掉li前面的符号 */
-    margin-top: px2rem(28px);
-    margin-left: px2rem(52px);
-    margin-right: px2rem(40px);
-    margin-bottom: px2rem(44px);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
     padding: 0px;
-    width: auto; /* 宽度根据元素内容调整 */
-    height: px2rem(169px);
-    // background-color: #783aff;
-}
+    width: auto;
+    height: auto;
 
-li {
-    // margin: 10px;
-    padding: 0px;
-    margin-right: px2rem(55px);
-    display: inline-block; //让所有的li在一行
-    // float:left; /* 向左漂移，将竖排变为横排 */
-    // background-color: white;
+    li {
+        padding: 5px;
+        display: inline-block; 
 
-    // div {
-    //     height: px2rem(169px);
-    // }
-}
-
-#close {
-    height: px2rem(122px);
-    margin: 0px;
-    padding: 0px;
-    background-color: #783aff;
-    text-align: center;
-    ion-icon {
-        margin-top: px2rem(5px);
-        // background-color: gray;
+        .app-layout {
+            margin: 0 auto;
+            width: px2rem(150px);
+            height: px2rem(150px);
+            justify-content: center;
+            align-self: center;
+            text-align: center;
+        
+            img {
+                margin: 0 auto;
+                padding: 0;
+                width: px2rem(100px);
+                height: px2rem(100px);
+                border-radius: 8px;
+            }
+        
+            p {
+                margin-top: px2rem(13px);
+                padding: 0;
+                height: px2rem(33px);
+                text-align: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-weight: 600;
+                font-size: 9px;
+            }
+        }
     }
-    p {
-        margin-top: 0;
-        // background-color: gray;
-    }
-}
+}  

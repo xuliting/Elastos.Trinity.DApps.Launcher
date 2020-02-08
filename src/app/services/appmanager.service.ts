@@ -4,9 +4,9 @@ import { AlertController, ToastController, PopoverController } from '@ionic/angu
 import { DomSanitizer } from '@angular/platform-browser';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { DappStoreApp, Dapp } from '../models/dapps.model';
+
+import { Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
-import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 
 declare let appManager: AppManagerPlugin.AppManager;
@@ -42,10 +42,10 @@ export class AppmanagerService {
     private storeFetched = false;
 
     /* Running manager */
-    public showRunningApps = false;
     public popup = false;
     public runningList: any = [];
     public lastList: any = [];
+
     private handledIntentId: number;
 
     constructor(
@@ -68,30 +68,32 @@ export class AppmanagerService {
         this.getLastList();
 
         console.log('AppmanagerService init');
-        appManager.setListener(this.onReceive);
+        appManager.setListener(this.onReceiveExternal);
 
         if (this.platform.platforms().indexOf('cordova') >= 0) {
             console.log('Listening to intent events');
             appManager.setIntentListener(
-              this.onReceiveIntent
+              this.onReceiveInternal
             );
         }
     }
 
-    ////////////////////////////// Listener //////////////////////////////
+    /******************************** Intent Listener ********************************/
 
-    // Intent listener
-    onReceiveIntent = (ret) => {
+    // External
+    onReceiveExternal = (ret) => {
+        console.log('Received external intent', ret);
         switch (ret.action) {
             case 'app':
-                console.log('App intent recieved', ret);
+                console.log('App intent', ret);
                 this.handledIntentId = ret.intentId;
                 this.findApp(ret.params.id);
         }
     }
 
-    onReceive = (ret) => {
-        console.log('onReceive', ret);
+    // Internal
+    onReceiveInternal = (ret) => {
+        console.log('Received internal intent', ret);
         console.log('ElastosJS  HomePage receive message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
 
         let params: any = ret.message;
@@ -99,7 +101,6 @@ export class AppmanagerService {
             try {
                 params = JSON.parse(params);
             } catch (e) {
-                // JSON exception? Not JSON format?
                 console.log('Params are not JSON format: ', params);
             }
         }
@@ -108,8 +109,7 @@ export class AppmanagerService {
             case MessageType.INTERNAL:
                 switch (params.action) {
                     case 'toggle':
-                        console.log('Showing running apps');
-                        this.popRunningManager();
+                        managerService.popRunningManager();
                         break;
                 }
                 break;
@@ -120,7 +120,9 @@ export class AppmanagerService {
                         managerService.addToHistory(params.id);
                         break;
                     case 'closed':
-                        managerService.getRunningList();
+                        if (this.popup) {
+                            managerService.popoverController.dismiss();
+                        }
                         managerService.getBookmarks(params.id);
                         break;
                     case 'unInstalled':
@@ -148,7 +150,7 @@ export class AppmanagerService {
         }
     }
 
-    ////////////////////////////// Fetch Installed Apps //////////////////////////////
+    /******************************** Fetch Apps ********************************/
 
     // Fetch stored apps
     getFavApps(): Promise<string[]> {
@@ -213,7 +215,7 @@ export class AppmanagerService {
                     app.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
                     app.id === 'org.elastos.trinity.dapp.wallet' ||
                     app.id === 'org.elastos.trinity.blockchain' ||
-                    app.id === 'org.elastos.trinity.dapp.installer'
+                    app.id === 'org.elastos.trinity.dapp.settings'
                 ) {
                     this.nativeApps.push({
                         id: app.id,
@@ -230,6 +232,8 @@ export class AppmanagerService {
                         isFav: false,
                         isBookmarked: false,
                     });
+                } else if (app.id === 'org.elastos.trinity.dapp.installer') {
+                    return;
                 } else {
                     this.installedApps.unshift({
                         id: app.id,
@@ -260,20 +264,9 @@ export class AppmanagerService {
         return this.sanitizer.bypassSecurityTrustResourceUrl(url);
     }
 
-    getRunningList() {
-        console.log('AppmanagerService getRunningList');
-        appManager.getRunningList(list => this.runningList = list);
-        console.log(this.runningList);
-    }
+    /******************************** App Install ********************************/
 
-    getLastList() {
-        console.log('AppmanagerService getLastList');
-        appManager.getLastList(list => this.lastList = list);
-    }
-
-    ////////////////////////////// App install //////////////////////////////
-
-    // Check if app recieved from intent is installed or needs updating before starting app
+    // Check if app received from intent is installed or needs updating before starting app
     findApp(id: string) {
         this.zone.run(() => {
             console.log('From intent', + id);
@@ -312,6 +305,7 @@ export class AppmanagerService {
                     }
                 }, (err) => {
                     this.installing = false;
+                    this.storeFetched = true;
                     console.log('Can\'t find matching app in store server', err);
                     appManager.start(id);
                 });
@@ -401,7 +395,7 @@ export class AppmanagerService {
         });
     }
 
-    ////////////////////////////// Uninstall last installed app //////////////////////////////
+    /******************************** Uninstall Last Installed App ********************************/
     uninstallApp() {
         let uninstallApps: Dapp[] = [];
         this.installedApps.map(app => {
@@ -425,7 +419,7 @@ export class AppmanagerService {
         }
     }
 
-    ////////////////////////////// Bookmarks //////////////////////////////
+    /******************************** Bookmarks ********************************/
     getBookmarks(id: string) {
         this.installedApps.map(app => {
             if (app.id === id && app.isBookmarked === false) {
@@ -468,7 +462,7 @@ export class AppmanagerService {
         this.storage.setBookmarkedApps(bookmarks);
     }
 
-    ////////////////////////////// Browsing history  //////////////////////////////
+    /******************************** Browsing History ********************************/
     addToHistory(paramsId: string) {
         console.log('Adding to browsing history', paramsId);
         let targetApp: Dapp = this.allApps.find(app => app.id === paramsId);
@@ -489,28 +483,29 @@ export class AppmanagerService {
         this.storage.setBrowsedApps(this.browsedApps);
     }
 
-     ////////////////////////////// Running Manager //////////////////////////////
-   /*  popRunningManager(ev: any) {
-        console.log(this.runningList);
-        this.popup = true;
-        this.presentPopover(ev);
+    /******************************** Running Manager ********************************/
+    getRunningList(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            appManager.getRunningList(list => this.runningList = list);
+            console.log('Getting running apps', this.runningList);
+            resolve();
+        });
     }
 
-    async presentPopover(ev) {
-        const popover = await this.popoverController.create({
-            component: RunningManagerComponent,
-            translucent: true,
-            event: ev,
-            cssClass: 'my-custom-popup'
-        });
-        popover.onDidDismiss().then(() => { this.popup = false; });
-        return await popover.present();
-    } */
+    getLastList() {
+        console.log('AppmanagerService getLastList');
+        appManager.getLastList(list => this.lastList = list);
+    }
 
-    popRunningManager() {
-        console.log(this.runningList);
-        this.popup = true;
-        this.presentPopover();
+    async popRunningManager() {
+        await this.getRunningList();
+
+        if (!this.popup) {
+            this.popup = true;
+            this.presentPopover();
+        } else {
+            this.popoverController.dismiss();
+        }
     }
 
     async presentPopover() {
@@ -520,13 +515,12 @@ export class AppmanagerService {
                 apps: this.runningList
             },
             translucent: true,
-            cssClass: 'my-custom-popup'
         });
         popover.onDidDismiss().then(() => { this.popup = false; });
         return await popover.present();
     }
 
-    ////////////////////////////// Intent actions //////////////////////////////
+    /******************************** Intent Actions ********************************/
     launcher() {
         appManager.launcher();
     }
@@ -543,7 +537,7 @@ export class AppmanagerService {
         appManager.closeApp(id);
     }
 
-    ////////////////////////////// Alerts //////////////////////////////
+    /******************************** Alerts/Toasts ********************************/
     installToast(msg: string = ''): void {
         this.toastCtrl.create({
             mode: 'ios',
@@ -580,7 +574,7 @@ export class AppmanagerService {
         console.log("ElastosJS  Error: " + err);
     }
 
-    ////////////////////////////// For Testing //////////////////////////////
+    /******************************** For Testing ********************************/
     removeApp(app) {
         appManager.unInstall(
             app.id,

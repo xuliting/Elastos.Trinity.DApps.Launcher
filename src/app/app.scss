@@ -1,59 +1,10 @@
 @import "./functions.scss";
 
-$activeColor: #1b9cff;
-$defaulColor: #666666;
-
 header-bar {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
-}
-
-:root {
-    --ion-text-color: #161723;
-    --ion-background-color: #FAFAFA;
-    --ion-toolbar-color: #161723;
-    --ion-toolbar-background: #ffffff;
-}
-
-.my-custom-popup {
-    .popover-content {
-        width: 95.5%;
-        // height: px2rem(420px);
-        background-color: #000000;
-    }
-}
-
-.my-custom-alert {
-    text-align: center;
-}
-
-.app-layout {
-    margin: 0 auto;
-    width: px2rem(150px);
-    // height: px2rem(200px);
-    justify-content: center;
-    align-self: center;
-    text-align: center;
-
-    img {
-        margin: 0 auto;
-        padding: 0;
-        width: px2rem(120px);
-        height: px2rem(120px);
-        border-radius: 8px;
-    }
-
-    p {
-        margin-top: px2rem(13px);
-        padding: 0;
-        height: px2rem(33px);
-        text-align: center;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
 }
 
 ion-row {
