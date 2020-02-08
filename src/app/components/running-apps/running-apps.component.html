@@ -1,0 +1,19 @@
+<div>
+    <div id="empty" *ngIf="runningList.length == 0">
+        <div>
+            <img src="assets/img/empty.png" alt="">
+            <p>No apps are currently running!</p>
+        </div>
+    </div>
+    <div *ngIf="runningList.length > 0">
+        <div id="running-title">Running</div>
+        <ul>
+            <li *ngFor="let app of runningList">
+                <div class="app-layout">
+                    <img/>
+                    <p>{{ app.name }}</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

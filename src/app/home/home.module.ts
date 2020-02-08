@@ -8,6 +8,7 @@ import { HomePage } from './home.page';
 import { DragulaModule } from 'ng2-dragula';
 import { TranslateModule } from '@ngx-translate/core';
 import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
+import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 
 @NgModule({
     imports: [

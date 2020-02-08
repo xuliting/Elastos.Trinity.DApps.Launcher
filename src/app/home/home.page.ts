@@ -16,7 +16,6 @@ declare let appManager: AppManagerPlugin.AppManager;
 
 export class HomePage implements OnInit {
 
-  public popup = false;
   public noFavApps = false;
   public installedApps: Dapp[] = [];
   public sections = [
@@ -37,17 +36,6 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  async presentPopover(ev) {
-      const popover = await this.popoverController.create({
-          component: RunningManagerComponent,
-          translucent: true,
-          event: ev,
-          cssClass: 'my-custom-popup'
-      });
-      popover.onDidDismiss().then(() => { this.popup = false; });
-      return await popover.present();
   }
 
   // Fetch favorite apps

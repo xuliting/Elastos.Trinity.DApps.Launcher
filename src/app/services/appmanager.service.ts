@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { DappStoreApp, Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
 import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
+import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 
 declare let appManager: AppManagerPlugin.AppManager;
 let managerService = null;
@@ -41,6 +42,7 @@ export class AppmanagerService {
     private storeFetched = false;
 
     /* Running manager */
+    public showRunningApps = false;
     public popup = false;
     public runningList: any = [];
     public lastList: any = [];
@@ -106,8 +108,8 @@ export class AppmanagerService {
             case MessageType.INTERNAL:
                 switch (params.action) {
                     case 'toggle':
-                        // console.log('Showing toggled apps');
-                        // this.popRunningManager(Event);
+                        console.log('Showing running apps');
+                        this.popRunningManager();
                         break;
                 }
                 break;
@@ -261,6 +263,7 @@ export class AppmanagerService {
     getRunningList() {
         console.log('AppmanagerService getRunningList');
         appManager.getRunningList(list => this.runningList = list);
+        console.log(this.runningList);
     }
 
     getLastList() {
@@ -308,6 +311,7 @@ export class AppmanagerService {
                         this.intentInstall(id);
                     }
                 }, (err) => {
+                    this.installing = false;
                     console.log('Can\'t find matching app in store server', err);
                     appManager.start(id);
                 });
@@ -486,7 +490,7 @@ export class AppmanagerService {
     }
 
      ////////////////////////////// Running Manager //////////////////////////////
-    popRunningManager(ev: any) {
+   /*  popRunningManager(ev: any) {
         console.log(this.runningList);
         this.popup = true;
         this.presentPopover(ev);
@@ -497,6 +501,25 @@ export class AppmanagerService {
             component: RunningManagerComponent,
             translucent: true,
             event: ev,
+            cssClass: 'my-custom-popup'
+        });
+        popover.onDidDismiss().then(() => { this.popup = false; });
+        return await popover.present();
+    } */
+
+    popRunningManager() {
+        console.log(this.runningList);
+        this.popup = true;
+        this.presentPopover();
+    }
+
+    async presentPopover() {
+        const popover = await this.popoverController.create({
+            component: RunningAppsComponent,
+            componentProps: {
+                apps: this.runningList
+            },
+            translucent: true,
             cssClass: 'my-custom-popup'
         });
         popover.onDidDismiss().then(() => { this.popup = false; });

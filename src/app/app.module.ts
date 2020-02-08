@@ -23,6 +23,8 @@ import { SafePipe } from './pipes/safe.pipe';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 import { SplashscreenPageModule } from './splash/splashscreen/splashscreen.module';
 import { RunningManagerComponent } from './components/running-manager/running-manager.component';
+import { RunningAppsComponent } from './components/running-apps/running-apps.component';
+import { AppmanagerService } from './services/appmanager.service';
 
 export class CustomTranslateLoader implements TranslateLoader {
     public getTranslation(lang: string): Observable<any> {
@@ -48,10 +50,11 @@ export function TranslateLoaderFactory() {
 @NgModule({
     declarations: [
         AppComponent,
+        RunningAppsComponent,
         // RunningManagerComponent,
         SafePipe,
     ],
-entryComponents: [SplashscreenPage, /*RunningManagerComponent */],
+entryComponents: [SplashscreenPage, RunningAppsComponent /*RunningManagerComponent */],
     imports: [
         BrowserModule,
         HttpClientModule,
@@ -72,6 +75,7 @@ entryComponents: [SplashscreenPage, /*RunningManagerComponent */],
         StatusBar,
         SplashScreen,
         InAppBrowser,
+        AppmanagerService,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],
     bootstrap: [AppComponent]
