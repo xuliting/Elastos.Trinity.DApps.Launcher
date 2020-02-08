@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
-import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
 import { DragulaModule } from 'ng2-dragula';
 import { TranslateModule } from '@ngx-translate/core';
+import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
 
 @NgModule({
     imports: [
@@ -23,7 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
             }
         ])
     ],
-    entryComponents: [RunningManagerComponent],
-    declarations: [HomePage, RunningManagerComponent]
+    entryComponents: [],
+    declarations: [HomePage]
 })
 export class HomePageModule { }

@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { IonicStorageModule } from "@ionic/storage";
+import { IonicStorageModule } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { DragulaModule } from 'ng2-dragula';
@@ -22,8 +22,8 @@ import { en } from './../assets/i18n/en';
 import { SafePipe } from './pipes/safe.pipe';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 import { SplashscreenPageModule } from './splash/splashscreen/splashscreen.module';
+import { RunningManagerComponent } from './components/running-manager/running-manager.component';
 
-/** 通过类引用方式解析国家化文件 */
 export class CustomTranslateLoader implements TranslateLoader {
     public getTranslation(lang: string): Observable<any> {
         return Observable.create(observer => {
@@ -48,9 +48,10 @@ export function TranslateLoaderFactory() {
 @NgModule({
     declarations: [
         AppComponent,
-        SafePipe
+        // RunningManagerComponent,
+        SafePipe,
     ],
-    entryComponents: [SplashscreenPage],
+entryComponents: [SplashscreenPage, /*RunningManagerComponent */],
     imports: [
         BrowserModule,
         HttpClientModule,
@@ -65,7 +66,7 @@ export function TranslateLoaderFactory() {
                 useFactory: (TranslateLoaderFactory)
             }
         }),
-        SplashscreenPageModule
+        SplashscreenPageModule,
     ],
     providers: [
         StatusBar,

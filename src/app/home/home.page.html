@@ -6,13 +6,13 @@
       </ion-menu-toggle>
     </ion-buttons>
     <ion-buttons slot="end" class="header-btns">
-      <ion-button fill="clear" (click)="popRunningManager($event)">
+      <ion-button fill="clear">
         <ion-icon mode="ios" name="pulse"></ion-icon>
       </ion-button>
-      <span class="point" *ngIf="appManager.runningList.length > 0"></span>
+      <span class="point" *ngIf="appManagerService.runningList.length > 0"></span>
     </ion-buttons>
     
-    <ion-progress-bar *ngIf="appManager.installing" type="indeterminate"></ion-progress-bar>
+    <ion-progress-bar *ngIf="appManagerService.installing" type="indeterminate"></ion-progress-bar>
 
    <!--    <ion-button fill="clear" (click)="openScan()">
         <ion-icon slot="icon-only" name="scan"> </ion-icon>
@@ -51,12 +51,12 @@
       </ion-row>
 
       <div *ngIf="section === 'Browsing History'">
-        <ion-item-sliding *ngFor="let app of appManager.browsedApps">
+        <ion-item-sliding *ngFor="let app of appManagerService.browsedApps">
           <ion-item>
             <ion-grid no-padding>
               <ion-row>
                 <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-                <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
                 </ion-col>
     
                 <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
@@ -72,12 +72,12 @@
       </div>
 
       <div *ngIf="section === 'Installed'">
-        <ion-item-sliding *ngFor="let app of appManager.installedApps">
+        <ion-item-sliding *ngFor="let app of appManagerService.installedApps">
           <ion-item>
             <ion-grid no-padding>
               <ion-row>
                 <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-                <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
                 </ion-col>
     
                 <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
@@ -116,7 +116,7 @@
               <ion-row>
 
                 <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-                <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
                 </ion-col>
     
                 <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
@@ -155,7 +155,7 @@
               <ion-row>
 
                 <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-                  <img [src]="appManager.sanitize(app.icons[0].src)"/>
+                  <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
                 </ion-col>
 
                 <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">

@@ -14,7 +14,7 @@ declare let appManager: AppManagerPlugin.AppManager;
   styleUrls: ['home.page.scss'],
 })
 
-export class HomePage {
+export class HomePage implements OnInit {
 
   public popup = false;
   public noFavApps = false;
@@ -28,18 +28,32 @@ export class HomePage {
   ];
 
   constructor(
-    public popoverController: PopoverController,
     public translate: TranslateService,
-    public appManager: AppmanagerService,
+    public appManagerService: AppmanagerService,
     public toastCtrl: ToastController,
     public storage: StorageService,
+    public popoverController: PopoverController
   ) {
+  }
+
+  ngOnInit() {
+  }
+
+  async presentPopover(ev) {
+      const popover = await this.popoverController.create({
+          component: RunningManagerComponent,
+          translucent: true,
+          event: ev,
+          cssClass: 'my-custom-popup'
+      });
+      popover.onDidDismiss().then(() => { this.popup = false; });
+      return await popover.present();
   }
 
   // Fetch favorite apps
   getFavorites(): Dapp[] {
     let favorites: Dapp[] = [];
-    this.appManager.installedApps.map(app => {
+    this.appManagerService.installedApps.map(app => {
       if (app.isFav) {
         favorites.push(app);
       }
@@ -50,7 +64,7 @@ export class HomePage {
   // Fetch bookmarked apps
   getBookmarks(): Dapp[] {
     let bookmarks: Dapp[] = [];
-    this.appManager.installedApps.map(app => {
+    this.appManagerService.installedApps.map(app => {
       if (app.isBookmarked) {
         bookmarks.push(app);
       }
@@ -73,12 +87,12 @@ export class HomePage {
     app.isFav = false;
     this.appRemovedFromFav(app);
     this.storeFavorites();
-    this.appManager.uninstallApp();
+    this.appManagerService.uninstallApp();
   }
 
   storeFavorites() {
     let favorites: string[] = [];
-    this.appManager.installedApps.map(dapp => {
+    this.appManagerService.installedApps.map(dapp => {
       if (dapp.isFav) {
         favorites.push(dapp.id);
       }
@@ -93,27 +107,27 @@ export class HomePage {
       return;
     } else {
       app.isBookmarked = true;
-      this.appManager.storeBookmarks();
+      this.appManagerService.storeBookmarks();
     }
   }
 
   removeBookmark(app: Dapp) {
     app.isBookmarked = false;
-    this.appManager.storeBookmarks();
-    this.appManager.uninstallApp();
+    this.appManagerService.storeBookmarks();
+    this.appManagerService.uninstallApp();
   }
 
   // Check app if installed or needs updating before opening
   findApp(id: string) {
     console.log('Finding app');
-    if (this.appManager.installing) {
+    if (this.appManagerService.installing) {
       console.log('Installation in progress');
       return;
     } else if (id === 'org.elastos.trinity.blockchain' || id === 'org.elastos.trinity.dapp.dappstore1') {
-        this.appManager.start(id);
+        this.appManagerService.start(id);
     } else {
       console.log('Finding...', id);
-      this.appManager.findApp(id);
+      this.appManagerService.findApp(id);
     }
   }
 
@@ -149,27 +163,10 @@ export class HomePage {
     toast.present();
   }
 
-  popRunningManager(event: any) {
-    console.log(this.appManager.runningList);
-    this.popup = true;
-    this.presentPopover(event);
-  }
-
-  async presentPopover(ev: any) {
-    const popover = await this.popoverController.create({
-      component: RunningManagerComponent,
-      event: ev,
-      translucent: true,
-      cssClass: 'my-custom-popup'
-    });
-    popover.onDidDismiss().then(() => { this.popup = false; });
-    return await popover.present();
-  }
-
   // Only used to manually uninstall apps for testing
   removeApp(app: Dapp) {
     console.log('Uninstalling app.. this manual uninstall is only used for testing');
-    this.appManager.removeApp(app);
+    this.appManagerService.removeApp(app);
   }
 }
 
@@ -177,7 +174,7 @@ export class HomePage {
    * Used to try and fav apps from browsing
    * history whether they are installed or not.
    * Currently fav mechanism only works for installed apps
-   **/
+**/
 
   /* favApp(app: Dapp) {
     console.log('Favoriting app..', app.id);

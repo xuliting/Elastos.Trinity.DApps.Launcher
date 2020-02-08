@@ -1,11 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, PopoverController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { DappStoreApp, Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
+import { RunningManagerComponent } from '../components/running-manager/running-manager.component';
 
 declare let appManager: AppManagerPlugin.AppManager;
 let managerService = null;
@@ -39,6 +40,8 @@ export class AppmanagerService {
     public installing = false;
     private storeFetched = false;
 
+    /* Running manager */
+    public popup = false;
     public runningList: any = [];
     public lastList: any = [];
     private handledIntentId: number;
@@ -51,7 +54,8 @@ export class AppmanagerService {
         private sanitizer: DomSanitizer,
         public zone: NgZone,
         public toastCtrl: ToastController,
-        private alertController: AlertController
+        private alertController: AlertController,
+        public popoverController: PopoverController,
     ) {
         managerService = this;
     }
@@ -84,21 +88,30 @@ export class AppmanagerService {
         }
     }
 
-    onReceive(ret) {
+    onReceive = (ret) => {
+        console.log('onReceive', ret);
         console.log('ElastosJS  HomePage receive message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
 
         let params: any = ret.message;
         if (typeof (params) === 'string') {
             try {
                 params = JSON.parse(params);
-            }
-            catch (e) {
+            } catch (e) {
                 // JSON exception? Not JSON format?
-                console.log("Params are not JSON format: ", params);
+                console.log('Params are not JSON format: ', params);
             }
         }
         console.log(params);
         switch (ret.type) {
+            case MessageType.INTERNAL:
+                switch (params.action) {
+                    case 'toggle':
+                        // console.log('Showing toggled apps');
+                        // this.popRunningManager(Event);
+                        break;
+                }
+                break;
+
             case MessageType.IN_REFRESH:
                 switch (params.action) {
                     case 'started':
@@ -126,6 +139,7 @@ export class AppmanagerService {
                         break;
                 }
                 break;
+
             case MessageType.EX_INSTALL:
                 managerService.install(params.uri, params.dev);
                 break;
@@ -293,6 +307,9 @@ export class AppmanagerService {
                         );
                         this.intentInstall(id);
                     }
+                }, (err) => {
+                    console.log('Can\'t find matching app in store server', err);
+                    appManager.start(id);
                 });
             } else {
                 console.log(id + ' is not installed');
@@ -407,7 +424,7 @@ export class AppmanagerService {
     ////////////////////////////// Bookmarks //////////////////////////////
     getBookmarks(id: string) {
         this.installedApps.map(app => {
-            if(app.id === id && app.isBookmarked === false) {
+            if (app.id === id && app.isBookmarked === false) {
                 this.addBookmark(app);
             }
         });
@@ -466,6 +483,24 @@ export class AppmanagerService {
             }
         }, []);
         this.storage.setBrowsedApps(this.browsedApps);
+    }
+
+     ////////////////////////////// Running Manager //////////////////////////////
+    popRunningManager(ev: any) {
+        console.log(this.runningList);
+        this.popup = true;
+        this.presentPopover(ev);
+    }
+
+    async presentPopover(ev) {
+        const popover = await this.popoverController.create({
+            component: RunningManagerComponent,
+            translucent: true,
+            event: ev,
+            cssClass: 'my-custom-popup'
+        });
+        popover.onDidDismiss().then(() => { this.popup = false; });
+        return await popover.present();
     }
 
     ////////////////////////////// Intent actions //////////////////////////////

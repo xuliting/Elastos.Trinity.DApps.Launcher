@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AppmanagerService } from 'src/app/services/appmanager.service';
 import { TranslateService } from '@ngx-translate/core';
-import { AppmanagerService } from "../../services/appmanager.service";
 import { DragulaService } from 'ng2-dragula';
 
 @Component({
@@ -15,7 +15,7 @@ export class RunningManagerComponent implements OnInit, OnDestroy {
     public pressed = false;
 
     constructor(
-        public appManager: AppmanagerService,
+        public appManagerService: AppmanagerService,
         public translate: TranslateService,
         private dragulaService: DragulaService
     ) {
@@ -32,14 +32,14 @@ export class RunningManagerComponent implements OnInit, OnDestroy {
 
         this.dragulaService.dropModel('Runnings').subscribe(args => {
             console.log(args);
-            appManager.close(args.item);
+            appManagerService.close(args.item);
         });
     }
 
     ngOnInit() {
         let apps = [];
-        this.appManager.runningList.map((appId) => {
-            this.appManager.appInfos.map((app) => {
+        this.appManagerService.runningList.map((appId) => {
+            this.appManagerService.appInfos.map((app) => {
                 if (appId === app.id) {
                     apps = apps.concat(app);
                     this.runningApps = apps;
@@ -53,7 +53,7 @@ export class RunningManagerComponent implements OnInit, OnDestroy {
     }
 
     onClick(id: string) {
-        this.appManager.start(id);
+        this.appManagerService.start(id);
     }
 
     onPress(): boolean {
@@ -62,16 +62,16 @@ export class RunningManagerComponent implements OnInit, OnDestroy {
     }
 
     getAppIcon(id: string) {
-        return this.appManager.appInfos.map(app => {
+        return this.appManagerService.appInfos.map(app => {
             if (app.id === id) {
                 console.log('FOUND APP FOR ICON', app.icons[0].src);
-                return this.appManager.sanitize(app.icons[0].src);
+                return this.appManagerService.sanitize(app.icons[0].src);
             }
         });
     }
 
     getAppName(id: string) {
-        return this.appManager.appInfos.map(app => {
+        return this.appManagerService.appInfos.map(app => {
             if (app.id === id) {
                 console.log('FOUND APP FOR NAME', app.name);
                 return app.name;
