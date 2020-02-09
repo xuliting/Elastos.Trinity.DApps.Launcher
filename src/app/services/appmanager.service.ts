@@ -38,8 +38,10 @@ export class AppmanagerService {
     public appList: string[] = [];
 
     /* For install progress bar */
-    public installing = false;
-    private storeFetched = false;
+    public progressTimer: any;
+    public progressValue = 0;
+    public checkingApp = false;
+    private appChecked = false;
 
     /* Running manager */
     public popup = false;
@@ -112,6 +114,12 @@ export class AppmanagerService {
                         managerService.popRunningManager();
                         break;
                 }
+                switch (params.visible) {
+                    case 'show':
+                        console.log('App visibility:', params.visible);
+                        managerService.resetProgress();
+                        break;
+                }
                 break;
 
             case MessageType.IN_REFRESH:
@@ -123,6 +131,7 @@ export class AppmanagerService {
                         if (this.popup) {
                             managerService.popoverController.dismiss();
                         }
+                        managerService.resetProgress();
                         managerService.getBookmarks(params.id);
                         break;
                     case 'unInstalled':
@@ -265,35 +274,28 @@ export class AppmanagerService {
     }
 
     /******************************** App Install ********************************/
-
-    // Check if app received from intent is installed or needs updating before starting app
     findApp(id: string) {
+        console.log('Finding app', id);
         this.zone.run(() => {
-            console.log('From intent', + id);
-            this.installing = true;
-            this.storeFetched = false;
+            this.checkingApp = true;
+            this.appChecked = false;
 
-            // TMP BPI TEST
-          /*   let fakeProgressValue = 0;
+            // Start progress bar
+            this.progressValue = 1;
             appManager.setTitleBarProgress(0);
-            let fakeProgressTimer = setInterval(()=>{
-                fakeProgressValue += 4;
-                appManager.setTitleBarProgress(fakeProgressValue);
-            }, 50); */
+            this.progressTimer = setInterval(() => {
+                this.progressValue += 2;
+                appManager.setTitleBarProgress(this.progressValue);
+            }, 50);
 
-            let targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
+            // Check if app received from intent is installed or needs updating before starting app
+            const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
             if (targetApp) {
                 this.http.get<any>('https://dapp-store.elastos.org/apps/' + id + '/manifest').subscribe((storeApp: any) => {
                     console.log('Got app!', storeApp);
-
-                    // TMP BPI TEST
-                    /* clearInterval(fakeProgressTimer);
-                    appManager.hideTitleBarProgress(); */
-
                     if (storeApp.version === targetApp.version) {
                         console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
-                        this.installing = false;
-                        this.storeFetched = true;
+                        this.appChecked = true;
                         appManager.start(id);
                     } else {
                         console.log(
@@ -304,9 +306,8 @@ export class AppmanagerService {
                         this.intentInstall(id);
                     }
                 }, (err) => {
-                    this.installing = false;
-                    this.storeFetched = true;
                     console.log('Can\'t find matching app in store server', err);
+                    this.appChecked = true;
                     appManager.start(id);
                 });
             } else {
@@ -315,9 +316,11 @@ export class AppmanagerService {
             }
 
             setTimeout(() => {
-                if (!this.storeFetched) {
-                    console.log('Store server failed to respond');
-                    this.installing = false;
+                if (!this.appChecked) {
+                    console.log('App failed to start, something went wrong with store server or download process');
+                    this.checkingApp = false;
+                    this.resetProgress();
+                    this.appStartErrToast();
                 }
             }, 10000);
         });
@@ -338,14 +341,11 @@ export class AppmanagerService {
         appManager.install(
             epk, true,
             (ret) => {
-                this.installing = false;
-                this.storeFetched = true;
+                this.appChecked = true;
                 appManager.start(id);
-                console.log('Success', ret);
+                console.log('Install success', ret);
             },
             (err) => {
-                this.installing = false;
-                this.storeFetched = true;
                 console.log('Error', err);
             }
         );
@@ -392,6 +392,15 @@ export class AppmanagerService {
                 console.error('resolveLocalFileSystemURL ERROR - ' + JSON.stringify(err));
                 reject(err);
             });
+        });
+    }
+
+    resetProgress() {
+        this.checkingApp = false;
+        this.progressValue = 0;
+        clearInterval(this.progressTimer);
+        appManager.hideTitleBarProgress(() => {
+            console.log('Progress bar reset');
         });
     }
 
@@ -540,6 +549,17 @@ export class AppmanagerService {
     }
 
     /******************************** Alerts/Toasts ********************************/
+    appStartErrToast() {
+        this.toastCtrl.create({
+            mode: 'ios',
+            header: 'Something went wrong',
+            message: 'Can\'t start app at this time, please try again',
+            color: 'success',
+            duration: 4000,
+            position: 'bottom'
+        }).then(toast => toast.present());
+    }
+
     installToast(msg: string = ''): void {
         this.toastCtrl.create({
             mode: 'ios',

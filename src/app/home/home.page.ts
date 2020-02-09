@@ -36,6 +36,10 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewWillEnter() {
+    this.appManagerService.resetProgress();
+  }
+
   // Fetch favorite apps
   getFavorites(): Dapp[] {
     let favorites: Dapp[] = [];
@@ -105,14 +109,12 @@ export class HomePage implements OnInit {
 
   // Check app if installed or needs updating before opening
   findApp(id: string) {
-    console.log('Finding app');
-    if (this.appManagerService.installing) {
+    if (this.appManagerService.checkingApp) {
       console.log('Installation in progress');
       return;
     } else if (id === 'org.elastos.trinity.blockchain' || id === 'org.elastos.trinity.dapp.dappstore1') {
         this.appManagerService.start(id);
     } else {
-      console.log('Finding...', id);
       this.appManagerService.findApp(id);
     }
   }

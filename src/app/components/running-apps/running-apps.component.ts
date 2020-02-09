@@ -26,10 +26,6 @@ export class RunningAppsComponent implements OnInit {
     this.getAppInfo();
   }
 
-  ionViewWillEnter() {
-    console.log('ENTERING');
-  }
-
   getAppInfo() {
     appManager.getAppInfos((info) => {
       const appInfos = Object.values(info);

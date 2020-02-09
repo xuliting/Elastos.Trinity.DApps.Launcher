@@ -43,12 +43,11 @@ export class AppComponent {
     }
 
     findApp(id: string) {
-        if (this.appManager.installing) {
+        if (this.appManager.checkingApp) {
           return;
         } else if (id === 'org.elastos.trinity.blockchain') {
             this.appManager.start(id);
         } else {
-          console.log('Finding...', id);
           this.appManager.findApp(id);
         }
     }
