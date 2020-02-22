@@ -326,17 +326,20 @@ export class AppmanagerService {
         });
     }
 
-  // Since versions aren't numbers nor can they be converted, we need to loop through each number of each version and compare them
-  checkVersion(installedVer, storeVer, appId) {
-    const oldVer = installedVer.split('.');
-    const newVer = storeVer.split('.');
+  /*
+    Since versions aren't numbers nor can they be converted,
+    we need to loop through each number of each version and compare them
+  */
+  checkVersion(installedVer: string, storeVer: string, appId: string) {
+    const current = installedVer.split('.');
+    const fetched = storeVer.split('.');
     for (let i = 0; i < storeVer.length; i++) {
-      const a = parseInt(newVer[i]) || 0;
-      const b = parseInt(oldVer[i]) || 0;
-      if (a > b) {
-        this.intentInstall(appId); // If store version in newer, install
+      const installedApp: number = parseInt(current[i]) || 0;
+      const storeApp: number = parseInt(fetched[i]) || 0;
+      if (storeApp > installedApp) {
+        this.intentInstall(appId); // If store version is newer, install
       }
-      if (a < b) {
+      if (storeApp < installedApp) {
         this.appChecked = true;
         appManager.start(appId); // If store version is older, start app
       }
