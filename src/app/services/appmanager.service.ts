@@ -299,11 +299,11 @@ export class AppmanagerService {
                         appManager.start(id);
                     } else {
                         console.log(
-                            'Update available for', id +
-                            ' Old Version:' + targetApp.version +
-                            ' New version:' + storeApp.version
+                            'Versions are different', id +
+                            ' Installed Version:' + targetApp.version +
+                            ' Store version:' + storeApp.version
                         );
-                        this.intentInstall(id);
+                        this.checkVersion(targetApp.version, storeApp.version, targetApp.id);
                     }
                 }, (err) => {
                     console.log('Can\'t find matching app in store server', err);
@@ -325,6 +325,23 @@ export class AppmanagerService {
             }, 10000);
         });
     }
+
+  // Since versions aren't numbers nor can they be converted, we need to loop through each number of each version and compare them
+  checkVersion(installedVer, storeVer, appId) {
+    const oldVer = installedVer.split('.');
+    const newVer = storeVer.split('.');
+    for (let i = 0; i < storeVer.length; i++) {
+      const a = parseInt(newVer[i]) || 0;
+      const b = parseInt(oldVer[i]) || 0;
+      if (a > b) {
+        this.intentInstall(appId); // If store version in newer, install
+      }
+      if (a < b) {
+        this.appChecked = true;
+        appManager.start(appId); // If store version is older, start app
+      }
+    }
+  }
 
     // Test Install
     async intentInstall(id: string) {
@@ -474,9 +491,13 @@ export class AppmanagerService {
     /******************************** Browsing History ********************************/
     addToHistory(paramsId: string) {
         console.log('Adding to browsing history', paramsId);
-        let targetApp: Dapp = this.allApps.find(app => app.id === paramsId);
-        this.browsedApps.unshift(targetApp);
-        this.removeDuplicates(this.browsedApps);
+        const targetApp: Dapp = this.allApps.find(app => app.id === paramsId);
+        if (targetApp.id === 'org.elastos.trinity.dapp.installer') {
+            return;
+        } else {
+            this.browsedApps.unshift(targetApp);
+            this.removeDuplicates(this.browsedApps);
+        }
     }
 
     // Remove any duplicated objects and sort list by latest viewed app
