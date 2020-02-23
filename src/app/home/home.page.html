@@ -1,18 +1,18 @@
-<ion-content no-margin no-padding>
+<ion-content class="ion-no-margin ion-no-padding">
   <!-- <ion-progress-bar *ngIf="appManagerService.installing" type="indeterminate"></ion-progress-bar> -->
 
-  <div id="home-bg" padding>
+  <div id="home-bg" class="ion-padding">
 
     <ion-card class="apps-card" *ngFor="let section of sections">
-      <ion-row class="app-header" padding>
-        <ion-col size="9" class="section-title" padding><p>{{ section }}</p></ion-col>
-        <ion-col size="3" class="section-btn" padding><p> View All</p></ion-col>
+      <ion-row class="app-header ion-padding">
+        <ion-col size="9" class="section-title ion-padding"><p>{{ section }}</p></ion-col>
+        <ion-col size="3" class="section-btn ion-padding"><p> View All</p></ion-col>
       </ion-row>
 
       <div *ngIf="section === 'Browsing History'">
         <ion-item-sliding *ngFor="let app of appManagerService.browsedApps">
           <ion-item>
-            <ion-grid no-padding>
+            <ion-grid class="ion-no-padding">
               <ion-row>
                 <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
                 <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
@@ -33,7 +33,7 @@
       <div *ngIf="section === 'Installed'">
         <ion-item-sliding *ngFor="let app of appManagerService.installedApps">
           <ion-item>
-            <ion-grid no-padding>
+            <ion-grid class="ion-no-padding">
               <ion-row>
                 <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
                 <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
@@ -51,16 +51,16 @@
           </ion-item>
           <ion-item-options side="start">
             <ion-item-option class="itemOption">
-              <div padding-horizontal (click)="favApp(app)">
-                  <div text-center><ion-icon mode="ios" name="star"></ion-icon></div>
+              <div class="ion-padding-horizontal" (click)="favApp(app)">
+                  <div class="ion-text-center"><ion-icon mode="ios" name="star"></ion-icon></div>
                 <ion-label>Favorite</ion-label>
               </div>
             </ion-item-option>
           </ion-item-options>
           <ion-item-options side="end">
             <ion-item-option class="itemOption" color="danger">
-              <div padding-horizontal (click)="removeApp(app)">
-                <div text-center><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
+              <div class="ion-padding-horizontal" (click)="removeApp(app)">
+                <div class="ion-text-center"><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
                 <ion-label>Uninstall</ion-label>
               </div>
             </ion-item-option>
@@ -71,7 +71,7 @@
       <div *ngIf="section === 'Bookmarks'">
         <ion-item-sliding *ngFor="let app of getBookmarks()">
           <ion-item>
-            <ion-grid no-padding>
+            <ion-grid class="ion-no-padding">
               <ion-row>
 
                 <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
@@ -90,16 +90,16 @@
           </ion-item>
           <ion-item-options side="start">
             <ion-item-option class="itemOption">
-              <div padding-horizontal (click)="favApp(app)">
-                <div text-center><ion-icon mode="ios" name="star"></ion-icon></div>
+              <div class="ion-padding-horizontal" (click)="favApp(app)">
+                <div class="ion-text-center"><ion-icon mode="ios" name="star"></ion-icon></div>
                 <ion-label>Favorite</ion-label>
               </div>
             </ion-item-option>
           </ion-item-options>
           <ion-item-options side="end">
             <ion-item-option class="itemOption" color="danger">
-              <div padding-horizontal (click)="removeBookmark(app)">
-                  <div text-center><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
+              <div class="ion-padding-horizontal" (click)="removeBookmark(app)">
+                  <div class="ion-text-center"><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
                   <ion-label>Unbookmark</ion-label>
               </div>
             </ion-item-option>
@@ -110,7 +110,7 @@
       <div *ngIf="section === 'Favorites'">
         <ion-item-sliding *ngFor="let app of getFavorites()">
           <ion-item>
-            <ion-grid no-padding>
+            <ion-grid class="ion-no-padding">
               <ion-row>
 
                 <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
@@ -129,16 +129,16 @@
           </ion-item>
           <ion-item-options side="start">
             <ion-item-option class="itemOption">
-              <div padding-horizontal (click)="bookmarkApp(app)">
-                <div text-center><ion-icon mode="ios" name="star"></ion-icon></div>
+              <div class="ion-padding-horizontal" (click)="bookmarkApp(app)">
+                <div class="ion-text-center"><ion-icon mode="ios" name="star"></ion-icon></div>
                 <ion-label>Bookmark</ion-label>
               </div>
             </ion-item-option>
           </ion-item-options>
           <ion-item-options side="end">
             <ion-item-option class="itemOption" color="danger">
-              <div padding-horizontal (click)="removeFavorite(app)">
-                <div text-center><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
+              <div class="ion-padding-horizontal" (click)="removeFavorite(app)">
+                <div class="ion-text-center"><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
                 <ion-label>Unfavorite</ion-label>
               </div>
             </ion-item-option>
