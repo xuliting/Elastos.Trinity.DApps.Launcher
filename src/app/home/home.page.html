@@ -1,23 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start" class="header-btns">
-      <ion-menu-toggle>
-        <ion-img class="ion-padding-start" src="/assets/icon/menu-icon-white.png"></ion-img>
-      </ion-menu-toggle>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-no-margin ion-no-padding">
 
   <ion-segment color="light"> 
     <ion-segment-button value="favAppsActive" (click)="favAppsActive = true">
-      <!-- <ion-img src="/assets/icon/bookmark-icon.svg"></ion-img> -->
       <ion-icon name="bookmark"></ion-icon>
       <ion-label>Favorites</ion-label>
     </ion-segment-button>
     <ion-segment-button value="!favAppsActive" (click)="favAppsActive = false">
-      <ion-icon mode="ios" name="hourglass"></ion-icon>
+      <ion-img src="/assets/icon/component-154-2@2x.png" class="ion-padding-top" ></ion-img>
+      <!-- <ion-icon mode="ios" name="hourglass"></ion-icon> -->
       <ion-label>Recent</ion-label>
     </ion-segment-button>
   </ion-segment>

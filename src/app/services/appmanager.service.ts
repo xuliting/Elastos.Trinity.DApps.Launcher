@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, ToastController, PopoverController } from '@ionic/angular';
+import { AlertController, ToastController, PopoverController, MenuController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
@@ -58,6 +58,7 @@ export class AppmanagerService {
         public toastCtrl: ToastController,
         public alertController: AlertController,
         public popoverController: PopoverController,
+        public menuCtrl: MenuController
     ) {
         managerService = this;
     }
@@ -113,18 +114,17 @@ export class AppmanagerService {
                     case 'toggle':
                         this.popRunningManager();
                         break;
-                    case 'menu-toggle':
-                        console.log("TODO: TOGGLE LEFT PANEL MENU");
-                        break;
-                    case 'menu-show':
-                        console.log("TODO: FORCE SHOW LEFT PANEL MENU");
-                        break;
                 }
                 switch (params.visible) {
                     case 'show':
                         console.log('App visibility:', params.visible);
                         managerService.resetProgress();
                         break;
+                }
+                switch (ret.message) {
+                    case 'menu-toggle':
+                    this.menuCtrl.toggle();
+                    break;
                 }
                 break;
 

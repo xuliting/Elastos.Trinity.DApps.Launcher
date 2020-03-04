@@ -1,17 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { Platform, ModalController } from '@ionic/angular';
+import { Platform, ModalController, IonSlides } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppmanagerService } from './services/appmanager.service';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 import { StorageService } from './services/storage.service';
+import { Dapp } from './models/dapps.model';
 
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
 })
 export class AppComponent {
+
+    @ViewChild('slider') slider: IonSlides;
+
+    slideOpts = {
+        initialSlide: 1,
+        speed: 400,
+        centeredSlides: false,
+        slidesPerView: 3.5
+    };
 
     constructor(
         private platform: Platform,
@@ -53,6 +63,16 @@ export class AppComponent {
           this.appManager.findApp(id);
         }
     }
+
+    getFavorites(): Dapp[] {
+        let favorites: Dapp[] = [];
+        this.appManager.installedApps.map(app => {
+          if (app.isFav) {
+            favorites.push(app);
+          }
+        });
+        return favorites;
+      }
 
     // Reset Favorites, Bookmarks, and History - Currently Used Only For Testing
     resetBrowser() {

@@ -4,11 +4,17 @@ ion-segment {
   background: #5a62ff;
 
   ion-segment-button {
-    ion-img, ion-icon {
+    ion-icon {
       font-size: 33px;
     }
 
+    ion-img {
+      width: 45px;
+      height: 45px;
+    }
+
     ion-label {
+      margin-top: 2px;
       text-transform: none;
       font-size: 11px;
       font-weight: 800;
