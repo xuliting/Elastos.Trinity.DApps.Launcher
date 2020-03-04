@@ -36,7 +36,7 @@ export class AppmanagerService {
     public browsedApps: Dapp[] = [];
 
     /* For install progress bar */
-    public progressTimer: any;
+    //public progressTimer: any;
     public progressValue = 0;
     public checkingApp = false;
     private appChecked = false;
@@ -68,20 +68,22 @@ export class AppmanagerService {
         this.getLastList();
 
         console.log('AppmanagerService init');
-        appManager.setListener(this.onReceiveInternal);
+        appManager.setListener((ret)=>{
+            this.onReceiveInternal(ret);
+        });
 
         if (this.platform.platforms().indexOf('cordova') >= 0) {
             console.log('Listening to intent events');
-            appManager.setIntentListener(
-              this.onReceiveExternal
-            );
+            appManager.setIntentListener((ret)=>{
+              this.onReceiveExternal(ret);
+            });
         }
     }
 
     /******************************** Intent Listener ********************************/
 
     // External
-    onReceiveExternal = (ret) => {
+    onReceiveExternal(ret) {
         console.log('Received external intent', ret);
         switch (ret.action) {
             case 'app':
@@ -92,7 +94,7 @@ export class AppmanagerService {
     }
 
     // Internal
-    onReceiveInternal = (ret) => {
+    onReceiveInternal(ret) {
         console.log('Received internal intent', ret);
         console.log('ElastosJS  HomePage receive message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
 
@@ -109,7 +111,13 @@ export class AppmanagerService {
             case MessageType.INTERNAL:
                 switch (params.action) {
                     case 'toggle':
-                        managerService.popRunningManager();
+                        this.popRunningManager();
+                        break;
+                    case 'menu-toggle':
+                        console.log("TODO: TOGGLE LEFT PANEL MENU");
+                        break;
+                    case 'menu-show':
+                        console.log("TODO: FORCE SHOW LEFT PANEL MENU");
                         break;
                 }
                 switch (params.visible) {
@@ -123,36 +131,37 @@ export class AppmanagerService {
             case MessageType.IN_REFRESH:
                 switch (params.action) {
                     case 'started':
-                        managerService.addToHistory(params.id);
+                        this.addToHistory(params.id);
                         break;
                     case 'closed':
                         if (this.popup) {
-                            managerService.popoverController.dismiss();
+                            this.popoverController.dismiss();
                         }
-                        managerService.resetProgress();
+                        this.resetProgress();
                         // managerService.getBookmarks(params.id);
                         break;
                     case 'unInstalled':
                         // managerService.appUninstalled(params.id);
-                        managerService.getAppInfos(true);
+                        this.getAppInfos();
                         break;
                     case 'installed':
                         // managerService.appInstalled(params.id);
-                        managerService.getAppInfos(true);
+                        this.getAppInfos();
                         break;
                     case 'initiated':
-                        managerService.getAppInfos(true);
+                        this.getAppInfos();
                         break;
                     case 'authorityChanged':
-                        managerService.getAppInfos(false);
+                        this.getAppInfos();
                         break;
                     case 'currentLocaleChanged':
                         break;
                 }
                 break;
 
+            // EPK installation from the CLI - Message received by the runtime.
             case MessageType.EX_INSTALL:
-                managerService.install(params.uri, params.dev);
+                this.installApp(params.uri, params.id);
                 break;
         }
     }
@@ -286,11 +295,11 @@ export class AppmanagerService {
 
             // Start progress bar
             this.progressValue = 1;
-            appManager.getTitleBar().showActivityIndicator(AppManagerPlugin.TitleBarActivityType.LAUNCH);
-            this.progressTimer = setInterval(() => {
+            appManager.getTitleBar().showActivityIndicator(AppManagerPlugin.TitleBarActivityType.DOWNLOAD);
+            /*this.progressTimer = setInterval(() => {
                 this.progressValue += 2;
                 //appManager.setTitleBarProgress(this.progressValue);
-            }, 50);
+            }, 50);*/
 
             // Check if app received from intent is installed or needs updating before starting app
             const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
@@ -300,6 +309,7 @@ export class AppmanagerService {
                     if (storeApp.version === targetApp.version) {
                         console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
                         this.appChecked = true;
+                        appManager.getTitleBar().showActivityIndicator(AppManagerPlugin.TitleBarActivityType.LAUNCH);
                         appManager.start(id);
                     } else {
                         console.log(
@@ -422,11 +432,12 @@ export class AppmanagerService {
     resetProgress() {
         this.checkingApp = false;
         this.progressValue = 0;
-        clearInterval(this.progressTimer);
+        //clearInterval(this.progressTimer);
         /*appManager.hideTitleBarProgress(() => {
             console.log('Progress bar reset');
         });*/
         appManager.getTitleBar().hideActivityIndicator(AppManagerPlugin.TitleBarActivityType.LAUNCH);
+        appManager.getTitleBar().hideActivityIndicator(AppManagerPlugin.TitleBarActivityType.DOWNLOAD);
     }
 
     /******************************** Uninstall Last Installed App ********************************/
