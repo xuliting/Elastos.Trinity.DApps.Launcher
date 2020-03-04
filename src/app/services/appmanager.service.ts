@@ -286,10 +286,10 @@ export class AppmanagerService {
 
             // Start progress bar
             this.progressValue = 1;
-            appManager.setTitleBarProgress(0);
+            appManager.getTitleBar().showActivityIndicator(AppManagerPlugin.TitleBarActivityType.LAUNCH);
             this.progressTimer = setInterval(() => {
                 this.progressValue += 2;
-                appManager.setTitleBarProgress(this.progressValue);
+                //appManager.setTitleBarProgress(this.progressValue);
             }, 50);
 
             // Check if app received from intent is installed or needs updating before starting app
@@ -423,9 +423,10 @@ export class AppmanagerService {
         this.checkingApp = false;
         this.progressValue = 0;
         clearInterval(this.progressTimer);
-        appManager.hideTitleBarProgress(() => {
+        /*appManager.hideTitleBarProgress(() => {
             console.log('Progress bar reset');
-        });
+        });*/
+        appManager.getTitleBar().hideActivityIndicator(AppManagerPlugin.TitleBarActivityType.LAUNCH);
     }
 
     /******************************** Uninstall Last Installed App ********************************/
