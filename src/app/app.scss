@@ -7,36 +7,64 @@ header-bar {
     top: 0;
 }
 
-ion-row {
-    .img-container {
+.menu-container {
+    height: 896px;
+    background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
+
+    ion-avatar {
         display: flex;
         justify-content: center;
+        align-items: center;
+        background: #6f73fc;
+        height: 40px;
+        width: 40px;
 
-        img {
-            border-radius: 15px !important;
-            overflow: hidden;
-            border: solid 1px black;
-            height: 48px;
-            width: 48px;
+        ion-icon, ion-img {
+            color: white;
+            overflow: visible !important;
+            height: 18px;
+            width: 18px;
         }
     }
 
-    .dapp-content {
+    .app-logo {
         display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .app-title {
+        display: flex;
+        justify-content: flex-start;
         align-items: center;
 
-        h2 {
-            color: black;
-            font-size: 16px;
-            font-weight: 600;
-            margin: 0;
+        ion-label {
+            color: white;
+            font-size: 14px;
+            letter-spacing: 1.63px;
+            line-height: 52px;
         }
+    }
 
-        p {
-            font-size: 9px !important;
-            font-weight: 500;
-            color: #959595;
-            margin: 0;
+    .scan-container {
+        height: 95px;
+        border-bottom: 0.5px solid rgb(55, 55, 55);
+
+        ion-img {
+            height: 13.5px;
+            width: 14.5px;
+        }
+    }
+
+    .profile-container {
+        height: 95px;
+    }
+
+    .apps-container {
+        border-bottom: 0.5px solid rgb(55, 55, 55);
+
+        ion-avatar {
+            background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
         }
     }
 }

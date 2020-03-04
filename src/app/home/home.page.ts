@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AppmanagerService } from '../services/appmanager.service';
 import { ToastController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { Dapp } from '../models/dapps.model';
+
+import { AppmanagerService } from '../services/appmanager.service';
 import { StorageService } from '../services/storage.service';
+import { TranslateService } from '@ngx-translate/core';
+
+import { Dapp } from '../models/dapps.model';
 
 declare let appManager: AppManagerPlugin.AppManager;
 
@@ -15,15 +17,7 @@ declare let appManager: AppManagerPlugin.AppManager;
 
 export class HomePage implements OnInit {
 
-  public noFavApps = false;
-  public installedApps: Dapp[] = [];
-  public sections = [
-    'Browsing History',
-    'Installed',
-    'Bookmarks',
-    'Favorites',
-    // 'Contacts',
-  ];
+  public favAppsActive = true;
 
   constructor(
     public translate: TranslateService,
@@ -37,10 +31,11 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.isBrowsedAppFav();
     this.appManagerService.resetProgress();
   }
 
-  // Fetch favorite apps
+  /******************************** Fetch Favorite Apps ********************************/
   getFavorites(): Dapp[] {
     let favorites: Dapp[] = [];
     this.appManagerService.installedApps.map(app => {
@@ -51,7 +46,7 @@ export class HomePage implements OnInit {
     return favorites;
   }
 
-  // Fetch bookmarked apps
+  /******************************** Fetch Bookmarked Apps ********************************/
   getBookmarks(): Dapp[] {
     let bookmarks: Dapp[] = [];
     this.appManagerService.installedApps.map(app => {
@@ -62,19 +57,44 @@ export class HomePage implements OnInit {
     return bookmarks;
   }
 
-  // Favorites
-  favApp(app: Dapp) {
-    if (app.isFav) {
-      return;
-    } else {
-      app.isFav = true;
-      this.appAddedToFav(app);
-      this.storeFavorites();
+  /******************************** Handle Favorites ********************************/
+  favApp(app: Dapp, section: string) {
+    app.isFav = true;
+
+    // If app is favorited from 'recents' list, fav app in 'favorites' list
+    if (section === 'recent') {
+      this.appManagerService.installedApps.map((installedApp) => {
+        if (app.id === installedApp.id) {
+          installedApp.isFav = true;
+        }
+      });
     }
+
+    this.appAddedToFav(app);
+    this.storeFavorites();
   }
 
-  removeFavorite(app: Dapp) {
+  removeFav(app: Dapp, section: string) {
     app.isFav = false;
+
+    // If app is unfavorited from 'recents' list, unfavorite app in 'favorites' list
+    if (section === 'recent') {
+      this.appManagerService.installedApps.map((installedApp) => {
+        if (app.id === installedApp.id) {
+          installedApp.isFav = false;
+        }
+      });
+    }
+
+    // If app is unfavorited from 'favorites' list, unfavorite app in 'recents' list
+    if (section === 'favorites') {
+      this.appManagerService.browsedApps.map((browsedApp) => {
+        if (app.id === browsedApp.id) {
+          browsedApp.isFav = false;
+        }
+      });
+    }
+
     this.appRemovedFromFav(app);
     this.storeFavorites();
     this.appManagerService.uninstallApp();
@@ -91,7 +111,7 @@ export class HomePage implements OnInit {
     this.storage.setFavApps(favorites);
   }
 
-  // Bookmarks
+  /******************************** Handle Bookmarks ********************************/
   bookmarkApp(app: Dapp) {
     if (app.isBookmarked) {
       return;
@@ -107,7 +127,19 @@ export class HomePage implements OnInit {
     this.appManagerService.uninstallApp();
   }
 
-  // Check app if installed or needs updating before opening
+  /******************************** Handle History ********************************/
+  isBrowsedAppFav() {
+    this.appManagerService.installedApps.map(installedApp => {
+      this.appManagerService.browsedApps.map((browsedApp) => {
+        if (installedApp.isFav && installedApp.id === browsedApp.id) {
+          console.log('Browsed app is favorite', browsedApp.id);
+          browsedApp.isFav = true;
+        }
+      });
+    });
+  }
+
+  /************** Check app if installed or needs updating before opening **************/
   findApp(id: string) {
     if (this.appManagerService.checkingApp) {
       console.log('Installation in progress');
@@ -119,7 +151,7 @@ export class HomePage implements OnInit {
     }
   }
 
-  // Alerts
+  /******************************** Alerts ********************************/
   async appAddedToFav(app: Dapp) {
     const toast = await this.toastCtrl.create({
       mode: 'ios',
@@ -139,57 +171,4 @@ export class HomePage implements OnInit {
     });
     toast.present();
   }
-
-  async appIsNative(app: Dapp) {
-    const toast = await this.toastCtrl.create({
-      mode: 'ios',
-      header: app.name,
-      message: 'You cannot add a native application of elastOS to your favorites',
-      color: 'primary',
-      duration: 4000
-    });
-    toast.present();
-  }
-
-  // Only used to manually uninstall apps for testing
-  removeApp(app: Dapp) {
-    console.log('Uninstalling app.. this manual uninstall is only used for testing');
-    this.appManagerService.removeApp(app);
-  }
 }
-
-/**
-   * Used to try and fav apps from browsing
-   * history whether they are installed or not.
-   * Currently fav mechanism only works for installed apps
-**/
-
-  /* favApp(app: Dapp) {
-    console.log('Favoriting app..', app.id);
-    let targetApp: Dapp = this.appManager.allApps.find(dapp => dapp.id === app.id);
-
-    if (targetApp) {
-      console.log('Target app found', targetApp);
-      this.appManager.installedApps.map(dapp => {
-        if (dapp.id === app.id && !dapp.isFav) {
-          dapp.isFav = true;
-          console.log(dapp.id + ' added to favorites');
-          this.appAddedToFav(dapp);
-        }
-      });
-
-      this.appManager.nativeApps.map(dapp => {
-        if (dapp.id === app.id) {
-          console.log('This is a native app', dapp.id);
-          this.appIsNative(dapp);
-        }
-      });
-
-    } else {
-      console.log('App is not installed');
-      this.appManager.appPendingInstallBeforeFav = app;
-      this.appManager.intentInstall(app.id);
-    }
-
-    this.storeFavorites();
-  } */

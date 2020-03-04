@@ -1,124 +1,77 @@
 @import "../functions.scss";
 
-// Header popup //
-.point {
-  position: absolute;
-  top: px2rem(15px);
-  left: px2rem(80px);
-  width: px2rem(14px);
-  height: px2rem(14px);
-  background: url(../../assets/img/point.png) no-repeat center;
-  background-size: cover;
-}
+ion-segment {
+  background: #5a62ff;
 
-// Container
-#home-bg {
-  min-height: 100%;
-  margin: 0;
-   // margin-left: 80px;
-  background-image: url("../../assets/img/bg.jpg"); 
-  background-repeat: repeat;
-  background-size: 100% 100%;
-}
-
-// Sidebar
-.sidenav {
-    height: 100%; 
-    width: 80px; 
-    position: fixed; 
-    z-index: 1; 
-    top: 0;
-    left: 0;
-    background-color: #111; 
-    overflow-x: hidden;
-}
-
-ion-card {
-  border-radius: 20px;
-  margin-bottom: 30px;
-  
-  .section-title {
-    font-size: 18px !important;
-    font-weight: 700;
-    color: black;
-
-    p {
-      margin: 0;
+  ion-segment-button {
+    ion-img, ion-icon {
+      font-size: 33px;
     }
-  }
 
-  .section-btn {
-    font-size: 13px !important;
-    color: #007AFF !important;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-
-    p {
-      margin: 0;
+    ion-label {
+      text-transform: none;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 14px;
+      letter-spacing: 0.55px;
     }
   }
 }
 
-.apps-card {
-  background: white;
+ion-item {
+  --padding-start: 0px;
 
-  .app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgb(216, 216, 216);
-  }
-      
   ion-row {
     padding: 5px 0;
     border-bottom: 1px solid rgb(230, 230, 230);
-
+  
     .img-container {
       display: flex;
       justify-content: center;
       align-items: center;
-
+  
       img {
         border-radius: 15px !important;
         overflow: hidden;
-        border: solid 1px black;
         height: 48px;
         width: 48px;
       }
     }
-
+  
     .dapp-content {
       display: flex;
       justify-content: flex-start;
       align-items: center;
 
-        h2 {
-          color: black;
-          font-size: 16px;
-          font-weight: 600;
-          margin: 0;
-        }
+      h2, p {
+        margin: 0;
+        color: black !important;
+      }
 
-        p {
-          font-size: 9px !important;
-          font-weight: 500;
-          color: #959595;
-          margin: 0;
-        }
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 9px !important;
+        font-weight: 500;
+      }
     }
 
-    .checkbox-container {
+    .icon-container {
       display: flex;
+      justify-content: center;
       align-items: center;
 
-      ion-checkbox {
-        --border-color: black !important;
-        --border-color-checked: black !important;
+      ion-icon, ion-img {
+        height: 24.9px;
+        width: 22.9px;
+        color: #5b62ff;
       }
     }
   }
-} 
+}
 
 .itemOption {
   display: flex;

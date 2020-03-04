@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__MENU_ICON_WHITE" width="21" height="17" data-name="MENU ICON WHITE" viewBox="0 0 21 17">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#fff}
+        </style>
+    </defs>
+    <rect id="prefix__Rectangle_215" width="21" height="1" class="prefix__cls-1" data-name="Rectangle 215" rx=".5" transform="translate(0 16)"/>
+    <rect id="prefix__Rectangle_216" width="21" height="1" class="prefix__cls-1" data-name="Rectangle 216" rx=".5" transform="translate(0 8)"/>
+    <rect id="prefix__Rectangle_217" width="21" height="1" class="prefix__cls-1" data-name="Rectangle 217" rx=".5"/>
+</svg>

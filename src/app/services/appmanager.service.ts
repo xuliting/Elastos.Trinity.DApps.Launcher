@@ -35,8 +35,6 @@ export class AppmanagerService {
     public nativeApps: Dapp[] = [];
     public browsedApps: Dapp[] = [];
 
-    public appList: string[] = [];
-
     /* For install progress bar */
     public progressTimer: any;
     public progressValue = 0;
@@ -58,7 +56,7 @@ export class AppmanagerService {
         private sanitizer: DomSanitizer,
         public zone: NgZone,
         public toastCtrl: ToastController,
-        private alertController: AlertController,
+        public alertController: AlertController,
         public popoverController: PopoverController,
     ) {
         managerService = this;
@@ -132,7 +130,7 @@ export class AppmanagerService {
                             managerService.popoverController.dismiss();
                         }
                         managerService.resetProgress();
-                        managerService.getBookmarks(params.id);
+                        // managerService.getBookmarks(params.id);
                         break;
                     case 'unInstalled':
                         // managerService.appUninstalled(params.id);
@@ -220,11 +218,13 @@ export class AppmanagerService {
                 });
 
                 if (
-                    app.id === 'org.elastos.trinity.dapp.did' ||
                     app.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
                     app.id === 'org.elastos.trinity.dapp.wallet' ||
-                    app.id === 'org.elastos.trinity.blockchain' ||
-                    app.id === 'org.elastos.trinity.dapp.settings'
+                    app.id === 'org.elastos.trinity.dapp.did' ||
+                    app.id === 'org.elastos.trinity.dapp.friends' ||
+                    app.id === 'org.elastos.trinity.dapp.dposvoting' ||
+                    app.id === 'org.elastos.trinity.dapp.settings' ||
+                    app.id === 'org.elastos.trinity.blockchain'
                 ) {
                     this.nativeApps.push({
                         id: app.id,
@@ -264,6 +264,10 @@ export class AppmanagerService {
         });
 
         if (history.length > 0) {
+            history.forEach((browsedApp) => {
+                browsedApp.isFav = false;
+            });
+
             this.browsedApps = history;
         }
     }
@@ -494,7 +498,7 @@ export class AppmanagerService {
     /******************************** Browsing History ********************************/
     addToHistory(paramsId: string) {
         console.log('Adding to browsing history', paramsId);
-        const targetApp: Dapp = this.allApps.find(app => app.id === paramsId);
+        const targetApp: Dapp = this.installedApps.find(app => app.id === paramsId);
         if (targetApp.id === 'org.elastos.trinity.dapp.installer') {
             return;
         } else {
@@ -584,36 +588,34 @@ export class AppmanagerService {
         }).then(toast => toast.present());
     }
 
-    installToast(msg: string = ''): void {
-        this.toastCtrl.create({
+    async resetBrowserAlert() {
+        const alert = await this.alertController.create({
             mode: 'ios',
-            message: msg,
-            color: 'success',
-            duration: 4000,
-            position: 'top'
-        }).then(toast => toast.present());
-    }
-
-    uninstallToast(msg: string = ''): void {
-        this.toastCtrl.create({
-            mode: 'ios',
-            message: msg,
-            color: 'danger',
-            duration: 4000,
-            position: 'top'
-        }).then(toast => toast.present());
-    }
-
-    // Only used for testing
-    appInstalled(id: string) {
-        let msg = "'" + id + "' " + this.translate.instant('installed');
-        this.installToast(msg);
-    }
-
-    // Only uses for testing
-    appUninstalled(id: string) {
-        let msg = "'" + id + "' " + this.translate.instant('uninstalled');
-        this.uninstallToast(msg);
+            header: 'Are you sure?',
+            message: 'Resetting your browser will erase your browsing history and favorites',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: () => {}
+                },
+                {
+                  text: 'Proceed',
+                  handler: () => {
+                    this.installedApps.forEach((app) => {
+                        app.isFav = false;
+                    });
+                    this.allApps.forEach((app) => {
+                        app.isFav = false;
+                    });
+                    this.browsedApps = [];
+                    this.storage.setFavApps([]);
+                    this.storage.setBookmarkedApps([]);
+                    this.storage.setBrowsedApps([]);
+                  }
+                }
+              ]
+        });
+        alert.present();
     }
 
     print_err(err) {

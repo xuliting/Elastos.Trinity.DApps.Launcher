@@ -1,151 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" class="header-btns">
+      <ion-menu-toggle>
+        <ion-img class="ion-padding-start" src="/assets/icon/menu-icon-white.png"></ion-img>
+      </ion-menu-toggle>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="ion-no-margin ion-no-padding">
-  <!-- <ion-progress-bar *ngIf="appManagerService.installing" type="indeterminate"></ion-progress-bar> -->
 
-  <div id="home-bg" class="ion-padding">
+  <ion-segment color="light"> 
+    <ion-segment-button value="favAppsActive" (click)="favAppsActive = true">
+      <!-- <ion-img src="/assets/icon/bookmark-icon.svg"></ion-img> -->
+      <ion-icon name="bookmark"></ion-icon>
+      <ion-label>Favorites</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="!favAppsActive" (click)="favAppsActive = false">
+      <ion-icon mode="ios" name="hourglass"></ion-icon>
+      <ion-label>Recent</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-    <ion-card class="apps-card" *ngFor="let section of sections">
-      <ion-row class="app-header ion-padding">
-        <ion-col size="9" class="section-title ion-padding"><p>{{ section }}</p></ion-col>
-        <ion-col size="3" class="section-btn ion-padding"><p> View All</p></ion-col>
-      </ion-row>
+  <div *ngIf="favAppsActive" class="ion-margin-top">
+    <ion-item *ngFor="let app of getFavorites()" lines="none">
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+            <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
+          </ion-col>
+          <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+            <ion-label>
+              <h2>{{ app.name }}</h2>
+              <p>{{ app.description.slice(0,70) }}...</p>
+            </ion-label>
+          </ion-col>
+          <ion-col size="1.5" class="icon-container" (click)="removeFav(app, 'favorites')">
+            <ion-icon name="bookmark"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </div>
 
-      <div *ngIf="section === 'Browsing History'">
-        <ion-item-sliding *ngFor="let app of appManagerService.browsedApps">
-          <ion-item>
-            <ion-grid class="ion-no-padding">
-              <ion-row>
-                <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-                <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
-                </ion-col>
-    
-                <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
-                  <ion-label>
-                    <h2>{{ app.name }}</h2>
-                    <p>{{ app.description.slice(0,70) }}...</p>
-                  </ion-label>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-        </ion-item-sliding>
-      </div>
-
-      <div *ngIf="section === 'Installed'">
-        <ion-item-sliding *ngFor="let app of appManagerService.installedApps">
-          <ion-item>
-            <ion-grid class="ion-no-padding">
-              <ion-row>
-                <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-                <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
-                </ion-col>
-    
-                <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
-                  <ion-label>
-                    <h2>{{ app.name }}</h2>
-                    <p>{{ app.description.slice(0,70) }}...</p>
-                  </ion-label>
-                </ion-col>
-  
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-          <ion-item-options side="start">
-            <ion-item-option class="itemOption">
-              <div class="ion-padding-horizontal" (click)="favApp(app)">
-                  <div class="ion-text-center"><ion-icon mode="ios" name="star"></ion-icon></div>
-                <ion-label>Favorite</ion-label>
-              </div>
-            </ion-item-option>
-          </ion-item-options>
-          <ion-item-options side="end">
-            <ion-item-option class="itemOption" color="danger">
-              <div class="ion-padding-horizontal" (click)="removeApp(app)">
-                <div class="ion-text-center"><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
-                <ion-label>Uninstall</ion-label>
-              </div>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-      </div>
-
-      <div *ngIf="section === 'Bookmarks'">
-        <ion-item-sliding *ngFor="let app of getBookmarks()">
-          <ion-item>
-            <ion-grid class="ion-no-padding">
-              <ion-row>
-
-                <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-                <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
-                </ion-col>
-    
-                <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
-                  <ion-label>
-                    <h2>{{ app.name }}</h2>
-                    <p>{{ app.description.slice(0,70) }}...</p>
-                  </ion-label>
-                </ion-col>
-    
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-          <ion-item-options side="start">
-            <ion-item-option class="itemOption">
-              <div class="ion-padding-horizontal" (click)="favApp(app)">
-                <div class="ion-text-center"><ion-icon mode="ios" name="star"></ion-icon></div>
-                <ion-label>Favorite</ion-label>
-              </div>
-            </ion-item-option>
-          </ion-item-options>
-          <ion-item-options side="end">
-            <ion-item-option class="itemOption" color="danger">
-              <div class="ion-padding-horizontal" (click)="removeBookmark(app)">
-                  <div class="ion-text-center"><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
-                  <ion-label>Unbookmark</ion-label>
-              </div>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-      </div>
-
-      <div *ngIf="section === 'Favorites'">
-        <ion-item-sliding *ngFor="let app of getFavorites()">
-          <ion-item>
-            <ion-grid class="ion-no-padding">
-              <ion-row>
-
-                <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-                  <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
-                </ion-col>
-
-                <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
-                  <ion-label>
-                    <h2>{{ app.name }}</h2>
-                    <p>{{ app.description.slice(0,70) }}...</p>
-                  </ion-label>
-                </ion-col>
-    
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-          <ion-item-options side="start">
-            <ion-item-option class="itemOption">
-              <div class="ion-padding-horizontal" (click)="bookmarkApp(app)">
-                <div class="ion-text-center"><ion-icon mode="ios" name="star"></ion-icon></div>
-                <ion-label>Bookmark</ion-label>
-              </div>
-            </ion-item-option>
-          </ion-item-options>
-          <ion-item-options side="end">
-            <ion-item-option class="itemOption" color="danger">
-              <div class="ion-padding-horizontal" (click)="removeFavorite(app)">
-                <div class="ion-text-center"><ion-icon mode="ios" name="remove-circle"></ion-icon></div>
-                <ion-label>Unfavorite</ion-label>
-              </div>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-      </div>
-    </ion-card>
+  <div *ngIf="!favAppsActive" class="ion-margin-top">
+    <ion-item lines="none" *ngFor="let app of appManagerService.browsedApps">
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+          <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
+          </ion-col>
+          <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+            <ion-label>
+              <h2>{{ app.name }}</h2>
+              <p>{{ app.description.slice(0,70) }}...</p>
+            </ion-label>
+          </ion-col>
+          <ion-col size="1.5" class="icon-container" (click)="removeFav(app, 'recent')" *ngIf="app.isFav">
+            <ion-icon name="bookmark"></ion-icon>
+          </ion-col>
+          <ion-col size="1.5" class="icon-container" (click)="favApp(app, 'recent')" *ngIf="!app.isFav">
+            <ion-img src="assets/icon/bookmark-outline.svg"></ion-img>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
   </div>
   
 </ion-content>

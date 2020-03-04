@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppmanagerService } from './services/appmanager.service';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
+import { StorageService } from './services/storage.service';
 
 @Component({
     selector: 'app-root',
@@ -15,9 +16,10 @@ export class AppComponent {
     constructor(
         private platform: Platform,
         private statusBar: StatusBar,
-        public appManager: AppmanagerService,
         public modalCtrl: ModalController,
-        public splashScreen: SplashScreen
+        public splashScreen: SplashScreen,
+        public appManager: AppmanagerService,
+        public storage: StorageService,
     ) {
         this.initializeApp();
     }
@@ -50,5 +52,10 @@ export class AppComponent {
         } else {
           this.appManager.findApp(id);
         }
+    }
+
+    // Reset Favorites, Bookmarks, and History - Currently Used Only For Testing
+    resetBrowser() {
+        this.appManager.resetBrowserAlert();
     }
 }

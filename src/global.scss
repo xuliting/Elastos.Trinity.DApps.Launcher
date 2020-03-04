@@ -54,10 +54,8 @@
 }
 
 :root {
-    --ion-text-color: #161723;
-    --ion-background-color: #FAFAFA;
-    --ion-toolbar-color: #161723;
-    --ion-toolbar-background: #FAFAFA;
+    --ion-toolbar-color: white;
+    --ion-toolbar-background: #5b62ff;
 }
 
 * {
@@ -66,16 +64,20 @@
 
 ion-header {
     ion-toolbar {
-      .header-btns {
-        font-size: 20px;
-        padding: 8px;
-      }
+        height: 48px;
+        display: flex;
+        align-items: center;
+
+        .header-btns {
+            font-size: 20px;
+            padding: 8px 8px 8px 12px;
+        }
   
-      ion-title {
-        padding: 20px 10px 10px;
-        font-size: 27px;
-        font-weight: 900;
-      }
+        ion-title {
+            padding: 20px 10px 10px;
+            font-size: 27px;
+            font-weight: 900;
+        }
     }
 }
 
@@ -91,7 +93,7 @@ ion-popover{
             width: 100%;
         }
     }
-  }
+}
 
 /* in-flight clone */
 .gu-mirror {
