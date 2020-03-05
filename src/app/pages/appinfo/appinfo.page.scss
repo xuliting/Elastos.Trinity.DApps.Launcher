@@ -35,6 +35,7 @@ ion-list {
         p {
             font-size: 12px !important;
             line-height: 12px !important;
+            color: #666666;
         }
     }
 
@@ -81,7 +82,7 @@ ion-list {
 
 ion-footer {
     text-align: center;
-    
+
     ion-button {
         width: px2rem(686px);
         height: px2rem(84px);
