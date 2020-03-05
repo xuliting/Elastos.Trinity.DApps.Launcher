@@ -1,14 +1,15 @@
 <ion-content class="ion-no-margin ion-no-padding">
 
-  <ion-segment color="light"> 
+  <ion-segment color="light" [class.darkMode]="theme.darkMode"> 
     <ion-segment-button value="favAppsActive" (click)="favAppsActive = true">
-      <ion-icon name="bookmark"></ion-icon>
-      <ion-label>Favorites</ion-label>
+      <ion-img src="/assets/icon/bookmark-icon.svg" class="ion-padding-top" ></ion-img>
+      <!-- <ion-icon name="bookmark"></ion-icon> -->
+      <ion-label [class.activeTab]="favAppsActive">Favorites</ion-label>
     </ion-segment-button>
     <ion-segment-button value="!favAppsActive" (click)="favAppsActive = false">
       <ion-img src="/assets/icon/component-154-2@2x.png" class="ion-padding-top" ></ion-img>
       <!-- <ion-icon mode="ios" name="hourglass"></ion-icon> -->
-      <ion-label>Recent</ion-label>
+      <ion-label [class.activeTab]="!favAppsActive">Recent</ion-label>
     </ion-segment-button>
   </ion-segment>
 
@@ -17,7 +18,7 @@
       <ion-grid class="ion-no-padding">
         <ion-row>
           <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-            <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
+            <img [src]="appManager.sanitize(app.icons[0].src)"/>
           </ion-col>
           <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
             <ion-label>
@@ -34,11 +35,11 @@
   </div>
 
   <div *ngIf="!favAppsActive" class="ion-margin-top">
-    <ion-item lines="none" *ngFor="let app of appManagerService.browsedApps">
+    <ion-item lines="none" *ngFor="let app of appManager.browsedApps">
       <ion-grid class="ion-no-padding">
         <ion-row>
           <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
-          <img [src]="appManagerService.sanitize(app.icons[0].src)"/>
+          <img [src]="appManager.sanitize(app.icons[0].src)"/>
           </ion-col>
           <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
             <ion-label>

@@ -2,7 +2,7 @@
   
   <ion-menu side="start">
     <ion-content>
-      <ion-grid class="menu-container ion-no-padding ion-no-margin">
+      <ion-grid class="menu-container ion-no-padding ion-no-margin" [class.lightMode]="!theme.darkMode">
 
         <ion-row class="scan-container" (click)="findApp('org.elastos.trinity.dapp.qrcodescanner')">
           <ion-col size="3.5" class="app-logo">
@@ -135,6 +135,17 @@
           </div>
         </ion-menu-toggle>
 
+        
+        <ion-row>
+          <ion-col size="3.5" class="app-logo">
+            <ion-toggle color="light" (click)="toggleDarkMode()"></ion-toggle>
+          </ion-col>
+          <ion-col size="8.5" class="app-title">
+            <ion-label *ngIf="!theme.darkMode">DARK MODE</ion-label>  
+            <ion-label *ngIf="theme.darkMode">LIGHT MODE</ion-label>  
+          </ion-col>
+        </ion-row>
+      
       </ion-grid>
     </ion-content>
   </ion-menu>

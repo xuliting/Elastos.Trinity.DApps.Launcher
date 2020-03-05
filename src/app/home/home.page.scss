@@ -26,6 +26,7 @@ ion-segment {
 
 ion-item {
   --padding-start: 0px;
+  --padding-end: 0px;
 
   ion-row {
     padding: 5px 0;
@@ -51,7 +52,7 @@ ion-item {
 
       h2, p {
         margin: 0;
-        color: black !important;
+        // color: black !important;
       }
 
       h2 {
@@ -73,18 +74,17 @@ ion-item {
       ion-icon, ion-img {
         height: 24.9px;
         width: 22.9px;
-        color: #5b62ff;
+        color: #ffde6e;
       }
     }
   }
 }
 
-.itemOption {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.darkMode {
+  background: #121212;
+  color: #ffffff;
+}
 
-  ion-label {
-    font-size: 9px;
-  }
+.activeTab {
+  color: white;
 }

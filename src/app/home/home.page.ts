@@ -6,8 +6,7 @@ import { StorageService } from '../services/storage.service';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Dapp } from '../models/dapps.model';
-
-declare let appManager: AppManagerPlugin.AppManager;
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -21,9 +20,10 @@ export class HomePage implements OnInit {
 
   constructor(
     public translate: TranslateService,
-    public appManagerService: AppmanagerService,
+    public appManager: AppmanagerService,
     public toastCtrl: ToastController,
     public storage: StorageService,
+    public theme: ThemeService
   ) {
   }
 
@@ -32,13 +32,13 @@ export class HomePage implements OnInit {
 
   ionViewWillEnter() {
     this.isBrowsedAppFav();
-    this.appManagerService.resetProgress();
+    this.appManager.resetProgress();
   }
 
   /******************************** Fetch Favorite Apps ********************************/
   getFavorites(): Dapp[] {
     let favorites: Dapp[] = [];
-    this.appManagerService.installedApps.map(app => {
+    this.appManager.installedApps.map(app => {
       if (app.isFav) {
         favorites.push(app);
       }
@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
   /******************************** Fetch Bookmarked Apps ********************************/
   getBookmarks(): Dapp[] {
     let bookmarks: Dapp[] = [];
-    this.appManagerService.installedApps.map(app => {
+    this.appManager.installedApps.map(app => {
       if (app.isBookmarked) {
         bookmarks.push(app);
       }
@@ -63,7 +63,7 @@ export class HomePage implements OnInit {
 
     // If app is favorited from 'recents' list, fav app in 'favorites' list
     if (section === 'recent') {
-      this.appManagerService.installedApps.map((installedApp) => {
+      this.appManager.installedApps.map((installedApp) => {
         if (app.id === installedApp.id) {
           installedApp.isFav = true;
         }
@@ -79,7 +79,7 @@ export class HomePage implements OnInit {
 
     // If app is unfavorited from 'recents' list, unfavorite app in 'favorites' list
     if (section === 'recent') {
-      this.appManagerService.installedApps.map((installedApp) => {
+      this.appManager.installedApps.map((installedApp) => {
         if (app.id === installedApp.id) {
           installedApp.isFav = false;
         }
@@ -88,7 +88,7 @@ export class HomePage implements OnInit {
 
     // If app is unfavorited from 'favorites' list, unfavorite app in 'recents' list
     if (section === 'favorites') {
-      this.appManagerService.browsedApps.map((browsedApp) => {
+      this.appManager.browsedApps.map((browsedApp) => {
         if (app.id === browsedApp.id) {
           browsedApp.isFav = false;
         }
@@ -97,12 +97,12 @@ export class HomePage implements OnInit {
 
     this.appRemovedFromFav(app);
     this.storeFavorites();
-    this.appManagerService.uninstallApp();
+    this.appManager.uninstallApp();
   }
 
   storeFavorites() {
     let favorites: string[] = [];
-    this.appManagerService.installedApps.map(dapp => {
+    this.appManager.installedApps.map(dapp => {
       if (dapp.isFav) {
         favorites.push(dapp.id);
       }
@@ -117,20 +117,24 @@ export class HomePage implements OnInit {
       return;
     } else {
       app.isBookmarked = true;
-      this.appManagerService.storeBookmarks();
+      this.appManager.storeBookmarks();
     }
   }
 
   removeBookmark(app: Dapp) {
     app.isBookmarked = false;
-    this.appManagerService.storeBookmarks();
-    this.appManagerService.uninstallApp();
+    this.appManager.storeBookmarks();
+    this.appManager.uninstallApp();
   }
 
   /******************************** Handle History ********************************/
   isBrowsedAppFav() {
-    this.appManagerService.installedApps.map(installedApp => {
-      this.appManagerService.browsedApps.map((browsedApp) => {
+    this.appManager.browsedApps.forEach((browsedApp) => {
+      browsedApp.isFav = false;
+    });
+
+    this.appManager.installedApps.map(installedApp => {
+      this.appManager.browsedApps.map((browsedApp) => {
         if (installedApp.isFav && installedApp.id === browsedApp.id) {
           console.log('Browsed app is favorite', browsedApp.id);
           browsedApp.isFav = true;
@@ -141,13 +145,13 @@ export class HomePage implements OnInit {
 
   /************** Check app if installed or needs updating before opening **************/
   findApp(id: string) {
-    if (this.appManagerService.checkingApp) {
+    if (this.appManager.checkingApp) {
       console.log('Installation in progress');
       return;
     } else if (id === 'org.elastos.trinity.blockchain' || id === 'org.elastos.trinity.dapp.dappstore1') {
-        this.appManagerService.start(id);
+        this.appManager.start(id);
     } else {
-      this.appManagerService.findApp(id);
+      this.appManager.findApp(id);
     }
   }
 

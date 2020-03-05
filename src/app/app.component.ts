@@ -7,6 +7,7 @@ import { AppmanagerService } from './services/appmanager.service';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 import { StorageService } from './services/storage.service';
 import { Dapp } from './models/dapps.model';
+import { ThemeService } from './services/theme.service';
 
 @Component({
     selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent {
         public splashScreen: SplashScreen,
         public appManager: AppmanagerService,
         public storage: StorageService,
+        public theme: ThemeService
     ) {
         this.initializeApp();
     }
@@ -73,6 +75,10 @@ export class AppComponent {
         });
         return favorites;
       }
+
+    toggleDarkMode() {
+        this.theme.toggleTheme();
+    }
 
     // Reset Favorites, Bookmarks, and History - Currently Used Only For Testing
     resetBrowser() {

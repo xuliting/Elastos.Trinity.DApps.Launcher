@@ -273,10 +273,6 @@ export class AppmanagerService {
         });
 
         if (history.length > 0) {
-            history.forEach((browsedApp) => {
-                browsedApp.isFav = false;
-            });
-
             this.browsedApps = history;
         }
     }

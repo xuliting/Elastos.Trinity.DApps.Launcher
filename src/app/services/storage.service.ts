@@ -9,6 +9,7 @@ export class StorageService {
   constructor(private storage: Storage) {
   }
 
+  /*** Favorites ***/
   public setFavApps(value: any) {
     return this.storage.set("favs", JSON.stringify(value)).then((data) => {
       console.log('Stored Favorite Apps', data);
@@ -22,6 +23,7 @@ export class StorageService {
     });
   }
 
+  /*** Bookmarks ***/
   public setBookmarkedApps(value: any) {
     return this.storage.set("bookmarks", JSON.stringify(value)).then((data) => {
       console.log('Stored Bookmarked Apps', data);
@@ -35,6 +37,7 @@ export class StorageService {
     });
   }
 
+  /*** Browsing History ***/
   public setBrowsedApps(value: any) {
     return this.storage.set("history", JSON.stringify(value)).then((data) => {
       console.log('Stored Browsed Apps', data);
@@ -44,6 +47,20 @@ export class StorageService {
   public getBrowsedApps(): Promise<any> {
     return this.storage.get("history").then((data) => {
       console.log(data);
+      return JSON.parse(data);
+    });
+  }
+
+  /*** Dark Mode ***/
+  public setTheme(value: boolean) {
+    return this.storage.set("theme", JSON.stringify(value)).then((data) => {
+      console.log('Saved theme', data);
+    });
+  }
+
+  public getTheme(): Promise<boolean> {
+    return this.storage.get("theme").then((data) => {
+      console.log('Fetched theme', data);
       return JSON.parse(data);
     });
   }
