@@ -10,6 +10,8 @@ import { StorageService } from './storage.service';
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 
 declare let appManager: AppManagerPlugin.AppManager;
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
+
 let managerService = null;
 
 enum MessageType {
@@ -291,7 +293,7 @@ export class AppmanagerService {
 
             // Start progress bar
             this.progressValue = 1;
-            appManager.getTitleBar().showActivityIndicator(AppManagerPlugin.TitleBarActivityType.DOWNLOAD);
+            titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
             /*this.progressTimer = setInterval(() => {
                 this.progressValue += 2;
                 //appManager.setTitleBarProgress(this.progressValue);
@@ -305,7 +307,7 @@ export class AppmanagerService {
                     if (storeApp.version === targetApp.version) {
                         console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
                         this.appChecked = true;
-                        appManager.getTitleBar().showActivityIndicator(AppManagerPlugin.TitleBarActivityType.LAUNCH);
+                        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
                         appManager.start(id);
                     } else {
                         console.log(
@@ -432,8 +434,8 @@ export class AppmanagerService {
         /*appManager.hideTitleBarProgress(() => {
             console.log('Progress bar reset');
         });*/
-        appManager.getTitleBar().hideActivityIndicator(AppManagerPlugin.TitleBarActivityType.LAUNCH);
-        appManager.getTitleBar().hideActivityIndicator(AppManagerPlugin.TitleBarActivityType.DOWNLOAD);
+        titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
+        titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
     }
 
     /******************************** Uninstall Last Installed App ********************************/
