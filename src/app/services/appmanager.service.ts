@@ -1,10 +1,17 @@
 import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, ToastController } from '@ionic/angular';
-import { SettingService } from './setting.service';
+import { AlertController, ToastController, PopoverController, MenuController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Platform } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+
+import { Dapp } from '../models/dapps.model';
+import { StorageService } from './storage.service';
+import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 
 declare let appManager: AppManagerPlugin.AppManager;
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
+
 let managerService = null;
 
 enum MessageType {
@@ -23,90 +30,259 @@ enum MessageType {
 })
 export class AppmanagerService {
 
+    /* Apps list */
     public appInfos: AppManagerPlugin.AppInfo[] = [];
-    public appList: string[] = [];
+    public allApps: Dapp[] = [];
+    public installedApps: Dapp[] = [];
+    public nativeApps: Dapp[] = [];
+    public browsedApps: Dapp[] = [];
+
+    /* For install progress bar */
+    //public progressTimer: any;
+    public progressValue = 0;
+    public checkingApp = false;
+    private appChecked = false;
+
+    /* Running manager */
+    public popup = false;
     public runningList: any = [];
     public lastList: any = [];
     public rows: any = [];
     private currentLang: string = null;
     private supportedLanguage: string[] = ['en', 'zh'];
 
-    constructor(private translate: TranslateService,
-        private setting: SettingService,
+    private handledIntentId: number;
+
+    constructor(
+        private platform: Platform,
+        private http: HttpClient,
+        private translate: TranslateService,
+        private storage: StorageService,
         private sanitizer: DomSanitizer,
         public zone: NgZone,
         public toastCtrl: ToastController,
-        private alertController: AlertController) {
+        public alertController: AlertController,
+        public popoverController: PopoverController,
+        public menuCtrl: MenuController
+    ) {
         managerService = this;
-
-        var me = this;
-        this.translate.onLangChange.subscribe(data => {
-            console.log("onLangChange");
-            me.onLangChange(data.lang);
-        });
     }
 
     init() {
-        console.log("AppmanagerService init");
-        appManager.setListener(this.onReceive);
-        this.getLanguage();
-        this.getAppInfos(true);
+        this.getAppInfos();
         this.getRunningList();
         this.getLastList();
-        this.getRuntimeVersion();
-    }
 
-    sanitize(url: string) {
-        return this.sanitizer.bypassSecurityTrustResourceUrl(url);;
-    }
+        console.log('AppmanagerService init');
+        appManager.setListener((ret)=>{
+            this.onReceiveInternal(ret);
+        });
 
-    print_err(err) {
-        console.log("ElastosJS  Error: " + err);
-    }
-
-    display_err(err) {
-        appManager.alertPrompt("Error", err);
-    }
-
-    toast(msg: string = '', duration: number = 2000): void {
-        this.toastCtrl.create({
-            message: msg,
-            duration: duration,
-            position: 'top'
-        }).then(toast => toast.present());
-    }
-
-    toast_installed(id: string) {
-        var msg = "'" + id + "' " + this.translate.instant('installed');
-        this.toast(msg);
-    }
-
-    setCurrentLanguage(code: string) {
-        appManager.setCurrentLocale(code);
-    }
-
-    onLangChange(code: string) {
-        this.changeInfosLanguage(this.translate.currentLang);
-        this.setCurrentLanguage(this.translate.currentLang);
-    }
-
-    changeInfosLanguage(lang: string) {
-        if (this.currentLang == lang || lang == null || this.appList.length < 1) return;
-
-        for (var id in this.appInfos) {
-            var locale = this.appInfos[id].locales[this.appInfos[id].defaultLocale];
-            if (typeof (locale) !== "object") continue;
-
-            locale = this.appInfos[id].locales[lang];
-            if (typeof (locale) !== "object") {
-                locale = this.appInfos[id].locales[this.appInfos[id].defaultLocale];
-            }
-            this.appInfos[id].name = locale.name;
-            this.appInfos[id].shortName = locale.shortName;
-            this.appInfos[id].description = locale.description;
-            this.appInfos[id].authorName = locale.authorName;
+        if (this.platform.platforms().indexOf('cordova') >= 0) {
+            console.log('Listening to intent events');
+            appManager.setIntentListener((ret)=>{
+              this.onReceiveExternal(ret);
+            });
         }
-        this.currentLang = lang;
+    }
+
+    /******************************** Intent Listener ********************************/
+
+    // External
+    onReceiveExternal(ret) {
+        console.log('Received external intent', ret);
+        switch (ret.action) {
+            case 'app':
+                console.log('App intent', ret);
+                this.handledIntentId = ret.intentId;
+                this.findApp(ret.params.id);
+        }
+    }
+
+    // Internal
+    onReceiveInternal(ret) {
+        console.log('Received internal intent', ret);
+        console.log('ElastosJS  HomePage receive message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
+
+        let params: any = ret.message;
+        if (typeof (params) === 'string') {
+            try {
+                params = JSON.parse(params);
+            } catch (e) {
+                console.log('Params are not JSON format: ', params);
+            }
+        }
+        console.log(params);
+        switch (ret.type) {
+            case MessageType.INTERNAL:
+                switch (params.action) {
+                    case 'toggle':
+                        this.popRunningManager();
+                        break;
+                }
+                switch (params.visible) {
+                    case 'show':
+                        console.log('App visibility:', params.visible);
+                        managerService.resetProgress();
+                        break;
+                }
+                switch (ret.message) {
+                    case 'menu-toggle':
+                    this.menuCtrl.toggle();
+                    break;
+                }
+                break;
+
+            case MessageType.IN_REFRESH:
+                switch (params.action) {
+                    case 'started':
+                        this.addToHistory(params.id);
+                        break;
+                    case 'closed':
+                        if (this.popup) {
+                            this.popoverController.dismiss();
+                        }
+                        this.resetProgress();
+                        // managerService.getBookmarks(params.id);
+                        break;
+                    case 'unInstalled':
+                        // managerService.appUninstalled(params.id);
+                        this.getAppInfos();
+                        break;
+                    case 'installed':
+                        managerService.toast_installed(params.id);
+                        // managerService.appInstalled(params.id);
+                        this.getAppInfos();
+                        break;
+                    case 'initiated':
+                        this.getAppInfos();
+                        break;
+                    case 'authorityChanged':
+                        this.getAppInfos();
+                        break;
+                    case 'currentLocaleChanged':
+                        break;
+                    case "launcher_upgraded":
+                        managerService.toast("Launcher have upgraded, please restart.");
+                }
+                break;
+
+            // EPK installation from the CLI - Message received by the runtime.
+            case MessageType.EX_INSTALL:
+                this.installApp(params.uri, params.id);
+                break;
+        }
+    }
+
+    /******************************** Fetch Apps ********************************/
+
+    // Fetch stored apps
+    getFavApps(): Promise<string[]> {
+        return new Promise((resolve, reject) => {
+            this.storage.getFavApps().then(apps => {
+                console.log('Fetched favorite apps', apps);
+                resolve(apps || []);
+            });
+        });
+    }
+
+    getBookmarkedApps(): Promise<string[]> {
+        return new Promise((resolve, reject) => {
+            this.storage.getBookmarkedApps().then(apps => {
+                console.log('Fetched bookmarked apps', apps);
+                resolve(apps || []);
+            });
+        });
+    }
+
+    getBrowsedApps(): Promise<Dapp[]> {
+        return new Promise((resolve, reject) => {
+            this.storage.getBrowsedApps().then(apps => {
+                console.log('Fetched browsing history', apps);
+                resolve(apps || []);
+            });
+        });
+    }
+
+    // Get installed app info
+    async getAppInfos() {
+        let favorites: string[] = await this.getFavApps();
+        let bookmarks: string[] = await this.getBookmarkedApps();
+        let history: Dapp[] = await this.getBrowsedApps();
+
+        this.installedApps = [];
+        this.nativeApps = [];
+
+        appManager.getAppInfos((info) => {
+            console.log('App infos', info);
+            this.appInfos = Object.values(info);
+            this.appInfos.map(app => {
+
+                this.allApps.push({
+                    id: app.id,
+                    version: app.version,
+                    name: app.name,
+                    shortName: app.shortName,
+                    description: app.description,
+                    startUrl: app.startUrl,
+                    icons: app.icons,
+                    authorName: app.authorName,
+                    authorEmail: app.authorEmail,
+                    category: app.category,
+                    urls: app.urls,
+                    isFav: favorites.includes(app.id) ? true : false,
+                    isBookmarked: bookmarks.includes(app.id) ? true : false
+                });
+
+                if (
+                    app.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
+                    app.id === 'org.elastos.trinity.dapp.wallet' ||
+                    app.id === 'org.elastos.trinity.dapp.did' ||
+                    app.id === 'org.elastos.trinity.dapp.friends' ||
+                    app.id === 'org.elastos.trinity.dapp.dposvoting' ||
+                    app.id === 'org.elastos.trinity.dapp.settings' ||
+                    app.id === 'org.elastos.trinity.blockchain'
+                ) {
+                    this.nativeApps.push({
+                        id: app.id,
+                        version: app.version,
+                        name: app.name,
+                        shortName: app.shortName,
+                        description: app.description,
+                        startUrl: app.startUrl,
+                        icons: app.icons,
+                        authorName: app.authorName,
+                        authorEmail: app.authorEmail,
+                        category: app.category,
+                        urls: app.urls,
+                        isFav: false,
+                        isBookmarked: false,
+                    });
+                } else if (app.id === 'org.elastos.trinity.dapp.installer') {
+                    return;
+                } else {
+                    this.installedApps.unshift({
+                        id: app.id,
+                        version: app.version,
+                        name: app.name,
+                        shortName: app.shortName,
+                        description: app.description,
+                        startUrl: app.startUrl,
+                        icons: app.icons,
+                        authorName: app.authorName,
+                        authorEmail: app.authorEmail,
+                        category: app.category,
+                        urls: app.urls,
+                        isFav: favorites.includes(app.id) ? true : false,
+                        isBookmarked: bookmarks.includes(app.id) ? true : false
+                    });
+                }
+            });
+        });
+
+        if (history.length > 0) {
+            this.browsedApps = history;
+        }
     }
 
     getLanguage() {
@@ -117,12 +293,303 @@ export class AppmanagerService {
                 if (!this.isSupportedLanguage(systemLang)) {
                     systemLang = 'en';
                 }
-                me.setting.setDefaultLang(systemLang);
-                me.setting.setSystemLang(systemLang);
+                // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setDefaultLang(systemLang);
+                // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setSystemLang(systemLang);
+            }
+        );
+    }
+    
+    // Get app icon
+    sanitize(url: string) {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
+
+    /******************************** App Install ********************************/
+    findApp(id: string) {
+        console.log('Finding app', id);
+        this.zone.run(() => {
+            this.checkingApp = true;
+            this.appChecked = false;
+
+            // Start progress bar
+            this.progressValue = 1;
+            titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
+            /*this.progressTimer = setInterval(() => {
+                this.progressValue += 2;
+                //appManager.setTitleBarProgress(this.progressValue);
+            }, 50);*/
+
+            // Check if app received from intent is installed or needs updating before starting app
+            const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
+            if (targetApp) {
+                this.http.get<any>('https://dapp-store.elastos.org/apps/' + id + '/manifest').subscribe((storeApp: any) => {
+                    console.log('Got app!', storeApp);
+                    if (storeApp.version === targetApp.version) {
+                        console.log(storeApp.id + ' ' + storeApp.version + ' is up to date and starting');
+                        this.appChecked = true;
+                        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
+                        appManager.start(id);
+                    } else {
+                        console.log(
+                            'Versions are different', id +
+                            ' Installed Version:' + targetApp.version +
+                            ' Store version:' + storeApp.version
+                        );
+                        this.checkVersion(targetApp.version, storeApp.version, targetApp.id);
+                    }
+                }, (err) => {
+                    console.log('Can\'t find matching app in store server', err);
+                    this.appChecked = true;
+                    appManager.start(id);
+                });
+            } else {
+                console.log(id + ' is not installed');
+                this.intentInstall(id);
+            }
+
+            setTimeout(() => {
+                if (!this.appChecked) {
+                    console.log('App failed to start, something went wrong with store server or download process');
+                    this.checkingApp = false;
+                    this.resetProgress();
+                    this.appStartErrToast();
+                }
+            }, 10000);
+        });
+    }
+
+  /*
+    Since versions aren't numbers nor can they be converted,
+    we need to loop through each number of each version and compare them
+  */
+  checkVersion(installedVer: string, storeVer: string, appId: string) {
+    const current = installedVer.split('.');
+    const fetched = storeVer.split('.');
+    for (let i = 0; i < storeVer.length; i++) {
+      const installedApp: number = parseInt(current[i]) || 0;
+      const storeApp: number = parseInt(fetched[i]) || 0;
+      if (storeApp > installedApp) {
+        this.intentInstall(appId); // If store version is newer, install
+      }
+      if (storeApp < installedApp) {
+        this.appChecked = true;
+        appManager.start(appId); // If store version is older, start app
+      }
+    }
+  }
+
+    // Test Install
+    async intentInstall(id: string) {
+        console.log('Downloading...' + id);
+        const epkPath = await this.downloadDapp(id);
+        console.log('EPK file downloaded and saved to ' + epkPath);
+        this.installApp(epkPath, id);
+    }
+
+    installApp(epk: any, id: string) {
+        console.log('Installing...' + id);
+
+        /* BUG TRACED HERE: After inquiring app for install, appManager installs the WRONG APP */
+        appManager.install(
+            epk, true,
+            (ret) => {
+                this.appChecked = true;
+                appManager.start(id);
+                console.log('Install success', ret);
+            },
+            (err) => {
+                console.log('Error', err);
             }
         );
     }
 
+    downloadDapp(id: string) {
+        console.log('App download starting...' + id);
+
+        return new Promise((resolve, reject) => {
+            // Download EPK file as blob
+            this.http.get('https://dapp-store.elastos.org/apps/' + id + '/download', {
+                responseType: 'arraybuffer'} ).subscribe(async response => {
+                console.log('Downloaded', response);
+                let blob = new Blob([response], { type: 'application/octet-stream' });
+                console.log('Blob', blob);
+
+                // Save to a temporary location
+                let filePath = await this._savedDownloadedBlobToTempLocation(blob);
+
+                resolve(filePath);
+            });
+        });
+    }
+
+    _savedDownloadedBlobToTempLocation(blob) {
+        let fileName = 'appinstall.epk';
+
+        return new Promise((resolve, reject) => {
+            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dirEntry: CordovaFilePlugin.DirectoryEntry) => {
+                dirEntry.getFile(fileName, { create: true, exclusive: false }, (fileEntry) => {
+                    console.log('Downloaded file entry', fileEntry);
+                    fileEntry.createWriter((fileWriter) => {
+                    fileWriter.write(blob);
+                    resolve('trinity:///data/' + fileName);
+                    }, (err) => {
+                    console.error('createWriter ERROR - ' + JSON.stringify(err));
+                    reject(err);
+                    });
+                }, (err) => {
+                    console.error('getFile ERROR - ' + JSON.stringify(err));
+                    reject(err);
+                });
+            }, (err) => {
+                console.error('resolveLocalFileSystemURL ERROR - ' + JSON.stringify(err));
+                reject(err);
+            });
+        });
+    }
+
+    resetProgress() {
+        this.checkingApp = false;
+        this.progressValue = 0;
+        //clearInterval(this.progressTimer);
+        /*appManager.hideTitleBarProgress(() => {
+            console.log('Progress bar reset');
+        });*/
+        titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
+        titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
+    }
+
+    /******************************** Uninstall Last Installed App ********************************/
+    uninstallApp() {
+        let uninstallApps: Dapp[] = [];
+        this.installedApps.map(app => {
+            if (app.isFav || app.isBookmarked) {
+                return;
+            } else {
+                uninstallApps.push(app);
+            }
+        });
+        console.log('Candidates for uninstall', uninstallApps, uninstallApps.length);
+
+        if (uninstallApps.length > 10) {
+            console.log('Uninstalling..', uninstallApps[uninstallApps.length - 1]);
+            appManager.unInstall(
+                uninstallApps[uninstallApps.length - 1].id,
+                (res) => {
+                    console.log('Uninstall Success', uninstallApps[uninstallApps.length - 1].id);
+                    this.installedApps.filter(app => app.id === uninstallApps[uninstallApps.length - 1].id);
+                },
+                (err) => console.log(err));
+        }
+    }
+
+    /******************************** Bookmarks ********************************/
+    getBookmarks(id: string) {
+        this.installedApps.map(app => {
+            if (app.id === id && app.isBookmarked === false) {
+                this.addBookmark(app);
+            }
+        });
+    }
+
+    async addBookmark(app: Dapp) {
+        const alert = await this.alertController.create({
+          header: app.name,
+          message: 'Do you want to add this to your bookmarks?',
+          mode: 'ios',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+            }, {
+              text: 'Okay',
+              handler: () => {
+                app.isBookmarked = true;
+                this.storeBookmarks();
+              }
+            }
+          ]
+        });
+
+        await alert.present();
+    }
+
+    storeBookmarks() {
+        let bookmarks: string[] = [];
+        this.installedApps.map(dapp => {
+          if (dapp.isBookmarked) {
+            bookmarks.push(dapp.id);
+          }
+        });
+
+        this.storage.setBookmarkedApps(bookmarks);
+    }
+
+    /******************************** Browsing History ********************************/
+    addToHistory(paramsId: string) {
+        console.log('Adding to browsing history', paramsId);
+        const targetApp: Dapp = this.installedApps.find(app => app.id === paramsId);
+        if (targetApp.id === 'org.elastos.trinity.dapp.installer') {
+            return;
+        } else {
+            this.browsedApps.unshift(targetApp);
+            this.removeDuplicates(this.browsedApps);
+        }
+    }
+
+    // Remove any duplicated objects and sort list by latest viewed app
+    removeDuplicates(apps: Dapp[]) {
+        this.browsedApps = apps.reduce((_apps, current) => {
+            const x = _apps.find(app => app.id === current.id);
+            if (!x) {
+                return _apps.concat([current]);
+            } else {
+                return _apps;
+            }
+        }, []);
+        this.storage.setBrowsedApps(this.browsedApps);
+    }
+
+    /******************************** Running Manager ********************************/
+    getRunningList(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            appManager.getRunningList((list) => {
+                console.log('Got running apps', list);
+                this.runningList = list;
+                resolve();
+            });
+        });
+    }
+
+    getLastList() {
+        console.log('AppmanagerService getLastList');
+        appManager.getLastList(list => this.lastList = list);
+    }
+
+    async popRunningManager() {
+        await this.getRunningList();
+
+        if (!this.popup) {
+            this.popup = true;
+            this.presentPopover();
+        } else {
+            this.popoverController.dismiss();
+        }
+    }
+
+    async presentPopover() {
+        const popover = await this.popoverController.create({
+            component: RunningAppsComponent,
+            componentProps: {
+                apps: this.runningList
+            },
+            translucent: true,
+        });
+        popover.onDidDismiss().then(() => { this.popup = false; });
+        return await popover.present();
+    }
+
+    /******************************** Intent Actions ********************************/
     launcher() {
         appManager.launcher();
     }
@@ -139,154 +606,70 @@ export class AppmanagerService {
         appManager.closeApp(id);
     }
 
-    install(url: string, update: boolean) {
-        var me = this;
-        appManager.install(url, update,
-            ret => {
-                console.log(ret);
-            },
-            err => {
-                if (err.indexOf("App '") === 0) {
-                    var arr = err.split("'");
-                    me.askInstall(url, arr[1]);
-                } else {
-                    me.display_err(err);
-                }
-            }
-        );
+    /******************************** Alerts/Toasts ********************************/
+    appStartErrToast() {
+        this.toastCtrl.create({
+            mode: 'ios',
+            header: 'Something went wrong',
+            message: 'Can\'t start app at this time, please try again',
+            color: 'success',
+            duration: 4000,
+            position: 'bottom'
+        }).then(toast => toast.present());
     }
 
-    askInstall(url: string, id: string) {
-        appManager.askPrompt(this.translate.instant("update-prompt"),
-            this.translate.instant("update-ask") + ": '" + id + "'?",
-            ()=>this.install(url, true));
-    }
-
-    unInstall(id: string, success: any, error: any) {
-        var me = this;
-        appManager.unInstall(id,
-            ret => success(ret),
-            err => {
-                if (error !== null) {
-                    error(err);
-                }  else {
-                    me.presentAlertError(err);
-                }
-            });
-    }
-
-    async presentAlertError(err: string) {
+    async resetBrowserAlert() {
         const alert = await this.alertController.create({
-            message: err,
-            buttons: ['OK']
-        });
-
-        await alert.present();
-    }
-
-
-    onReceive(ret) {
-        console.log("ElastosJS  HomePage receive message:" + ret.message + ". type: " + ret.type + ". from: " + ret.from);
-        var params: any = ret.message;
-        if (typeof (params) === "string") {
-            params = JSON.parse(params);
-        }
-        console.log(params);
-        switch (ret.type) {
-            case MessageType.IN_REFRESH:
-                switch (params.action) {
-                    case "started":
-                    case "closed":
-                        managerService.getRunningList();
-                        break;
-                    case "installed":
-                        managerService.toast_installed(params.id);
-                    case "unInstalled":
-                    case "initiated":
-                        managerService.getAppInfos(true);
-                        break;
-                    case "authorityChanged":
-                        managerService.getAppInfos(false);
-                        break;
-                    case "currentLocaleChanged":
-                        break;
-                    case "launcher_upgraded":
-                        managerService.toast("Launcher have upgraded, please restart.");
-                }
-                break;
-            case MessageType.EX_INSTALL:
-                managerService.install(params.uri, false);
-                break;
-        }
-    }
-
-    getRows(size) {
-        this.rows = [];
-        for (let i = 0; i < this.appList.length; i += size) {
-            this.rows.push(this.appList.slice(i, i + size));
-        }
-    }
-
-    getAppInfos(refresh: boolean = false)/*: Promise<any> */ {
-        console.log('AppmanagerService getAppInfos');
-        let me = this;
-        appManager.getAppInfos(
-            (appsInfo, idList) => {
-                // console.log('appsInfo:', appsInfo, ' idList:', idList);
-                me.appInfos = appsInfo;
-                me.appList = idList;
-
-                let hiddenAppList: string[] = ["org.elastos.trinity.dapp.installer"];
-                for (var id of hiddenAppList) {
-                  let index = me.appList.indexOf(id, 0);
-                  if (index > -1) {
-                     me.appList.splice(index, 1);
+            mode: 'ios',
+            header: 'Are you sure?',
+            message: 'Resetting your browser will erase your browsing history and favorites',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: () => {}
+                },
+                {
+                  text: 'Proceed',
+                  handler: () => {
+                    this.installedApps.forEach((app) => {
+                        app.isFav = false;
+                    });
+                    this.allApps.forEach((app) => {
+                        app.isFav = false;
+                    });
+                    this.browsedApps = [];
+                    this.storage.setFavApps([]);
+                    this.storage.setBookmarkedApps([]);
+                    this.storage.setBrowsedApps([]);
                   }
                 }
-
-                if (refresh) {
-                    me.zone.run(() => {
-                        me.getRows(4);
-                        me.changeInfosLanguage(me.setting.currentLang);
-                    });
-                }
-            }
-        );
-    }
-
-    getRunningList() {
-        console.log("AppmanagerService getRunningList");
-        let me = this;
-        appManager.getRunningList(list => me.runningList = list);
-    }
-
-    getLastList() {
-        console.log("AppmanagerService getLastList");
-        let me = this;
-        appManager.getLastList(list => me.lastList = list);
-    }
-
-    setPluginAuthority(id: string, plugin: string, authority: AppManagerPlugin.PluginAuthority) {
-        var me = this;
-        appManager.setPluginAuthority(id, plugin, authority,
-            () => console.log('setPluginAuthority success'),
-            err => me.display_err(err));
-    }
-
-    setUrlAuthority(id: string, url: string, authority: AppManagerPlugin.UrlAuthority) {
-        var me = this;
-        appManager.setUrlAuthority(id, url, authority,
-            () => console.log('setUrlAuthority success'),
-            err => me.display_err(err));
-    }
-
-    getRuntimeVersion() {
-        appManager.getVersion( (val) => {
-            this.setting.version = val;
+              ]
         });
+        alert.present();
+    }
+
+    print_err(err) {
+        console.log("ElastosJS  Error: " + err);
+    }
+
+    /******************************** For Testing ********************************/
+    removeApp(app) {
+        appManager.unInstall(
+            app.id,
+            (res) => {
+                console.log('Uninstall Success', app);
+                this.installedApps = this.installedApps.filter(dapp => dapp.id === app.id);
+                this.allApps = this.allApps.filter(dapp => dapp.id === app.id);
+            },
+            (err) => console.log(err)
+        );
     }
 
     isSupportedLanguage(lang: string) {
         return this.supportedLanguage.indexOf(lang) === -1 ? false : true;
     }
 }
+
+
+
+

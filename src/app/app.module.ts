@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -10,19 +11,20 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { IonicStorageModule } from "@ionic/storage";
+import { IonicStorageModule } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { DragulaModule } from 'ng2-dragula';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { zh } from './../assets/i18n/zh';
 import { en } from './../assets/i18n/en';
-
 import { SafePipe } from './pipes/safe.pipe';
 import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
 import { SplashscreenPageModule } from './splash/splashscreen/splashscreen.module';
 
-/** 通过类引用方式解析国家化文件 */
+import { RunningAppsComponent } from './components/running-apps/running-apps.component';
+import { AppmanagerService } from './services/appmanager.service';
+
 export class CustomTranslateLoader implements TranslateLoader {
     public getTranslation(lang: string): Observable<any> {
         return Observable.create(observer => {
@@ -48,11 +50,13 @@ export function TranslateLoaderFactory() {
 @NgModule({
     declarations: [
         AppComponent,
-        SafePipe
+        RunningAppsComponent,
+        SafePipe,
     ],
-    entryComponents: [SplashscreenPage],
+entryComponents: [SplashscreenPage, RunningAppsComponent],
     imports: [
         BrowserModule,
+        HttpClientModule,
         IonicModule.forRoot(), AppRoutingModule, FormsModule, DragulaModule.forRoot(),
         IonicStorageModule.forRoot({
             name: '__launcher.db',
@@ -64,12 +68,13 @@ export function TranslateLoaderFactory() {
                 useFactory: (TranslateLoaderFactory)
             }
         }),
-        SplashscreenPageModule
+        SplashscreenPageModule,
     ],
     providers: [
         StatusBar,
         SplashScreen,
         InAppBrowser,
+        AppmanagerService,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],
     bootstrap: [AppComponent]

@@ -1,51 +1,17 @@
-// App Styles
-// ----------------------------------------------------------------------------
-// Put style rules here that you want to apply to the entire application. These
-// styles are for the entire app and not just one component. Additionally, this
-// file can hold Sass mixins, functions, and placeholder classes to be imported
-// and used throughout the application.
-
-// http://ionicframework.com/docs/theming/
-
-//TODO::
-// App Global Sass
-// --------------------------------------------------
-// Put style rules here that you want to apply globally. These
-// styles are for the entire app and not just one component.
-// Additionally, this file can be also used as an entry point
-// to import other Sass files to be included in the output CSS.
-//
-// Shared Sass variables, which can be used to adjust Ionic's
-// default Sass variables, belong in "theme/variables.scss".
-//
-// To declare rules for a specific mode, create a child rule
-// for the .md, .ios, or .wp mode classes. The mode class is
-// automatically applied to the <body> element in the app.
-
 @import "./functions.scss";
-
-$activeColor: #1b9cff;
-$defaulColor: #666666;
 
 header-bar {
     position: absolute;
     left: 0;
     right: 0;
-    top: 10px !important;
+    top: 0;
 }
 
-:root {
-    --ion-text-color: white;
-    --ion-background-color: #161723;
-    --ion-toolbar-color: #161723;
-    --ion-toolbar-background: rgb(255, 255, 255, 0.7);
-}
+.lightMode {
+    background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
 
-.my-custom-popup {
-    .popover-content {
-        width: 95.5%;
-        // height: px2rem(420px);
-        background-color: #000000;
+    ion-label, ion-icon, ion-img {
+        color: white;
     }
 }
 
@@ -55,45 +21,70 @@ header-bar {
     --ion-text-color: #000000;
 }
 
-.demo_line {
-    height: 1px;
-    border-top: 1px solid #ddd;
-    text-align: center;
-}
+.menu-container {
+    height: 896px;
+    // background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
 
-ion-button {
-    text-transform: none;
-}
-
-ion-icon {
-    width: px2rem(64px);
-    height: px2rem(64px);
-}
-
-.app-layout {
-        margin: 0 auto;
-        width: px2rem(150px);
-        // height: px2rem(200px);
+    ion-avatar {
+        display: flex;
         justify-content: center;
-        align-self: center;
-        text-align: center;
-        // background-color: green;
+        align-items: center;
+        background: #6f73fc;
+        height: 40px;
+        width: 40px;
 
-        img {
-            margin: 0 auto;
-            padding: 0;
-            width: px2rem(120px);
-            height: px2rem(120px);
-            border-radius: 8px;
+        ion-icon, ion-img {
+            // color: white;
+            overflow: visible !important;
+            height: 18px;
+            width: 18px;
         }
+    }
 
-        p {
-            margin-top: px2rem(13px);
-            padding: 0;
-            height: px2rem(33px);
-            text-align: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+    ion-label {
+        // color: white;
+        font-size: 14px;
+        letter-spacing: 1.63px;
+        line-height: 52px;
+    }
+
+    .app-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .app-title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .scan-container {
+        height: 95px;
+        border-bottom: 0.5px solid rgb(55, 55, 55);
+
+        ion-img {
+            height: 13.5px;
+            width: 14.5px;
         }
+    }
+
+    .fav-container {
+        height: 110px;
+        border-bottom: 0.5px solid rgb(55, 55, 55);
+
+        ion-label {
+            line-height: 0px;
+            padding: 15px 0 15px;
+        }
+    }
+
+    .apps-container {
+        border-bottom: 0.5px solid rgb(55, 55, 55);
+
+        ion-avatar {
+            background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
+        }
+    }
 }

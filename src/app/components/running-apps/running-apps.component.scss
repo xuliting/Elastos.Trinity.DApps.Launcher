@@ -1,0 +1,63 @@
+@import "../../functions.scss";
+
+ion-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: px2rem(70px);
+        height: px2rem(56px);
+    }
+
+    ion-label {
+        margin-top: 0;
+        text-align: center;
+        font-weight: 700;
+        font-size: 14px;
+    }
+}
+
+ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0px;
+    width: auto;
+    height: auto;
+
+    li {
+        padding: 5px;
+        display: inline-block; 
+
+        .app-layout {
+            margin: 0 auto;
+            width: px2rem(150px);
+            height: px2rem(150px);
+            justify-content: center;
+            align-self: center;
+            text-align: center;
+        
+            img {
+                margin: 0 auto;
+                padding: 0;
+                width: px2rem(100px);
+                height: px2rem(100px);
+                border-radius: 8px;
+            }
+        
+            p {
+                margin-top: px2rem(13px);
+                padding: 0;
+                height: px2rem(33px);
+                text-align: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-weight: 600;
+                font-size: 9px;
+            }
+        }
+    }
+}  

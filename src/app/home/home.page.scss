@@ -1,72 +1,90 @@
 @import "../functions.scss";
 
-.line-limit-length {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+ion-segment {
+  background: #5a62ff;
 
-// .aligncenter {
-    // clear: both;
-    // display: block;
-    // margin: auto;
-// }
-
-.point {
-    position: absolute;
-    top: px2rem(15px);
-    left: px2rem(80px);
-    width: px2rem(14px);
-    height: px2rem(14px);
-    background: url(../../assets/img/point.png) no-repeat center;
-    background-size: cover;
-}
-
-#home-bg {
-    overflow: hidden;
-    position: fixed;
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-    background-image: url("../../assets/img/bg.jpg"); 
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-}
-
-.app-layout {
-    p {
-        color: #161723 !important;
-        font-size: 10px;
-        font-weight: 600;
-    }
-}
-
-ion-toolbar{
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 10px !important;
-}
-
-ion-button {
+  ion-segment-button {
     ion-icon {
-        color: black;
+      font-size: 33px;
     }
+
+    ion-img {
+      width: 45px;
+      height: 45px;
+    }
+
+    ion-label {
+      margin-top: 2px;
+      text-transform: none;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 14px;
+      letter-spacing: 0.55px;
+    }
+  }
 }
 
-ion-grid {
-    margin-top: 2.1rem;
-    padding: 0 !important;
-    margin-left: px2rem(27px);
-    margin-right: px2rem(27px);
+ion-item {
+  --padding-start: 0px;
+  --padding-end: 0px;
 
-    ion-row {
-        align-items: center;
-        // height: px2rem(189px);
+  ion-row {
+    padding: 5px 0;
+    border-bottom: 1px solid rgb(230, 230, 230);
+  
+    .img-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      img {
+        border-radius: 15px !important;
+        overflow: hidden;
+        height: 48px;
+        width: 48px;
+      }
+    }
+  
+    .dapp-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      h2, p {
+        margin: 0;
+        // color: black !important;
+      }
+
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 9px !important;
+        font-weight: 500;
+      }
     }
 
-    div {
-        height: px2rem(200px);
+    .icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      ion-icon, ion-img {
+        height: 24.9px;
+        width: 22.9px;
+        color: #ffde6e;
+      }
     }
+  }
+}
+
+.darkMode {
+  background: #121212;
+  color: #ffffff;
+}
+
+.activeTab {
+  color: white;
 }

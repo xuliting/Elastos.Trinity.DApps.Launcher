@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__IDENTITY_ICON" width="16.354" height="16.281" data-name="IDENTITY ICON" viewBox="0 0 16.354 16.281">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#fff}
+        </style>
+    </defs>
+    <path id="prefix__Path_1" d="M389.82 8794.8a.516.516 0 0 1-.534-.533v-2.532a7.109 7.109 0 0 0-14.217 0v2.532a.534.534 0 0 1-1.068 0v-2.532a8.167 8.167 0 0 1 8.167-8.141 8.3 8.3 0 0 1 1.661.167 8.19 8.19 0 0 1 6.5 7.354c.016.206.023.414.023.62v2.532a.516.516 0 0 1-.532.533z" class="prefix__cls-1" data-name="Path 1" transform="translate(-374 -8783.593)"/>
+    <path id="prefix__Path_2" d="M390.222 8856.561a5.625 5.625 0 0 1-5.615-5.607v-2.533a2.013 2.013 0 0 0-4.027 0v2.533a5.611 5.611 0 0 1-5.6 5.607.532.532 0 0 1 0-1.064 4.543 4.543 0 0 0 4.532-4.543v-2.533a3.082 3.082 0 0 1 6.164 0v2.533a4.546 4.546 0 0 0 4.53 4.543.532.532 0 1 1 .016 1.064z" class="prefix__cls-1" data-name="Path 2" transform="translate(-374.417 -8840.279)"/>
+</svg>

@@ -1,50 +1,61 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-button slot="start" fill="clear" (click)="popoRunningManager($event)">
-      <ion-icon
-        slot="icon-only"
-        [name]="popup ? 'switch-light' : 'switch-dark'"
-      ></ion-icon>
-    </ion-button>
-    <span class="point" *ngIf="appManager.runningList.length > 0"></span>
-    <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="openScan()">
-        <ion-icon slot="icon-only" name="scan"> </ion-icon>
-      </ion-button>
-      <ion-button
-        fill="clear"
-        [routerLink]="['/my']"
-        routerDirection="forward"
-        (ionFocus)="touched = true"
-        (ionBlur)="touched = false"
-      >
-        <ion-icon
-          slot="icon-only"
-          [name]="touched ? 'my-light' : 'my-dark'"
-        ></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-no-margin ion-no-padding">
 
-<ion-content>
-  <div id="home-bg">
-    <ion-grid>
-      <ion-row *ngFor="let row of appManager.rows" align-items-center>
-        <ion-col
-          size="3"
-          align-self:center
-          *ngFor="let id of row; let i = index"
-        >
-          <div class="app-layout" (click)="onClick(id)">
-            <img
-              [src]="appManager.sanitize(appManager.appInfos[id].icons[0].src)"
-              alt=""
-            />
-            <p>{{ appManager.appInfos[id].name }}</p>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+  <ion-segment color="light" [class.darkMode]="theme.darkMode"> 
+    <ion-segment-button value="favAppsActive" (click)="favAppsActive = true">
+      <ion-img src="/assets/icon/bookmark-icon.svg" class="ion-padding-top" ></ion-img>
+      <!-- <ion-icon name="bookmark"></ion-icon> -->
+      <ion-label [class.activeTab]="favAppsActive">Favorites</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="!favAppsActive" (click)="favAppsActive = false">
+      <ion-img src="/assets/icon/component-154-2@2x.png" class="ion-padding-top" ></ion-img>
+      <!-- <ion-icon mode="ios" name="hourglass"></ion-icon> -->
+      <ion-label [class.activeTab]="!favAppsActive">Recent</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="favAppsActive" class="ion-margin-top">
+    <ion-item *ngFor="let app of getFavorites()" lines="none">
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+            <img [src]="appManager.sanitize(app.icons[0].src)"/>
+          </ion-col>
+          <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+            <ion-label>
+              <h2>{{ app.name }}</h2>
+              <p>{{ app.description.slice(0,70) }}...</p>
+            </ion-label>
+          </ion-col>
+          <ion-col size="1.5" class="icon-container" (click)="removeFav(app, 'favorites')">
+            <ion-icon name="bookmark"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
   </div>
+
+  <div *ngIf="!favAppsActive" class="ion-margin-top">
+    <ion-item lines="none" *ngFor="let app of appManager.browsedApps">
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+          <img [src]="appManager.sanitize(app.icons[0].src)"/>
+          </ion-col>
+          <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+            <ion-label>
+              <h2>{{ app.name }}</h2>
+              <p>{{ app.description.slice(0,70) }}...</p>
+            </ion-label>
+          </ion-col>
+          <ion-col size="1.5" class="icon-container" (click)="removeFav(app, 'recent')" *ngIf="app.isFav">
+            <ion-icon name="bookmark"></ion-icon>
+          </ion-col>
+          <ion-col size="1.5" class="icon-container" (click)="favApp(app, 'recent')" *ngIf="!app.isFav">
+            <ion-img src="assets/icon/bookmark-outline.svg"></ion-img>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </div>
+  
 </ion-content>
