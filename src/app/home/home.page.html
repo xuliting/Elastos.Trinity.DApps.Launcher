@@ -1,26 +1,24 @@
 <ion-content class="ion-no-margin ion-no-padding">
 
   <ion-segment color="light" [class.darkMode]="theme.darkMode"> 
-    <ion-segment-button value="favAppsActive" (click)="favAppsActive = true">
+    <ion-segment-button [class.activeTab]="favAppsActive" value="favAppsActive" (click)="favAppsActive = true">
       <ion-img src="/assets/icon/bookmark-icon.svg" class="ion-padding-top" ></ion-img>
-      <!-- <ion-icon name="bookmark"></ion-icon> -->
-      <ion-label [class.activeTab]="favAppsActive">Favorites</ion-label>
+      <ion-label>Favorites</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="!favAppsActive" (click)="favAppsActive = false">
-      <ion-img src="/assets/icon/component-154-2@2x.png" class="ion-padding-top" ></ion-img>
-      <!-- <ion-icon mode="ios" name="hourglass"></ion-icon> -->
-      <ion-label [class.activeTab]="!favAppsActive">Recent</ion-label>
+    <ion-segment-button [class.activeTab]="!favAppsActive" value="!favAppsActive" (click)="favAppsActive = false">
+      <ion-img src="/assets/icon/component-155-1.svg" class="ion-padding-top" ></ion-img>
+      <ion-label>Recent</ion-label>
     </ion-segment-button>
   </ion-segment>
 
-  <div *ngIf="favAppsActive" class="ion-margin-top">
-    <ion-item *ngFor="let app of getFavorites()" lines="none">
+  <div *ngIf="favAppsActive && appManager.getFavorites().length > 0" class="ion-margin-top apps-container">
+    <ion-item *ngFor="let app of appManager.getFavorites()" lines="none">
       <ion-grid class="ion-no-padding">
         <ion-row>
-          <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+          <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="openApp(app.id)">
             <img [src]="appManager.sanitize(app.icons[0].src)"/>
           </ion-col>
-          <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+          <ion-col size="8" size-xs="8" class="dapp-content" (click)="openApp(app.id)">
             <ion-label>
               <h2>{{ app.name }}</h2>
               <p>{{ app.description.slice(0,70) }}...</p>
@@ -34,14 +32,14 @@
     </ion-item>
   </div>
 
-  <div *ngIf="!favAppsActive" class="ion-margin-top">
+  <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container">
     <ion-item lines="none" *ngFor="let app of appManager.browsedApps">
       <ion-grid class="ion-no-padding">
         <ion-row>
-          <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="findApp(app.id)">
+          <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="openApp(app.id)">
           <img [src]="appManager.sanitize(app.icons[0].src)"/>
           </ion-col>
-          <ion-col size="8" size-xs="8" class="dapp-content" (click)="findApp(app.id)">
+          <ion-col size="8" size-xs="8" class="dapp-content" (click)="openApp(app.id)">
             <ion-label>
               <h2>{{ app.name }}</h2>
               <p>{{ app.description.slice(0,70) }}...</p>

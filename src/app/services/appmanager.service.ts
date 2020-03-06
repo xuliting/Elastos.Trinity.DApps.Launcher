@@ -38,32 +38,35 @@ export class AppmanagerService {
     public browsedApps: Dapp[] = [];
 
     /* For install progress bar */
-    //public progressTimer: any;
     public progressValue = 0;
     public checkingApp = false;
     private appChecked = false;
+    private checkedApps: string[] = [];
 
     /* Running manager */
     public popup = false;
     public runningList: any = [];
     public lastList: any = [];
+    public rows: any = [];
+
+    /* Languages */
+    private currentLang: string = null;
+    private supportedLanguage: string[] = ['en', 'zh'];
 
     private handledIntentId: number;
 
     constructor(
         private platform: Platform,
         private http: HttpClient,
-        private translate: TranslateService,
-        private storage: StorageService,
         private sanitizer: DomSanitizer,
         public zone: NgZone,
         public toastCtrl: ToastController,
         public alertController: AlertController,
         public popoverController: PopoverController,
-        public menuCtrl: MenuController
-    ) {
-        managerService = this;
-    }
+        public menuCtrl: MenuController,
+        private translate: TranslateService,
+        private storage: StorageService,
+    ) {}
 
     init() {
         this.getAppInfos();
@@ -71,16 +74,21 @@ export class AppmanagerService {
         this.getLastList();
 
         console.log('AppmanagerService init');
-        appManager.setListener((ret)=>{
+        appManager.setListener((ret) => {
             this.onReceiveInternal(ret);
         });
 
         if (this.platform.platforms().indexOf('cordova') >= 0) {
             console.log('Listening to intent events');
-            appManager.setIntentListener((ret)=>{
+            appManager.setIntentListener((ret) => {
               this.onReceiveExternal(ret);
             });
         }
+
+        // Empty checked apps every hour
+        setInterval(() => {
+            this.checkedApps = [];
+        }, 3600000);
     }
 
     /******************************** Intent Listener ********************************/
@@ -120,7 +128,7 @@ export class AppmanagerService {
                 switch (params.visible) {
                     case 'show':
                         console.log('App visibility:', params.visible);
-                        managerService.resetProgress();
+                        this.resetProgress();
                         break;
                 }
                 switch (ret.message) {
@@ -133,21 +141,24 @@ export class AppmanagerService {
             case MessageType.IN_REFRESH:
                 switch (params.action) {
                     case 'started':
+                        // titleBarManager.setTitle(params.name);
                         this.addToHistory(params.id);
+                        this.checkedApps.push(params.id);
                         break;
                     case 'closed':
                         if (this.popup) {
                             this.popoverController.dismiss();
                         }
                         this.resetProgress();
-                        // managerService.getBookmarks(params.id);
+                        // titleBarManager.setTitle('');
+                        // this.findBookmark(params.id);
                         break;
                     case 'unInstalled':
-                        // managerService.appUninstalled(params.id);
+                        // this.appUninstalled(params.id);
                         this.getAppInfos();
                         break;
                     case 'installed':
-                        // managerService.appInstalled(params.id);
+                        // this.appInstalled(params.id);
                         this.getAppInfos();
                         break;
                     case 'initiated':
@@ -157,6 +168,8 @@ export class AppmanagerService {
                         this.getAppInfos();
                         break;
                     case 'currentLocaleChanged':
+                        break;
+                    case "launcher_upgraded":
                         break;
                 }
                 break;
@@ -288,20 +301,20 @@ export class AppmanagerService {
     findApp(id: string) {
         console.log('Finding app', id);
         this.zone.run(() => {
+
+            // Initial conditions for app load progress
             this.checkingApp = true;
             this.appChecked = false;
 
             // Start progress bar
             this.progressValue = 1;
             titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
-            /*this.progressTimer = setInterval(() => {
-                this.progressValue += 2;
-                //appManager.setTitleBarProgress(this.progressValue);
-            }, 50);*/
 
-            // Check if app received from intent is installed or needs updating before starting app
+            // Check if app is installed or needs updating before starting app
             const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
-            if (targetApp) {
+
+            // Check if app was opened the past hour, if not proceed, else automatically start
+            if (targetApp && !this.checkedApps.includes(id)) {
                 this.http.get<any>('https://dapp-store.elastos.org/apps/' + id + '/manifest').subscribe((storeApp: any) => {
                     console.log('Got app!', storeApp);
                     if (storeApp.version === targetApp.version) {
@@ -322,6 +335,11 @@ export class AppmanagerService {
                     this.appChecked = true;
                     appManager.start(id);
                 });
+            } else if (targetApp && this.checkedApps.includes(id)) {
+                console.log('App already checked the past hour and starting', id);
+                console.log('Checked apps', this.checkedApps);
+                this.appChecked = true;
+                appManager.start(id);
             } else {
                 console.log(id + ' is not installed');
                 this.intentInstall(id);
@@ -329,34 +347,34 @@ export class AppmanagerService {
 
             setTimeout(() => {
                 if (!this.appChecked) {
-                    console.log('App failed to start, something went wrong with store server or download process');
+                    console.log('App failed to start in time, something went wrong with store server or download process');
                     this.checkingApp = false;
                     this.resetProgress();
                     this.appStartErrToast();
                 }
-            }, 10000);
+            }, 20000);
         });
     }
 
-  /*
-    Since versions aren't numbers nor can they be converted,
-    we need to loop through each number of each version and compare them
-  */
-  checkVersion(installedVer: string, storeVer: string, appId: string) {
-    const current = installedVer.split('.');
-    const fetched = storeVer.split('.');
-    for (let i = 0; i < storeVer.length; i++) {
-      const installedApp: number = parseInt(current[i]) || 0;
-      const storeApp: number = parseInt(fetched[i]) || 0;
-      if (storeApp > installedApp) {
-        this.intentInstall(appId); // If store version is newer, install
-      }
-      if (storeApp < installedApp) {
-        this.appChecked = true;
-        appManager.start(appId); // If store version is older, start app
-      }
+    /*
+        Since versions aren't numbers nor can they be converted,
+        we need to loop through each number of each version and compare them
+    */
+    checkVersion(installedVer: string, storeVer: string, appId: string) {
+        const current = installedVer.split('.');
+        const fetched = storeVer.split('.');
+        for (let i = 0; i < storeVer.length; i++) {
+            const installedApp: number = parseInt(current[i]) || 0;
+            const storeApp: number = parseInt(fetched[i]) || 0;
+            if (storeApp > installedApp) {
+                this.intentInstall(appId); // If store version is newer, install
+            }
+            if (storeApp < installedApp) {
+                this.appChecked = true;
+                appManager.start(appId); // If store version is older, start app
+            }
+        }
     }
-  }
 
     // Test Install
     async intentInstall(id: string) {
@@ -430,10 +448,6 @@ export class AppmanagerService {
     resetProgress() {
         this.checkingApp = false;
         this.progressValue = 0;
-        //clearInterval(this.progressTimer);
-        /*appManager.hideTitleBarProgress(() => {
-            console.log('Progress bar reset');
-        });*/
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
     }
@@ -462,8 +476,29 @@ export class AppmanagerService {
         }
     }
 
+    /******************************** Favorites ********************************/
+    getFavorites(): Dapp[] {
+        let favorites: Dapp[] = [];
+        this.installedApps.map(app => {
+          if (app.isFav) {
+            favorites.push(app);
+          }
+        });
+        return favorites;
+    }
+
     /******************************** Bookmarks ********************************/
-    getBookmarks(id: string) {
+    getBookmarks(): Dapp[] {
+        let bookmarks: Dapp[] = [];
+        this.installedApps.map(app => {
+          if (app.isBookmarked) {
+            bookmarks.push(app);
+          }
+        });
+        return bookmarks;
+    }
+
+    findBookmark(id: string) {
         this.installedApps.map(app => {
             if (app.id === id && app.isBookmarked === false) {
                 this.addBookmark(app);
@@ -509,7 +544,7 @@ export class AppmanagerService {
     addToHistory(paramsId: string) {
         console.log('Adding to browsing history', paramsId);
         const targetApp: Dapp = this.installedApps.find(app => app.id === paramsId);
-        if (targetApp.id === 'org.elastos.trinity.dapp.installer') {
+        if (!targetApp || targetApp.id === 'org.elastos.trinity.dapp.installer') {
             return;
         } else {
             this.browsedApps.unshift(targetApp);
@@ -586,18 +621,42 @@ export class AppmanagerService {
         appManager.closeApp(id);
     }
 
+    /******************************** Language  ********************************/
+    getLanguage() {
+        var me = this;
+        appManager.getLocale(
+            (defaultLang, currentLang, systemLang) => {
+                console.log('defaultLangL', defaultLang, ' currentLang:', currentLang, ' systemLang:', systemLang);
+                if (!this.isSupportedLanguage(systemLang)) {
+                    systemLang = 'en';
+                }
+                // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setDefaultLang(systemLang);
+                // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setSystemLang(systemLang);
+            }
+        );
+    }
+
+    isSupportedLanguage(lang: string) {
+        return this.supportedLanguage.indexOf(lang) === -1 ? false : true;
+    }
+
     /******************************** Alerts/Toasts ********************************/
     appStartErrToast() {
         this.toastCtrl.create({
             mode: 'ios',
             header: 'Something went wrong',
             message: 'Can\'t start app at this time, please try again',
-            color: 'success',
+            color: 'primary',
             duration: 4000,
             position: 'bottom'
         }).then(toast => toast.present());
     }
 
+    print_err(err) {
+        console.log("ElastosJS  Error: " + err);
+    }
+
+    /******************************** For Testing ********************************/
     async resetBrowserAlert() {
         const alert = await this.alertController.create({
             mode: 'ios',
@@ -617,6 +676,7 @@ export class AppmanagerService {
                     this.allApps.forEach((app) => {
                         app.isFav = false;
                     });
+                    this.resetProgress();
                     this.browsedApps = [];
                     this.storage.setFavApps([]);
                     this.storage.setBookmarkedApps([]);
@@ -626,23 +686,6 @@ export class AppmanagerService {
               ]
         });
         alert.present();
-    }
-
-    print_err(err) {
-        console.log("ElastosJS  Error: " + err);
-    }
-
-    /******************************** For Testing ********************************/
-    removeApp(app) {
-        appManager.unInstall(
-            app.id,
-            (res) => {
-                console.log('Uninstall Success', app);
-                this.installedApps = this.installedApps.filter(dapp => dapp.id === app.id);
-                this.allApps = this.allApps.filter(dapp => dapp.id === app.id);
-            },
-            (err) => console.log(err)
-        );
     }
 }
 

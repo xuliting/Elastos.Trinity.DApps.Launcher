@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { StorageService } from './storage.service';
 
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -39,9 +41,20 @@ export class ThemeService {
   setTheme(dark) {
     this.darkMode = dark;
     if (this.darkMode) {
+      // Set dark mode globally
       document.body.classList.add("dark");
+
+      // Set dark mode to native header
+      titleBarManager.setBackgroundColor("#121212");
+      TitleBarPlugin.TitleBarForegroundMode.LIGHT;
+
     } else {
+      // Remove dark mode globally
       document.body.classList.remove("dark");
+
+      // Remove dark mode to native header
+      titleBarManager.setBackgroundColor("#5a62ff");
+      TitleBarPlugin.TitleBarForegroundMode.DARK;
     }
   }
 }

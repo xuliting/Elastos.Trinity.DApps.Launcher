@@ -19,8 +19,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { zh } from './../assets/i18n/zh';
 import { en } from './../assets/i18n/en';
 import { SafePipe } from './pipes/safe.pipe';
-import { SplashscreenPage } from './splash/splashscreen/splashscreen.page';
-import { SplashscreenPageModule } from './splash/splashscreen/splashscreen.module';
 
 import { RunningAppsComponent } from './components/running-apps/running-apps.component';
 import { AppmanagerService } from './services/appmanager.service';
@@ -52,7 +50,7 @@ export function TranslateLoaderFactory() {
         RunningAppsComponent,
         SafePipe,
     ],
-entryComponents: [SplashscreenPage, RunningAppsComponent],
+entryComponents: [RunningAppsComponent],
     imports: [
         BrowserModule,
         HttpClientModule,
@@ -67,7 +65,6 @@ entryComponents: [SplashscreenPage, RunningAppsComponent],
                 useFactory: (TranslateLoaderFactory)
             }
         }),
-        SplashscreenPageModule,
     ],
     providers: [
         StatusBar,

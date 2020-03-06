@@ -35,28 +35,6 @@ export class HomePage implements OnInit {
     this.appManager.resetProgress();
   }
 
-  /******************************** Fetch Favorite Apps ********************************/
-  getFavorites(): Dapp[] {
-    let favorites: Dapp[] = [];
-    this.appManager.installedApps.map(app => {
-      if (app.isFav) {
-        favorites.push(app);
-      }
-    });
-    return favorites;
-  }
-
-  /******************************** Fetch Bookmarked Apps ********************************/
-  getBookmarks(): Dapp[] {
-    let bookmarks: Dapp[] = [];
-    this.appManager.installedApps.map(app => {
-      if (app.isBookmarked) {
-        bookmarks.push(app);
-      }
-    });
-    return bookmarks;
-  }
-
   /******************************** Handle Favorites ********************************/
   favApp(app: Dapp, section: string) {
     app.isFav = true;
@@ -144,7 +122,7 @@ export class HomePage implements OnInit {
   }
 
   /************** Check app if installed or needs updating before opening **************/
-  findApp(id: string) {
+  openApp(id: string) {
     if (this.appManager.checkingApp) {
       console.log('Installation in progress');
       return;

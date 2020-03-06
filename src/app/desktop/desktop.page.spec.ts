@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SplashscreenPage } from './splashscreen.page';
+import { DesktopPage } from './desktop.page';
 
-describe('SplashscreenPage', () => {
-  let component: SplashscreenPage;
-  let fixture: ComponentFixture<SplashscreenPage>;
+describe('DesktopPage', () => {
+  let component: DesktopPage;
+  let fixture: ComponentFixture<DesktopPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SplashscreenPage ],
+      declarations: [ DesktopPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SplashscreenPage);
+    fixture = TestBed.createComponent(DesktopPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
