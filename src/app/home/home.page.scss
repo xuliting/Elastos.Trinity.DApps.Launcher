@@ -20,71 +20,85 @@ ion-segment {
       font-weight: 800;
       line-height: 14px;
       letter-spacing: 0.55px;
+      color: #4148c7;
     }
   }
 }
 
-ion-item {
-  --padding-start: 0px;
-  --padding-end: 0px;
-
-  ion-row {
-    padding: 5px 0;
-    border-bottom: 1px solid rgb(230, 230, 230);
+.apps-container {
+  border-top: 1px solid rgb(230, 230, 230);
   
-    .img-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  ion-item {
+    --padding-start: 0px;
+    --inner-padding-end: 0px;
   
-      img {
-        border-radius: 15px !important;
-        overflow: hidden;
-        height: 48px;
-        width: 48px;
+    ion-row {
+      padding: 5px 0;
+      border-bottom: 1px solid rgb(230, 230, 230);
+    
+      .img-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        img {
+          border-radius: 15px !important;
+          overflow: hidden;
+          height: 48px;
+          width: 48px;
+        }
       }
-    }
+    
+      .dapp-content {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
   
-    .dapp-content {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      h2, p {
-        margin: 0;
-        // color: black !important;
+        h2, p {
+          margin: 0;
+          // color: black !important;
+        }
+  
+        h2 {
+          font-size: 16px;
+          font-weight: 600;
+        }
+  
+        p {
+          font-size: 9px !important;
+          font-weight: 500;
+        }
       }
-
-      h2 {
-        font-size: 16px;
-        font-weight: 600;
-      }
-
-      p {
-        font-size: 9px !important;
-        font-weight: 500;
-      }
-    }
-
-    .icon-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      ion-icon, ion-img {
-        height: 24.9px;
-        width: 22.9px;
-        color: #ffde6e;
+  
+      .icon-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+  
+        ion-icon, ion-img {
+          height: 24.9px;
+          width: 22.9px;
+          color: #ffde6e;
+        }
       }
     }
   }
 }
 
 .darkMode {
-  background: #121212;
+  background: #1A1B1E;
   color: #ffffff;
 }
 
 .activeTab {
-  color: white;
+  border-bottom: 4px solid white;
+
+  ion-img {
+    fill: white !important;
+    filter: brightness(0) invert(1);
+  }
+
+  ion-label {
+    color: white !important;
+  }
 }

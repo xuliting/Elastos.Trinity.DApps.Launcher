@@ -5,12 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SplashscreenPage } from './splashscreen.page';
+import { DesktopPage } from './desktop.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: SplashscreenPage
+    component: DesktopPage
   }
 ];
 
@@ -21,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [SplashscreenPage]
+  declarations: [DesktopPage]
 })
-export class SplashscreenPageModule {}
+export class DesktopPageModule {}
