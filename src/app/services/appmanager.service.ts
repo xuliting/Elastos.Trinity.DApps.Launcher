@@ -580,7 +580,7 @@ export class AppmanagerService {
         });
         console.log('Candidates for uninstall', uninstallApps, uninstallApps.length);
 
-        if (uninstallApps.length > 3) {
+        if (uninstallApps.length > 10) {
             console.log('Uninstalling..', uninstallApps[uninstallApps.length - 1]);
             appManager.unInstall(
                 uninstallApps[uninstallApps.length - 1].id,
