@@ -74,7 +74,6 @@ export class HomePage implements OnInit {
 
     this.appManager.genericToast(app.name + ' removed from favorites');
     this.appManager.storeFavorites();
-    this.appManager.uninstallApp();
   }
 
   /******************************** Handle Bookmarks ********************************/
@@ -90,7 +89,6 @@ export class HomePage implements OnInit {
   removeBookmark(app: Dapp) {
     app.isBookmarked = false;
     this.appManager.storeBookmarks();
-    this.appManager.uninstallApp();
   }
 
   /******************************** Handle History ********************************/

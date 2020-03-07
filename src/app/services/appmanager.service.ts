@@ -33,8 +33,12 @@ export class AppmanagerService {
     /* Apps list */
     public appInfos: AppManagerPlugin.AppInfo[] = [];
     public allApps: Dapp[] = [];
-    public installedApps: Dapp[] = [];
+
+    /* Native apps */
     public nativeApps: Dapp[] = [];
+
+    /* 3rd party apps */
+    public installedApps: Dapp[] = [];
     public browsedApps: Dapp[] = [];
     public favorites: string[] = [];
     public bookmarks: string[] = [];
@@ -439,41 +443,7 @@ export class AppmanagerService {
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
     }
 
-    /******************************** Uninstall Last Installed App ********************************/
-    uninstallApp() {
-        let uninstallApps: Dapp[] = [];
-        this.installedApps.map(app => {
-            if (app.isFav || app.isBookmarked) {
-                return;
-            } else {
-                uninstallApps.push(app);
-            }
-        });
-        console.log('Candidates for uninstall', uninstallApps, uninstallApps.length);
-
-        if (uninstallApps.length > 5) {
-            console.log('Uninstalling..', uninstallApps[uninstallApps.length - 1]);
-            appManager.unInstall(
-                uninstallApps[uninstallApps.length - 1].id,
-                (res) => {
-                    console.log('Uninstall Success', uninstallApps[uninstallApps.length - 1].id);
-                    this.installedApps.filter(app => app.id === uninstallApps[uninstallApps.length - 1].id);
-                },
-                (err) => console.log(err));
-        }
-    }
-
     /******************************** Favorites ********************************/
-  /*   getFavorites(): Dapp[] {
-        let favorites: Dapp[] = [];
-        this.installedApps.map(app => {
-          if (app.isFav) {
-            favorites.push(app);
-          }
-        });
-        return favorites;
-    } */
-
     getFavorites(): Dapp[] {
         return this.installedApps.filter((app) => this.favorites.includes(app.id));
     }
@@ -489,16 +459,6 @@ export class AppmanagerService {
     }
 
     /******************************** Bookmarks ********************************/
-   /*  getBookmarks(): Dapp[] {
-        let bookmarks: Dapp[] = [];
-        this.installedApps.map(app => {
-          if (app.isBookmarked) {
-            bookmarks.push(app);
-          }
-        });
-        return bookmarks;
-    } */
- 
     getBookmarks(): Dapp[] {
         return this.installedApps.filter((app) => this.bookmarks.includes(app.id));
     }
@@ -605,6 +565,33 @@ export class AppmanagerService {
             }
         }, []);
         this.storage.setBrowsedApps(this.browsedApps);
+        this.uninstallApp();
+    }
+
+    /******************************** Uninstall Last Browsed App  ********************************/
+    uninstallApp() {
+        let uninstallApps: Dapp[] = [];
+        this.browsedApps.map(app => {
+            if (app.isFav || app.isBookmarked) {
+                return;
+            } else {
+                uninstallApps.push(app);
+            }
+        });
+        console.log('Candidates for uninstall', uninstallApps, uninstallApps.length);
+
+        if (uninstallApps.length > 3) {
+            console.log('Uninstalling..', uninstallApps[uninstallApps.length - 1]);
+            appManager.unInstall(
+                uninstallApps[uninstallApps.length - 1].id,
+                (res) => {
+                    console.log('Uninstall Success', uninstallApps[uninstallApps.length - 1].id);
+                    this.browsedApps = this.browsedApps.filter(app => app.id !== uninstallApps[uninstallApps.length - 1].id);
+                    this.installedApps = this.installedApps.filter(app => app.id !== uninstallApps[uninstallApps.length - 1].id);
+                    this.storage.setBrowsedApps(this.browsedApps);
+                },
+                (err) => console.log(err));
+        }
     }
 
     /******************************** Running Manager ********************************/
