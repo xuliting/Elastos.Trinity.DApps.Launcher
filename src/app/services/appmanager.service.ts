@@ -31,7 +31,9 @@ enum MessageType {
 export class AppmanagerService {
 
     /* Apps list */
-    public appInfos: AppManagerPlugin.AppInfo[] = [];
+    /* TO DO -> error 'versionCode' does not exist on type 'AppInfo'? */
+    // public appInfos: AppManagerPlugin.AppInfo[] = []; */
+    public appInfos: any[] = [];
     public allApps: Dapp[] = [];
 
     /* Native apps */
@@ -314,7 +316,9 @@ export class AppmanagerService {
             titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
 
             // Check if app is installed or needs updating before starting app
-            const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
+            /* TO DO -> error 'versionCode' does not exist on type 'AppInfo'? */
+            //  const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
+            const targetApp = this.appInfos.find(app => app.id === id);
 
             // Check if app was opened the past hour, if not proceed, else automatically start
             if (targetApp && !this.checkedApps.includes(id)) {
@@ -505,18 +509,9 @@ export class AppmanagerService {
     }
 
     /******************************** Browsing History ********************************/
-/*     addToHistory(paramsId: string) {
-        console.log('Adding to browsing history', paramsId);
-        const targetApp: Dapp = this.installedApps.find(app => app.id === paramsId);
-        if (!targetApp || targetApp.id === 'org.elastos.trinity.dapp.installer') {
-            return;
-        } else {
-            this.browsedApps.unshift(targetApp);
-            this.removeDuplicates(this.browsedApps);
-        }
-    } */
-
     addToHistory(paramsId: string) {
+        console.log('Adding to browsing history', paramsId);
+
         appManager.getAppInfos((info) => {
             this.appInfos = Object.values(info);
         });
