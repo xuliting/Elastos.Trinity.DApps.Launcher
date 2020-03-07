@@ -40,7 +40,7 @@ export class StorageService {
   /*** Browsing History ***/
   public setBrowsedApps(value: any) {
     return this.storage.set("history", JSON.stringify(value)).then((data) => {
-      console.log('Stored Browsed Apps', data);
+      console.log('Stored Browsed Apps');
     });
   }
 

@@ -32,7 +32,6 @@ export class HomePage implements OnInit {
 
   ionViewWillEnter() {
     this.isBrowsedAppFav();
-    this.appManager.resetProgress();
   }
 
   /******************************** Handle Favorites ********************************/
@@ -48,8 +47,8 @@ export class HomePage implements OnInit {
       });
     }
 
-    this.appAddedToFav(app);
-    this.storeFavorites();
+    this.appManager.genericToast(app.name + ' added to favorites');
+    this.appManager.storeFavorites();
   }
 
   removeFav(app: Dapp, section: string) {
@@ -73,20 +72,9 @@ export class HomePage implements OnInit {
       });
     }
 
-    this.appRemovedFromFav(app);
-    this.storeFavorites();
+    this.appManager.genericToast(app.name + ' removed from favorites');
+    this.appManager.storeFavorites();
     this.appManager.uninstallApp();
-  }
-
-  storeFavorites() {
-    let favorites: string[] = [];
-    this.appManager.installedApps.map(dapp => {
-      if (dapp.isFav) {
-        favorites.push(dapp.id);
-      }
-    });
-
-    this.storage.setFavApps(favorites);
   }
 
   /******************************** Handle Bookmarks ********************************/
@@ -111,13 +99,10 @@ export class HomePage implements OnInit {
       browsedApp.isFav = false;
     });
 
-    this.appManager.installedApps.map(installedApp => {
-      this.appManager.browsedApps.map((browsedApp) => {
-        if (installedApp.isFav && installedApp.id === browsedApp.id) {
-          console.log('Browsed app is favorite', browsedApp.id);
-          browsedApp.isFav = true;
-        }
-      });
+    this.appManager.browsedApps.map((browsedApp) => {
+      if (this.appManager.favorites.includes(browsedApp.id)) {
+        browsedApp.isFav = true;
+      }
     });
   }
 
@@ -131,26 +116,5 @@ export class HomePage implements OnInit {
     } else {
       this.appManager.findApp(id);
     }
-  }
-
-  /******************************** Alerts ********************************/
-  async appAddedToFav(app: Dapp) {
-    const toast = await this.toastCtrl.create({
-      mode: 'ios',
-      message: app.name + ' added to favorites',
-      color: 'primary',
-      duration: 2000
-    });
-    toast.present();
-  }
-
-  async appRemovedFromFav(app: Dapp) {
-    const toast = await this.toastCtrl.create({
-      mode: 'ios',
-      message: app.name + ' removed from favorites',
-      color: 'primary',
-      duration: 2000
-    });
-    toast.present();
   }
 }
