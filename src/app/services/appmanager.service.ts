@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
+import { resolveSoa } from 'dns';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -45,17 +46,14 @@ export class AppmanagerService {
     public favorites: string[] = [];
     public bookmarks: string[] = [];
 
+    /* Background apps */
+    public backgroundApps: any = [];
+
     /* For install progress bar */
     public progressValue = 0;
     public checkingApp = false;
     private appChecked = false;
     private checkedApps: string[] = [];
-
-    /* Running manager */
-    public popup = false;
-    public runningList: any = [];
-    public lastList: any = [];
-    public rows: any = [];
 
     /* Languages */
     private currentLang: string = null;
@@ -77,9 +75,8 @@ export class AppmanagerService {
     ) {}
 
     init() {
+        this.getRunningApps();
         this.getAppInfos();
-        this.getRunningList();
-        this.getLastList();
 
         console.log('AppmanagerService init');
         appManager.setListener((ret) => {
@@ -130,7 +127,6 @@ export class AppmanagerService {
             case MessageType.INTERNAL:
                 switch (params.action) {
                     case 'toggle':
-                        this.popRunningManager();
                         break;
                 }
                 switch (params.visible) {
@@ -141,6 +137,7 @@ export class AppmanagerService {
                 }
                 switch (ret.message) {
                     case 'menu-toggle':
+                    this.resetProgress();
                     this.menuCtrl.toggle();
                     break;
                 }
@@ -150,14 +147,13 @@ export class AppmanagerService {
                 switch (params.action) {
                     case 'started':
                         // titleBarManager.setTitle(params.name);
-                        this.resetProgress();
+                        this.getRunningApps();
                         this.addToHistory(params.id);
                         this.checkedApps.push(params.id);
+                        this.resetProgress();
                         break;
                     case 'closed':
-                        if (this.popup) {
-                            this.popoverController.dismiss();
-                        }
+                        this.getRunningApps();
                         this.resetProgress();
                         // titleBarManager.setTitle('');
                         // this.findBookmark(params.id);
@@ -440,6 +436,7 @@ export class AppmanagerService {
     }
 
     resetProgress() {
+        console.log('Resetting progress');
         this.checkingApp = false;
         this.progressValue = 0;
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
@@ -590,42 +587,33 @@ export class AppmanagerService {
     }
 
     /******************************** Running Manager ********************************/
-    getRunningList(): Promise<void> {
+    fetchRunningList() {
         return new Promise((resolve, reject) => {
             appManager.getRunningList((list) => {
                 console.log('Got running apps', list);
-                this.runningList = list;
-                resolve();
+                resolve(list || []);
             });
         });
     }
 
-    getLastList() {
-        console.log('AppmanagerService getLastList');
-        appManager.getLastList(list => this.lastList = list);
-    }
+    getRunningApps() {
+        this.backgroundApps = [];
 
-    async popRunningManager() {
-        await this.getRunningList();
+        appManager.getRunningList((list) => {
+            console.log('Got runnings apps', list);
 
-        if (!this.popup) {
-            this.popup = true;
-            this.presentPopover();
-        } else {
-            this.popoverController.dismiss();
-        }
-    }
+            appManager.getAppInfos((info) => {
+                this.appInfos = Object.values(info);
 
-    async presentPopover() {
-        const popover = await this.popoverController.create({
-            component: RunningAppsComponent,
-            componentProps: {
-                apps: this.runningList
-            },
-            translucent: true,
+                this.appInfos.map((app) => {
+                    if (list.includes(app.id)) {
+                        this.backgroundApps.push(app);
+                    }
+                });
+            });
         });
-        popover.onDidDismiss().then(() => { this.popup = false; });
-        return await popover.present();
+
+        console.log('Apps running', this.backgroundApps);
     }
 
     /******************************** Intent Actions ********************************/

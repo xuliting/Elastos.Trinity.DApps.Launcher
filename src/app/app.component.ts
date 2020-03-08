@@ -21,19 +21,19 @@ export class AppComponent {
         name: 'scanner',
         color: '#1317ac',
         id: 'org.elastos.trinity.dapp.qrcodescanner',
-        iconDir: '/assets/icon/qr-scanner-icon-white@2x.png',
+        iconDir: '/assets/apps/qr-scanner-icon-white@2x.png',
         active: false
     };
 
     public sections = [
-        { name: 'desktop', color: '#20e3d2', id: null, iconDir: '/assets/icon/home-icon-white@2x.png', active: false },
-        { name: 'dapp browser', color: '#f06666', id: null, iconDir: '/assets/icon/dapp-browser-icon-white@2x.png', active: false },
-        { name: 'wallet', color: '#e853dd', id: 'org.elastos.trinity.dapp.wallet', iconDir: '/assets/icon/wallet-icon@2x.png', active: false },
-        { name: 'identity', color: '#5aacff', id: 'org.elastos.trinity.dapp.did', iconDir: '/assets/icon/identity-icon@2x.png', active: false },
-        { name: 'contacts', color: '#5cd552', id: 'org.elastos.trinity.dapp.friends', iconDir: '/assets/icon/friends-icon-white@2x.png', active: false },
-        { name: 'node voting', color: '#9c50ff', id: 'org.elastos.trinity.dapp.dposvoting', iconDir: '/assets/icon/dpos-voting-icon-white@2x.png', active: false },
-        { name: 'candidate voting', color: '#ffde6e', id: null, iconDir: '/assets/icon/crc-voting-icon-white@2x.png', active: false },
-        { name: 'settings', color: '#555555', id: 'org.elastos.trinity.dapp.settings', iconDir: '/assets/icon/settings-icon-white@2x.png', active: false },
+        { name: 'desktop', color: '#20e3d2', id: null, iconDir: '/assets/apps/home-icon-white@2x.png', active: false },
+        { name: 'dapp browser', color: '#f06666', id: null, iconDir: '/assets/apps/dapp-browser-icon-white@2x.png', active: false },
+        { name: 'wallet', color: '#e853dd', id: 'org.elastos.trinity.dapp.wallet', iconDir: '/assets/apps/wallet-icon@2x.png', active: false },
+        { name: 'identity', color: '#5aacff', id: 'org.elastos.trinity.dapp.did', iconDir: '/assets/apps/identity-icon@2x.png', active: false },
+        { name: 'contacts', color: '#5cd552', id: 'org.elastos.trinity.dapp.friends', iconDir: '/assets/apps/friends-icon-white@2x.png', active: false },
+        { name: 'node voting', color: '#9c50ff', id: 'org.elastos.trinity.dapp.dposvoting', iconDir: '/assets/apps/dpos-voting-icon-white@2x.png', active: false },
+        { name: 'candidate voting', color: '#ffde6e', id: null, iconDir: '/assets/apps/crc-voting-icon-white@2x.png', active: false },
+        { name: 'settings', color: '#555555', id: 'org.elastos.trinity.dapp.settings', iconDir: '/assets/apps/settings-icon-white@2x.png', active: false },
     ];
 
     slideOpts = {
