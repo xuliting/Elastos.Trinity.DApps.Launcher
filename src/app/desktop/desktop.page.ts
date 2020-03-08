@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { IonSlides } from '@ionic/angular';
 
 declare let appManager: AppManagerPlugin.AppManager;
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 @Component({
   selector: 'app-desktop',
@@ -47,6 +48,10 @@ export class DesktopPage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    titleBarManager.setTitle("Desktop");
   }
 
   /************** Check app if it's installed or needs updating before opening **************/
