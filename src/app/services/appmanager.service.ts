@@ -59,7 +59,7 @@ export class AppmanagerService {
     private currentLang: string = null;
     private supportedLanguage: string[] = ['en', 'zh'];
 
-    private handledIntentId: number;
+    private handledIntentId: Number;
 
     constructor(
         private platform: Platform,
@@ -80,13 +80,13 @@ export class AppmanagerService {
 
         console.log('AppmanagerService init');
         appManager.setListener((ret) => {
-            this.onReceiveInternal(ret);
+            this.onMessageReceived(ret);
         });
 
         if (this.platform.platforms().indexOf('cordova') >= 0) {
             console.log('Listening to intent events');
             appManager.setIntentListener((ret) => {
-              this.onReceiveExternal(ret);
+              this.onIntentReceived(ret);
             });
         }
 
@@ -98,8 +98,8 @@ export class AppmanagerService {
 
     /******************************** Intent Listener ********************************/
 
-    // External
-    onReceiveExternal(ret) {
+    // Intent
+    onIntentReceived(ret: AppManagerPlugin.ReceivedIntent) {
         console.log('Received external intent', ret);
         switch (ret.action) {
             case 'app':
@@ -109,8 +109,8 @@ export class AppmanagerService {
         }
     }
 
-    // Internal
-    onReceiveInternal(ret) {
+    // Message
+    onMessageReceived(ret: AppManagerPlugin.ReceivedMessage) {
         console.log('Received internal intent', ret);
         console.log('ElastosJS  HomePage receive message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
 

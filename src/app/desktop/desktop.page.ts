@@ -50,7 +50,8 @@ export class DesktopPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
+    titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DESKTOP);
     titleBarManager.setTitle("Desktop");
   }
 

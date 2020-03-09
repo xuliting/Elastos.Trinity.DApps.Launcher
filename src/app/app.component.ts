@@ -60,9 +60,10 @@ export class AppComponent {
         this.platform.ready().then(() => {
             console.log('platform.ready');
             screen.orientation.lock('portrait');
-            this.statusBar.styleDefault();
-            this.splashScreen.hide();
+            //this.statusBar.styleDefault();
+            //this.splashScreen.hide();
             this.appManager.init();
+            this.router.navigate(["desktop"]);
         });
     }
 

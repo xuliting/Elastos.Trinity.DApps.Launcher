@@ -8,6 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Dapp } from '../models/dapps.model';
 import { ThemeService } from '../services/theme.service';
 
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -31,6 +33,8 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DEFAULT);
+    titleBarManager.setNavigationMode(TitleBarPlugin.TitleBarNavigationMode.BACK);
     this.isBrowsedAppFav();
   }
 
