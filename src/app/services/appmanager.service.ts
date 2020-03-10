@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, ToastController, PopoverController, MenuController } from '@ionic/angular';
+import { AlertController, ToastController, PopoverController, MenuController, NavController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
@@ -9,6 +9,7 @@ import { Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 import { resolveSoa } from 'dns';
+import { Router } from '@angular/router';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -72,6 +73,7 @@ export class AppmanagerService {
         public menuCtrl: MenuController,
         private translate: TranslateService,
         private storage: StorageService,
+        private navController: NavController
     ) {}
 
     init() {
@@ -137,9 +139,13 @@ export class AppmanagerService {
                 }
                 switch (ret.message) {
                     case 'menu-toggle':
-                    this.resetProgress();
-                    this.menuCtrl.toggle();
-                    break;
+                        this.resetProgress();
+                        this.menuCtrl.toggle();
+                        break;
+                    case 'navback':
+                        // Go back to previous screen
+                        this.navController.back();
+                        break;
                 }
                 break;
 
