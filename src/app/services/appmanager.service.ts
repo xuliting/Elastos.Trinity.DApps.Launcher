@@ -33,9 +33,7 @@ enum MessageType {
 export class AppmanagerService {
 
     /* Apps list */
-    /* TO DO -> error 'versionCode' does not exist on type 'AppInfo'? */
-    // public appInfos: AppManagerPlugin.AppInfo[] = []; */
-    public appInfos: any[] = [];
+    public appInfos: AppManagerPlugin.AppInfo[] = [];
     public allApps: Dapp[] = [];
 
     /* Native apps */
@@ -113,8 +111,7 @@ export class AppmanagerService {
 
     // Message
     onMessageReceived(ret: AppManagerPlugin.ReceivedMessage) {
-        console.log('Received internal intent', ret);
-        console.log('ElastosJS  HomePage receive message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
+        console.log('Elastos launcher received message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
 
         let params: any = ret.message;
         if (typeof (params) === 'string') {
@@ -145,6 +142,22 @@ export class AppmanagerService {
                     case 'navback':
                         // Go back to previous screen
                         this.navController.back();
+                        break;
+                    case 'notifications-toggle':
+                        // Toggles the notifications panel on/off
+                        // TODO
+                        break;
+                    case 'runningapps-toggle':
+                        // Toggles running apps list on/off
+                        // TODO
+                        break;
+                    case 'scan-clicked':
+                        // Launch the scanner app
+                        this.findApp("org.elastos.trinity.dapp.qrcodescanner");
+                        break;
+                    case 'settings-clicked':
+                        // Launch the settings app
+                        this.findApp("org.elastos.trinity.dapp.settings");
                         break;
                 }
                 break;
@@ -318,9 +331,7 @@ export class AppmanagerService {
             titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
 
             // Check if app is installed or needs updating before starting app
-            /* TO DO -> error 'versionCode' does not exist on type 'AppInfo'? */
-            //  const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
-            const targetApp = this.appInfos.find(app => app.id === id);
+            const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
 
             // Check if app was opened the past hour, if not proceed, else automatically start
             if (targetApp && !this.checkedApps.includes(id)) {
