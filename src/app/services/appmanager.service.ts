@@ -180,6 +180,8 @@ export class AppmanagerService {
                     case 'unInstalled':
                         break;
                     case 'installed':
+                        titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
+
                         this.genericToast('Installed ' + params.id);
                         this.getAppInfos().then(() => {
                             appManager.start(params.id);
@@ -383,8 +385,9 @@ export class AppmanagerService {
     // Test Install
     async intentInstall(id: string) {
         console.log('Downloading...' + id);
-        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
+        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
         const epkPath = await this.downloadDapp(id);
+    
         console.log('EPK file downloaded and saved to ' + epkPath);
         this.installApp(epkPath, id);
     }
@@ -422,6 +425,7 @@ export class AppmanagerService {
                 // Save to a temporary location
                 let filePath = await this._savedDownloadedBlobToTempLocation(blob);
 
+                console.log("Download operation completed");
                 resolve(filePath);
             });
         });
@@ -435,11 +439,18 @@ export class AppmanagerService {
                 dirEntry.getFile(fileName, { create: true, exclusive: false }, (fileEntry) => {
                     console.log('Downloaded file entry', fileEntry);
                     fileEntry.createWriter((fileWriter) => {
-                    fileWriter.write(blob);
-                    resolve('trinity:///data/' + fileName);
+                        fileWriter.onwriteend = (event) => {
+                            console.log("File written");
+                            resolve('trinity:///data/' + fileName);
+                        };
+                        fileWriter.onerror = (event) => {
+                            console.error('createWriter ERROR - ' + JSON.stringify(event));
+                            reject(event);
+                        };
+                        fileWriter.write(blob);
                     }, (err) => {
-                    console.error('createWriter ERROR - ' + JSON.stringify(err));
-                    reject(err);
+                        console.error('createWriter ERROR - ' + JSON.stringify(err));
+                        reject(err);
                     });
                 }, (err) => {
                     console.error('getFile ERROR - ' + JSON.stringify(err));
