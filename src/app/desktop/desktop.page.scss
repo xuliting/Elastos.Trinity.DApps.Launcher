@@ -1,5 +1,6 @@
 .container {
-
+  min-height: 100%;
+  
   ion-avatar {
     display: flex;
     justify-content: center;
@@ -56,10 +57,9 @@
           width: 40px;
       
           ion-icon, ion-img {
-              // color: white;
-              overflow: visible !important;
-              height: 18px;
-              width: 18px;
+            overflow: visible !important;
+            height: 18px;
+            width: 18px;
           }
         }
       }
@@ -88,29 +88,36 @@
         }
       }
 
-      .fav-list {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: none;
-        box-shadow: none;
-        padding: 9px 27px;
-
-        ion-col {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 6px;
-
-          .app-icon {
+      .description-container {
+        .description {
+          border-bottom: none;
+          box-shadow: none;
+  
+          .bullet {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-end;
+            align-items: flex-start;
+  
+            span {
+              font-size: 30px;
+            }
           }
-
-          ion-label {
-            font-size: 9px;
+  
+          p {
+            font-size: 10px;
             font-weight: 500;
+            line-height: 1.6;
+            letter-spacing: 0.15px;
+            text-align: left;
+            margin-bottom: 0;
+            color: #ffffff;
+          }
+        }
+
+        .button {
+          h5 {
+            font-size: 9px;
+            color: #5b62ff;
           }
         }
       }
@@ -120,14 +127,14 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-        padding: 0px 27px 9px;
+        padding: 9px 27px;
 
         .fav-app {
           display: flex;
           justify-content: center;
           align-items: center;
           width: 70px;
-          height: 70px;
+          height: 80px;
 
           div {
             display: flex;
@@ -139,49 +146,6 @@
               padding-top: 5px;
               font-size: 9px;
               font-weight: 500;
-            }
-          }
-        }
-      }
-
-      .running-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: space-around;
-
-        .running-app {
-          margin: 6px 12px;
-          width: 386px;
-          height: 59px;
-          border-radius: 9px;
-          background-color: #ffffff;
-          border-bottom: none;
-          box-shadow: none;
-
-          .running-logo {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-          }
-
-          .running-content {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-
-            ion-label {
-              h2 {
-                color: black;
-                font-size: 13px;
-                font-weight: 500;
-                line-height: 1.23;
-              }
-          
-              p {
-                font-size: 7px !important;
-                line-height: 1.29;
-              }
             }
           }
         }

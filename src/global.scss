@@ -53,32 +53,8 @@
     src: url('assets/fonts/Raleway-Black.ttf') format('truetype');
 }
 
-:root {
-    --ion-toolbar-color: white;
-    --ion-toolbar-background: #5b62ff;
-}
-
 * {
     font-family: 'Raleway' !important;
-}
-
-ion-header {
-    ion-toolbar {
-        height: 48px;
-        display: flex;
-        align-items: center;
-
-        .header-btns {
-            font-size: 20px;
-            padding: 8px 8px 8px 12px;
-        }
-  
-        ion-title {
-            padding: 20px 10px 10px;
-            font-size: 27px;
-            font-weight: 900;
-        }
-    }
 }
 
 ion-popover{
@@ -91,34 +67,7 @@ ion-popover{
             top: 0% !important;
             left: 0% !important;
             width: 100%;
+            background: linear-gradient(to bottom, #5b62ff 50%, #909af3 100%);
         }
     }
-}
-
-/* in-flight clone */
-.gu-mirror {
-    position: fixed !important;
-    margin: 0 !important;
-    z-index: 9999 !important;
-    opacity: 0.8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-    filter: alpha(opacity=80);
-    pointer-events: none;
-}
-/* high-performance display:none; helper */
-.gu-hide {
-    left: -9999px !important;
-}
-/* added to mirrorContainer (default = body) while dragging */
-.gu-unselectable {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-}
-/* added to the source element while its mirror is dragged */
-.gu-transit {
-    opacity: 0.2;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-    filter: alpha(opacity=20);
 }

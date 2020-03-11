@@ -11,6 +11,7 @@
     </ion-segment-button>
   </ion-segment>
 
+  <!-- Favorite Apps -->
   <div *ngIf="favAppsActive && appManager.getFavorites().length > 0" class="ion-margin-top apps-container">
     <ion-item *ngFor="let app of appManager.getFavorites()" lines="none">
       <ion-grid class="ion-no-padding">
@@ -32,6 +33,7 @@
     </ion-item>
   </div>
 
+  <!-- Browsed Apps -->
   <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container">
     <ion-item lines="none" *ngFor="let app of appManager.browsedApps">
       <ion-grid class="ion-no-padding">
@@ -54,6 +56,29 @@
         </ion-row>
       </ion-grid>
     </ion-item>
+  </div>
+
+  <!-- No Apps -->
+  <div *ngIf="favAppsActive && appManager.getFavorites().length === 0 || !favAppsActive && appManager.browsedApps.length === 0" class="no-apps-container">
+    <div class="no-apps-header">
+      <div class="no-apps-head"></div>
+    </div>
+    <div class="ion-padding-top no-apps-msg" color="primary">
+      <h1>No applications yet?</h1>
+      <p>
+        You can start by finding elastOS <br>
+        dApps on any of your favorite <br>
+        websites that hold our dApp addresses
+      </p>
+      <p>
+        You can also check your contacts list to see <br>
+        what dApps your friends are using
+      </p>
+      <p>
+        The more you explore the Elastos ecosystem, <br>
+        the more dApps you will find
+      </p>
+    </div>
   </div>
   
 </ion-content>

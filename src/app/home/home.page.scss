@@ -85,6 +85,56 @@ ion-segment {
   }
 }
 
+.no-apps-container {
+  height: 100%;
+
+  .no-apps-header {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .no-apps-head {
+      height: 140px;
+      width: 140px;
+      border-radius: 100%;
+      background: #5a62ff;
+      margin-bottom: 25%;
+    }
+  }
+
+  .no-apps-msg {
+    height: 50%;
+    width: 100%;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    transform: scale(1.5);
+    background: #5a62ff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    h1 {
+      margin-bottom: 0;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 3.71;
+      letter-spacing: 1.2px;
+      color: #ffffff;
+    }
+
+    p {
+      font-size: 8px;
+      font-weight: 500;
+      line-height: 1.29;
+      letter-spacing: 0.7px;
+      text-align: center;
+      color: #ffffff;
+    }
+  }
+}
+
 .darkMode {
   background: #1A1B1E;
   color: #ffffff;

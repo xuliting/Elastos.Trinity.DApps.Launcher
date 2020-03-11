@@ -5,74 +5,58 @@
       <ion-img src="/assets/img/elalogo.svg"></ion-img>
     </div>
 
-    <div class="apps-container">
-      <ion-row *ngFor="let section of sections">
-        <ion-col class="caret-arrow ion-no-padding" size="1.25" (click)="section.active = !section.active">
-          <ion-img *ngIf="!section.active" src="/assets/icon/caret-arrow.svg"></ion-img>
-          <ion-img *ngIf="section.active" [ngStyle]="{ 'fill': section.color }" src="/assets/icon/caret-arrow2.svg"></ion-img>
-        </ion-col>
-        <ion-col size="2" class="logo ion-no-padding" (click)="section.active = !section.active">
-          <ion-avatar [ngStyle]="{ 'background': section.active ? section.color : none }">
-            <ion-img [src]="section.iconDir"></ion-img>
-          </ion-avatar>
-        </ion-col>
-        <ion-col size="8.75" class="title ion-no-padding">
-          <ion-label [ngStyle]="{ 'font-weight': section.active ? 700 : none }">{{ section.name.toUpperCase() }}</ion-label>  
-        </ion-col>
-
-        <!-- Favorites List -->
-        <div *ngIf="section.name === 'favorites' && section.active">
-          <div class="fav-container">
-            <div class="fav-app" *ngFor="let app of appManager.getFavorites()">
-              <div> 
-                <ion-avatar (click)="openApp(app.id)">
-                  <img [src]="appManager.sanitize(app.icons[0].src)">
-                </ion-avatar>
-                <ion-label>{{ app.name }}</ion-label>
-              </div>
+    <!-- Favorites -->
+    <div class="apps-container" *ngIf="appManager.getFavorites().length > 0">
+      <ion-row>
+        <div class="fav-container">
+          <div class="fav-app" *ngFor="let app of appManager.getFavorites()">
+            <div> 
+              <ion-avatar (click)="openApp(app.id)">
+                <img [src]="appManager.sanitize(app.icons[0].src)">
+              </ion-avatar>
+              <ion-label>{{ app.name.slice(0,10) }}</ion-label>
             </div>
           </div>
         </div>
-
-        <!-- Running List -->
-        <div *ngIf="section.name === 'background apps' && section.active">
-          <div class="running-container">
-            <ion-row class="running-app" *ngFor="let app of appManager.backgroundApps">
-              <ion-col size="2.3" class="running-logo" (click)="openApp(app.id)">
-                <ion-avatar>
-                  <img [src]="appManager.sanitize(app.icons[0].src)"/>
-                </ion-avatar>
-              </ion-col>
-              <ion-col class="running-content" size="9.7" (click)="openApp(app.id)">
-                <ion-label>
-                  <h2>{{ app.name }}</h2>
-                  <p>{{ app.description.slice(0,70) }}...</p>
-                </ion-label>
-              </ion-col>
-            </ion-row>
-          </div>
-        </div>
-
       </ion-row>
     </div>
 
+    <!-- Dapp Browser && Native Apps -->
     <div class="apps-container">
-      <ion-row *ngFor="let app of apps">
+      <ion-row *ngFor="let app of appManager.sections" color="light">
         <ion-col class="caret-arrow ion-no-padding" size="1.25" (click)="app.active = !app.active">
           <ion-img *ngIf="!app.active" src="/assets/icon/caret-arrow.svg"></ion-img>
           <ion-img *ngIf="app.active" [ngStyle]="{ 'fill': app.color }" src="/assets/icon/caret-arrow2.svg"></ion-img>
         </ion-col>
         <ion-col size="2" class="logo ion-no-padding" (click)="app.active = !app.active"> 
-          <ion-avatar [ngStyle]="{ 'background': app.active ? app.color : none }">
+          <ion-avatar [ngStyle]="{ 'background': app.active || app.started ? app.color : none }">
             <ion-img [src]="app.iconDir"></ion-img>
           </ion-avatar>
         </ion-col>
-        <ion-col size="6.5" class="title ion-no-padding">
-          <ion-label [ngStyle]="{ 'font-weight': app.active ? 700 : none }">{{ app.name.toUpperCase() }}</ion-label>  
+        <ion-col size="6.5" class="title ion-no-padding" (click)="openNativeApp(app)">
+          <ion-label [ngStyle]="{ 'font-weight': app.active || app.started ? 700 : none }">{{ app.name.toUpperCase() }}</ion-label>  
         </ion-col>
         <ion-col class="detail-arrow" size="2.25" (click)="openNativeApp(app)">
-          <ion-img src="/assets/icon/detail-arrow.svg"></ion-img>
+          <ion-img *ngIf="!app.active" src="/assets/icon/detail-arrow.svg"></ion-img>
         </ion-col>
+
+        <div class="description-container" *ngIf="app.active">
+          <ion-row class="description" *ngFor="let info of app.description">
+            <ion-col size="1.5" class="bullet">
+              <span [ngStyle]="{ 'color': app.color }">•</span>
+            </ion-col>
+            <ion-col size="9">
+              <p>{{ info }}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="button">
+            <ion-col>
+              <h5>Open and browse dApps</h5>
+            </ion-col>
+          </ion-row>
+
+        </div>
       </ion-row>
     </div>
 

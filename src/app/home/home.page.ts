@@ -33,6 +33,7 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    titleBarManager.setTitle('Dapp Browser');
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DEFAULT);
     titleBarManager.setNavigationMode(TitleBarPlugin.TitleBarNavigationMode.BACK);
     this.isBrowsedAppFav();

@@ -42,7 +42,13 @@ export class RunningAppsComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  startApp(id: string) {
+  start(id: string) {
     appManager.start(id);
+  }
+
+  close(id: string) {
+    appManager.closeApp(id);
+    this.runningList = this.runningList.filter((appId) => appId !== id);
+    this.runningApps = this.runningApps.filter((app) => app.id !== id);
   }
 }

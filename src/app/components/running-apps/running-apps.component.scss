@@ -1,63 +1,76 @@
 @import "../../functions.scss";
 
-ion-col {
+ion-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #6f73fc;
+    height: 40px;
+    width: 40px;
+
+    ion-icon, ion-img {
+        overflow: visible !important;
+        height: 18px;
+        width: 18px;
+    }
+}
+
+.running-header {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    img {
-        width: px2rem(70px);
-        height: px2rem(56px);
-    }
-
     ion-label {
         margin-top: 0;
         text-align: center;
-        font-weight: 700;
         font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 1.63px;
+        color: #ffffff;
     }
 }
 
-ul {
+.running-container {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 0px;
-    width: auto;
-    height: auto;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: space-around;
+    padding: 14px;
 
-    li {
-        padding: 5px;
-        display: inline-block; 
+    .running-app {
+        margin-bottom: 14px;
+        width: 386px;
+        height: 59px;
+        border-radius: 9px;
+        background-color: #232bbe;
+        border-bottom: none;
+        box-shadow: none;
 
-        .app-layout {
-            margin: 0 auto;
-            width: px2rem(150px);
-            height: px2rem(150px);
-            justify-content: center;
-            align-self: center;
-            text-align: center;
+        .running-logo {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .running-content {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            ion-label {
+                h2 {
+                    font-size: 15px;
+                    font-weight: 500;
+                    line-height: 1.23;
+                    color: #ffffff;
+                }
         
-            img {
-                margin: 0 auto;
-                padding: 0;
-                width: px2rem(100px);
-                height: px2rem(100px);
-                border-radius: 8px;
-            }
-        
-            p {
-                margin-top: px2rem(13px);
-                padding: 0;
-                height: px2rem(33px);
-                text-align: center;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                font-weight: 600;
-                font-size: 9px;
+                p {
+                    color: #ffffff !important;
+                    font-size: 10px !important;
+                    line-height: 1.29;
+                }
             }
         }
     }
-}  
+}

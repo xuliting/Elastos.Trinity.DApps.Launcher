@@ -1,12 +1,7 @@
 <div>
     <div id="empty" *ngIf="runningList.length == 0" class="ion-padding">
-        <ion-row class="ion-padding-top">
-            <ion-col size="12">
-                <img src="assets/img/empty.png" alt="">
-            </ion-col>
-        </ion-row>
-        <ion-row class="ion-padding-bottom">
-            <ion-col size="12">
+        <ion-row class="ion-padding">
+            <ion-col class="running-header ion-padding" size="12">
                 <ion-label>No apps are currently running!</ion-label>
             </ion-col>
         </ion-row>
@@ -14,18 +9,31 @@
 
     <div *ngIf="runningApps.length > 0">
         <ion-row class="ion-padding-top">
-            <ion-col size="12">
-                <ion-label>Running</ion-label>
+            <ion-col class="running-header" size="12">
+                <ion-label>Running Applications</ion-label>
             </ion-col>
         </ion-row>
-        <ul>
-            <li *ngFor="let app of runningApps">
-                <div class="app-layout" (click)="startApp(app.id)">
-                    <img [src]="sanitize(app.icons[0].src)"/>
-                    <p>{{ app.name }}</p>
-                </div>
-            </li>
-        </ul>
+        <div class="running-container">
+            <ion-row class="running-app" *ngFor="let app of runningApps">
+                <ion-col size="1.8" class="running-logo" (click)="start(app.id)">
+                    <ion-avatar>
+                        <img [src]="sanitize(app.icons[0].src)"/>
+                    </ion-avatar>
+                </ion-col>
+                <ion-col class="running-content" size="8.4" (click)="start(app.id)">
+                    <ion-label>
+                        <h2>{{ app.name }}</h2>
+                        <p *ngIf="app.description.length >= 40">{{ app.description.slice(0,40) }}...</p>
+                        <p *ngIf="app.description.length < 40">{{ app.description.slice(0,40) }}</p>
+                    </ion-label>
+                </ion-col>
+                <ion-col class="running-content" size="1.8" (click)="close(app.id)">
+                    <ion-label>
+                        <p>Close</p>
+                    </ion-label>
+                </ion-col>
+            </ion-row>
+        </div>
     </div>
 
 </div>

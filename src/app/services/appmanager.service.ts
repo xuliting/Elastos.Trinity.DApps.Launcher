@@ -4,12 +4,11 @@ import { AlertController, ToastController, PopoverController, MenuController, Na
 import { DomSanitizer } from '@angular/platform-browser';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
-import { resolveSoa } from 'dns';
-import { Router } from '@angular/router';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -46,13 +45,88 @@ export class AppmanagerService {
     public bookmarks: string[] = [];
 
     /* Background apps */
-    public backgroundApps: any = [];
+    public popup = false;
+    public runningList: any = [];
+
+    /* Desktop apps */
+    public sections = [
+        {
+            name: 'dapp browser',
+            color: '#f06666',
+            id: null,
+            iconDir: '/assets/apps/dapp-browser-icon-white@2x.png',
+            active: false,
+            started: false,
+            description: [
+                "dApps are Apps that can't be shutdown! This is a perfect environment to not just browse true decentralized applications but also to develop them for all to enjoy.",
+                "Our dApps utilize as much Elastos technology as you want. P2P Networking, Decentralized Identity, Decentralized Storage, Blockchain, Smart Contracts and Tokens. We got it all!"
+            ]
+        },
+        {
+            name: 'wallet',
+            color: '#e853dd',
+            id: 'org.elastos.trinity.dapp.wallet',
+            iconDir: '/assets/apps/wallet-icon@2x.png',
+            active: false,
+            started: false,
+            description: [
+                "As elastOS is a secure environment with all outside communication and network traffic blocked by default, this makes the elastOS wallet one of the most secure.",
+                "This area is a place for wallet widgets. Want to check how much ELA you got? The wallet widget can show you without even opening the applications. Coming soon!"
+            ]
+        },
+        {
+            name: 'identity',
+            color: '#5aacff',
+            id: 'org.elastos.trinity.dapp.did',
+            iconDir: '/assets/apps/identity-icon@2x.png',
+            active: false,
+            started: false,
+            description: [
+                "Own you identity on elastOS. Manage your decentralized profiles and share with friends and business the data that only you want them to see.",
+                "We call our identity DID's (Decentralized Identifier). It can be autonomous, independent and decentralized - acting as a proof of ownership for digital identities."
+            ]
+        },
+        {
+            name: 'contacts',
+            color: '#5cd552',
+            id: 'org.elastos.trinity.dapp.friends',
+            iconDir: '/assets/apps/friends-icon-white@2x.png',
+            active: false,
+            started: false,
+            description: [
+                "The elastOS ecosystem and network is all about friends! Here we will have contacts widgets (coming soon) where you can see all your contacts without opening the application. Check out what applications they are using and you may find your new favorite dApp.",
+            ]
+        },
+        {
+            name: 'node voting',
+            color: '#9c50ff',
+            id: 'org.elastos.trinity.dapp.dposvoting',
+            iconDir: '/assets/apps/dpos-voting-icon-white@2x.png',
+            active: false,
+            started: false,
+            description: [
+                "As part of our ecosystem, we have nodes which secure our network. These are called DPoS Supernodes and validate transactions.",
+                "Each ELA you have in your wallet gives you a voting power of 1. With this you can vote for 36 nodes. You can still spend it at anytime, but you will have to revote."
+            ]
+        },
+        {
+            name: 'candidate voting',
+            color: '#ffde6e',
+            id: null,
+            iconDir: '/assets/apps/crc-voting-icon-white@2x.png',
+            active: false,
+            started: false,
+            description: [
+                "As part of the Elastos ecosystem, we have a community governance mechanism that drives decisions, disputes and resolutions.",
+                "The Cyber Republic Council (CRC) comprises of 12 seats which are filled by a community election conducted on the blockchain. This is where you can participate."
+            ]
+        },
+    ];
 
     /* For install progress bar */
-    public progressValue = 0;
     public checkingApp = false;
-    private appChecked = false;
-    private checkedApps: string[] = [];
+    private storeChecked = false;
+    private updateApps: string[] = [];
 
     /* Languages */
     private currentLang: string = null;
@@ -71,10 +145,12 @@ export class AppmanagerService {
         public menuCtrl: MenuController,
         private translate: TranslateService,
         private storage: StorageService,
-        private navController: NavController
+        private navController: NavController,
+        private router: Router
     ) {}
 
     init() {
+        this.resetProgress();
         this.getRunningApps();
         this.getAppInfos();
 
@@ -89,11 +165,6 @@ export class AppmanagerService {
               this.onIntentReceived(ret);
             });
         }
-
-        // Empty checked apps every hour
-        setInterval(() => {
-            this.checkedApps = [];
-        }, 3600000);
     }
 
     /******************************** Intent Listener ********************************/
@@ -127,29 +198,30 @@ export class AppmanagerService {
                 switch (params.action) {
                     case 'toggle':
                         break;
+                    case 'minimize':
+                        this.resetProgress();
+                        this.resetDesktop();
+                        break;
                 }
                 switch (params.visible) {
                     case 'show':
-                        console.log('App visibility:', params.visible);
                         this.resetProgress();
                         break;
                 }
                 switch (ret.message) {
-                    case 'menu-toggle':
-                        this.resetProgress();
-                        this.menuCtrl.toggle();
-                        break;
                     case 'navback':
-                        // Go back to previous screen
-                        this.navController.back();
+                        // this.navController.back();
+
+                        // Navigate to desktop
+                        this.router.navigate(['desktop']);
                         break;
                     case 'notifications-toggle':
                         // Toggles the notifications panel on/off
                         // TODO
                         break;
                     case 'runningapps-toggle':
-                        // Toggles running apps list on/off
-                        // TODO
+                        // Launch the running list
+                        this.popRunningManager();
                         break;
                     case 'scan-clicked':
                         // Launch the scanner app
@@ -166,21 +238,25 @@ export class AppmanagerService {
                 switch (params.action) {
                     case 'started':
                         // titleBarManager.setTitle(params.name);
-                        this.getRunningApps();
+
+                        // Add started app to history
                         this.addToHistory(params.id);
-                        this.checkedApps.push(params.id);
                         this.resetProgress();
                         break;
                     case 'closed':
-                        this.getRunningApps();
+                    /*     if (this.popup) {
+                            this.popoverController.dismiss();
+                        } */
                         this.resetProgress();
-                        // titleBarManager.setTitle('');
+                        this.resetDesktop();
+
+                        // Ask user if they want to bookmark app if not bookmarked
                         // this.findBookmark(params.id);
                         break;
                     case 'unInstalled':
                         break;
                     case 'installed':
-                        titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
+                        this.resetProgress();
 
                         this.genericToast('Installed ' + params.id);
                         this.getAppInfos().then(() => {
@@ -245,11 +321,13 @@ export class AppmanagerService {
 
         this.installedApps = [];
         this.nativeApps = [];
+        this.updateApps = [];
 
         appManager.getAppInfos((info) => {
             console.log('App infos', info);
             this.appInfos = Object.values(info);
             this.appInfos.map(app => {
+
 
                 this.allApps.push({
                     id: app.id,
@@ -310,6 +388,26 @@ export class AppmanagerService {
                         isBookmarked: this.bookmarks.includes(app.id) ? true : false
                     });
                 }
+
+                if (!this.storeChecked) {
+                    this.storeChecked = true;
+                    this.http.get<any>('https://dapp-store.elastos.org/apps/' + app.id + '/manifest').subscribe((storeApp: any) => {
+                        console.log('Got app!', storeApp);
+
+                        let currentVersion = app.versionCode;
+                        let storeVersion = storeApp.version_code;
+                        if (storeVersion === currentVersion) {
+                            console.log(app.id + ', version ' + currentVersion + ' is up to date');
+                        } else if (storeApp.version_code < currentVersion) {
+                            console.log(app.id + ', version ' + currentVersion + ' is higher than store version ' + storeVersion);
+                        } else {
+                            console.log(app.id + ', version ' + currentVersion + ' is lower than store version ' + storeVersion);
+                            this.updateApps.push(app.id);
+                        }
+                    }, (err) => {
+                        console.error('Can\'t find matching app in store server', err);
+                    });
+                }
             });
         });
     }
@@ -326,59 +424,25 @@ export class AppmanagerService {
 
             // Initial conditions for app load progress
             this.checkingApp = true;
-            this.appChecked = false;
-
-            // Start progress bar
-            this.progressValue = 1;
-            titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
 
             // Check if app is installed or needs updating before starting app
             const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === id);
 
-            // Check if app was opened the past hour, if not proceed, else automatically start
-            if (targetApp && !this.checkedApps.includes(id)) {
-                titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.UPLOAD);
-                this.http.get<any>('https://dapp-store.elastos.org/apps/' + id + '/manifest').subscribe((storeApp: any) => {
-                    console.log('Got app!', storeApp);
-
-                    let currentVersion = targetApp.versionCode;
-                    let storeVersion = storeApp.version_code;
-                    if (storeVersion === currentVersion) {
-                        console.log(id + ', version ' + currentVersion + ' is up to date and starting');
-                        this.startApp(id);
-                    } else if (storeApp.version_code > currentVersion) {
-                        console.log(id + ', version ' + currentVersion + ' is lower than store version ' + storeVersion + ' and installing');
-                        this.intentInstall(id);
-                    } else {
-                        console.log(id + ', version ' + currentVersion + ' is higher than store version ' + storeVersion + ' and starting');
-                        this.startApp(id);
-                    }
-                }, (err) => {
-                    console.log('Can\'t find matching app in store server', err);
-                    this.startApp(id);
-                });
-            } else if (targetApp && this.checkedApps.includes(id)) {
-                console.log('App already checked the past hour and starting', id);
-                console.log('Checked apps', this.checkedApps);
+            // Check if app is not installed or needs updating, if not proceed, else automatically start
+            if (targetApp && !this.updateApps.includes(id)) {
                 this.startApp(id);
+            } else if (targetApp && this.updateApps.includes(id)) {
+                console.log(id + 'is installed but needs update');
+                this.intentInstall(id);
             } else {
                 console.log(id + ' is not installed');
                 this.intentInstall(id);
             }
-
-            setTimeout(() => {
-                if (!this.appChecked) {
-                    console.log(id + ' failed to start in time, something went wrong with store server or download process');
-                    this.appChecked = true;
-                    this.resetProgress();
-                    this.appStartErrToast();
-                }
-            }, 30000);
         });
     }
 
     startApp(id: string) {
-        this.appChecked = true;
+        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
         appManager.start(id);
     }
 
@@ -387,23 +451,20 @@ export class AppmanagerService {
         console.log('Downloading...' + id);
         titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
         const epkPath = await this.downloadDapp(id);
-    
+
         console.log('EPK file downloaded and saved to ' + epkPath);
         this.installApp(epkPath, id);
     }
 
     installApp(epk: any, id: string) {
         console.log('Installing...' + id);
-
-        /* BUG TRACED HERE: After inquiring app for install, appManager installs the WRONG APP */
+        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.UPLOAD);
         appManager.install(
             epk, true,
             (ret) => {
-                this.appChecked = true;
                 console.log('Install success', ret);
             },
             (err) => {
-                this.appChecked = true;
                 this.resetProgress();
                 this.appStartErrToast();
                 console.log('Error', err);
@@ -427,6 +488,9 @@ export class AppmanagerService {
 
                 console.log("Download operation completed");
                 resolve(filePath);
+            }, (err) => {
+                console.error(err);
+                this.resetProgress();
             });
         });
     }
@@ -446,19 +510,23 @@ export class AppmanagerService {
                         fileWriter.onerror = (event) => {
                             console.error('createWriter ERROR - ' + JSON.stringify(event));
                             reject(event);
+                            this.resetProgress();
                         };
                         fileWriter.write(blob);
                     }, (err) => {
                         console.error('createWriter ERROR - ' + JSON.stringify(err));
                         reject(err);
+                        this.resetProgress();
                     });
                 }, (err) => {
                     console.error('getFile ERROR - ' + JSON.stringify(err));
                     reject(err);
+                    this.resetProgress();
                 });
             }, (err) => {
                 console.error('resolveLocalFileSystemURL ERROR - ' + JSON.stringify(err));
                 reject(err);
+                this.resetProgress();
             });
         });
     }
@@ -466,10 +534,20 @@ export class AppmanagerService {
     resetProgress() {
         console.log('Resetting progress');
         this.checkingApp = false;
-        this.progressValue = 0;
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.UPLOAD);
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
+    }
+
+
+    resetDesktop() {
+        this.zone.run(() => {
+            console.log('Resetting desktop');
+            this.sections.forEach((section) => {
+                section.started = false;
+                section.active = false;
+            });
+        });
     }
 
     /******************************** Favorites ********************************/
@@ -615,33 +693,37 @@ export class AppmanagerService {
     }
 
     /******************************** Running Manager ********************************/
-    fetchRunningList() {
+    getRunningApps(): Promise<void> {
         return new Promise((resolve, reject) => {
             appManager.getRunningList((list) => {
                 console.log('Got running apps', list);
-                resolve(list || []);
+                this.runningList = list;
+                resolve();
             });
         });
     }
 
-    getRunningApps() {
-        this.backgroundApps = [];
+    async popRunningManager() {
+        await this.getRunningApps();
 
-        appManager.getRunningList((list) => {
-            console.log('Got runnings apps', list);
+        if (!this.popup) {
+            this.popup = true;
+            this.presentPopover();
+        } else {
+            this.popoverController.dismiss();
+        }
+    }
 
-            appManager.getAppInfos((info) => {
-                this.appInfos = Object.values(info);
-
-                this.appInfos.map((app) => {
-                    if (list.includes(app.id)) {
-                        this.backgroundApps.push(app);
-                    }
-                });
-            });
+    async presentPopover() {
+        const popover = await this.popoverController.create({
+            component: RunningAppsComponent,
+            componentProps: {
+                apps: this.runningList
+            },
+            translucent: true,
         });
-
-        console.log('Apps running', this.backgroundApps);
+        popover.onDidDismiss().then(() => { this.popup = false; });
+        return await popover.present();
     }
 
     /******************************** Intent Actions ********************************/
@@ -727,7 +809,7 @@ export class AppmanagerService {
                         app.isFav = false;
                     });
                     this.resetProgress();
-                    this.checkedApps = [];
+                    this.updateApps = [];
                     this.browsedApps = [];
                     this.storage.setFavApps([]);
                     this.storage.setBookmarkedApps([]);
