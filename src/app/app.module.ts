@@ -22,6 +22,7 @@ import { SafePipe } from './pipes/safe.pipe';
 
 import { RunningAppsComponent } from './components/running-apps/running-apps.component';
 import { AppmanagerService } from './services/appmanager.service';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 export class CustomTranslateLoader implements TranslateLoader {
     public getTranslation(lang: string): Observable<any> {
@@ -49,9 +50,10 @@ export function TranslateLoaderFactory() {
     declarations: [
         AppComponent,
         RunningAppsComponent,
+        NotificationsComponent,
         SafePipe,
     ],
-entryComponents: [RunningAppsComponent],
+entryComponents: [RunningAppsComponent, NotificationsComponent],
     imports: [
         BrowserModule,
         HttpClientModule,

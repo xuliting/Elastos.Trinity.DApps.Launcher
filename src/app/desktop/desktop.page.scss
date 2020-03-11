@@ -1,11 +1,16 @@
 .container {
   min-height: 100%;
+
+  .item {
+    min-height: 61px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+    box-shadow: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.11);
+  }
   
   ion-avatar {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #6f73fc;
     height: 40px;
     width: 40px;
 
@@ -31,123 +36,112 @@
     }
   }
 
-  .apps-container {
-    ion-row {
-      min-height: 61px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.11);
-      box-shadow: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.11);
+  .favs-container {
+    .fav-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 9px 27px;
 
-      .caret-arrow {
+      .fav-app {
         display: flex;
         justify-content: center;
         align-items: center;
-      }
-    
-      .logo {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    
-        ion-avatar {
+        width: 70px;
+        height: 80px;
+
+        div {
           display: flex;
+          flex-direction: column;
           justify-content: center;
           align-items: center;
-          background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
-          height: 40px;
-          width: 40px;
-      
-          ion-icon, ion-img {
-            overflow: visible !important;
-            height: 18px;
-            width: 18px;
-          }
-        }
-      }
-    
-      .title {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    
-        ion-label {
-          // color: white;
-          font-size: 14px;
-          letter-spacing: 1.63px;
-          line-height: 52px;
-        }
-      }
 
-      .detail-arrow {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        ion-img {
-          height: 16.2px;
-          width: 8.7px;
-        }
-      }
-
-      .description-container {
-        .description {
-          border-bottom: none;
-          box-shadow: none;
-  
-          .bullet {
-            display: flex;
-            justify-content: flex-end;
-            align-items: flex-start;
-  
-            span {
-              font-size: 30px;
-            }
-          }
-  
-          p {
-            font-size: 10px;
-            font-weight: 500;
-            line-height: 1.6;
-            letter-spacing: 0.15px;
-            text-align: left;
-            margin-bottom: 0;
-            color: #ffffff;
-          }
-        }
-
-        .button {
-          h5 {
+          ion-label {
+            padding-top: 5px;
             font-size: 9px;
-            color: #5b62ff;
+            font-weight: 500;
           }
         }
       }
+    }
+  }
 
-      .fav-container {
+  .apps-container {
+    .caret-arrow-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .app-logo {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+  
+    .app-title {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+  
+      ion-label {
+        font-size: 14px;
+        letter-spacing: 1.63px;
+        line-height: 52px;
+      }
+    }
+
+    .detail-arrow-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      ion-img {
+        height: 8.2px;
+        width: 4.4px;
+      }
+    }
+
+    .info-container {
+      .bullet-icon {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        padding: 9px 27px;
+        justify-content: flex-end;
+        align-items: flex-start;
 
-        .fav-app {
+        span {
+          font-size: 30px;
+        }
+      }
+
+      p {
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 1.6;
+        letter-spacing: 0.15px;
+        text-align: left;
+        margin-bottom: 0;
+      }
+
+      .link-row {
+        padding: 10px 0;
+
+        .link-icon {
           display: flex;
-          justify-content: center;
+          justify-content: flex-end;
           align-items: center;
-          width: 70px;
-          height: 80px;
+          padding-right: 0;
 
-          div {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            ion-label {
-              padding-top: 5px;
-              font-size: 9px;
-              font-weight: 500;
-            }
+          ion-img {
+            width: 15px;
+            height: 15px;
+            margin-top: 3px;
           }
+        }
+
+        h5 {
+          font-size: 9px;
+          color: #5b62ff;
         }
       }
     }

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
+import { NotificationsComponent } from '../components/notifications/notifications.component';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -54,7 +55,8 @@ export class AppmanagerService {
             name: 'dapp browser',
             color: '#f06666',
             id: null,
-            iconDir: '/assets/apps/dapp-browser-icon-white@2x.png',
+            iconDir: '/assets/apps_svg/dapp-browser-icon-white.svg',
+            iconDir2: '/assets/apps/dapp-browser-icon-white@2x.png',
             active: false,
             started: false,
             description: [
@@ -66,7 +68,8 @@ export class AppmanagerService {
             name: 'wallet',
             color: '#e853dd',
             id: 'org.elastos.trinity.dapp.wallet',
-            iconDir: '/assets/apps/wallet-icon@2x.png',
+            iconDir: '/assets/apps_svg/wallet-icon.svg',
+            iconDir2: '/assets/apps/wallet-icon@2x.png',
             active: false,
             started: false,
             description: [
@@ -78,7 +81,8 @@ export class AppmanagerService {
             name: 'identity',
             color: '#5aacff',
             id: 'org.elastos.trinity.dapp.did',
-            iconDir: '/assets/apps/identity-icon@2x.png',
+            iconDir: '/assets/apps_svg/identity-icon.svg',
+            iconDir2: '/assets/apps/identity-icon@2x.png',
             active: false,
             started: false,
             description: [
@@ -90,7 +94,8 @@ export class AppmanagerService {
             name: 'contacts',
             color: '#5cd552',
             id: 'org.elastos.trinity.dapp.friends',
-            iconDir: '/assets/apps/friends-icon-white@2x.png',
+            iconDir: '/assets/apps_svg/friends-icon-white.svg',
+            iconDir2: '/assets/apps/friends-icon-white@2x.png',
             active: false,
             started: false,
             description: [
@@ -101,7 +106,8 @@ export class AppmanagerService {
             name: 'node voting',
             color: '#9c50ff',
             id: 'org.elastos.trinity.dapp.dposvoting',
-            iconDir: '/assets/apps/dpos-voting-icon-white@2x.png',
+            iconDir: '/assets/apps_svg/dpos-voting-icon-white.svg',
+            iconDir2: '/assets/apps/dpos-voting-icon-white@2x.png',
             active: false,
             started: false,
             description: [
@@ -113,7 +119,8 @@ export class AppmanagerService {
             name: 'candidate voting',
             color: '#ffde6e',
             id: null,
-            iconDir: '/assets/apps/crc-voting-icon-white@2x.png',
+            iconDir: '/assets/apps_svg/crc-voting-icon-white.svg',
+            iconDir2: '/assets/apps/crc-voting-icon-white@2x.png',
             active: false,
             started: false,
             description: [
@@ -217,11 +224,11 @@ export class AppmanagerService {
                         break;
                     case 'notifications-toggle':
                         // Toggles the notifications panel on/off
-                        // TODO
+                        this.popNotifications();
                         break;
                     case 'runningapps-toggle':
                         // Launch the running list
-                        this.popRunningManager();
+                        this.popRunningApps();
                         break;
                     case 'scan-clicked':
                         // Launch the scanner app
@@ -328,7 +335,6 @@ export class AppmanagerService {
             this.appInfos = Object.values(info);
             this.appInfos.map(app => {
 
-
                 this.allApps.push({
                     id: app.id,
                     version: app.version,
@@ -388,28 +394,37 @@ export class AppmanagerService {
                         isBookmarked: this.bookmarks.includes(app.id) ? true : false
                     });
                 }
-
-                if (!this.storeChecked) {
-                    this.storeChecked = true;
-                    this.http.get<any>('https://dapp-store.elastos.org/apps/' + app.id + '/manifest').subscribe((storeApp: any) => {
-                        console.log('Got app!', storeApp);
-
-                        let currentVersion = app.versionCode;
-                        let storeVersion = storeApp.version_code;
-                        if (storeVersion === currentVersion) {
-                            console.log(app.id + ', version ' + currentVersion + ' is up to date');
-                        } else if (storeApp.version_code < currentVersion) {
-                            console.log(app.id + ', version ' + currentVersion + ' is higher than store version ' + storeVersion);
-                        } else {
-                            console.log(app.id + ', version ' + currentVersion + ' is lower than store version ' + storeVersion);
-                            this.updateApps.push(app.id);
-                        }
-                    }, (err) => {
-                        console.error('Can\'t find matching app in store server', err);
-                    });
-                }
             });
+
+            this.checkForUpdates();
         });
+    }
+
+    checkForUpdates() {
+        if (!this.storeChecked) {
+            this.storeChecked = true;
+            this.appInfos.forEach((app) => {
+                this.http.get<any>('https://dapp-store.elastos.org/apps/' + app.id + '/manifest').subscribe((storeApp: any) => {
+                    console.log('Got app!', storeApp);
+
+                    let currentVersion = app.versionCode;
+                    let storeVersion = storeApp.version_code;
+                    if (storeVersion === currentVersion) {
+                        console.log(app.id + ', version ' + currentVersion + ' is up to date');
+                    } else if (storeApp.version_code < currentVersion) {
+                        console.log(app.id + ', version ' + currentVersion + ' is higher than store version ' + storeVersion);
+                    } else {
+                        console.log(app.id + ', version ' + currentVersion + ' is lower than store version ' + storeVersion);
+                        this.updateApps.push(app.id);
+                    }
+                }, (err) => {
+                    console.error('Can\'t find matching app in store server', err);
+                });
+            });
+        } else {
+            console.log('Apps already checked for updates');
+            return;
+        }
     }
 
     // Get app icon
@@ -545,7 +560,6 @@ export class AppmanagerService {
             console.log('Resetting desktop');
             this.sections.forEach((section) => {
                 section.started = false;
-                section.active = false;
             });
         });
     }
@@ -692,7 +706,7 @@ export class AppmanagerService {
         }
     }
 
-    /******************************** Running Manager ********************************/
+    /******************************** Running Apps ********************************/
     getRunningApps(): Promise<void> {
         return new Promise((resolve, reject) => {
             appManager.getRunningList((list) => {
@@ -703,22 +717,44 @@ export class AppmanagerService {
         });
     }
 
-    async popRunningManager() {
+    async popRunningApps() {
         await this.getRunningApps();
 
         if (!this.popup) {
             this.popup = true;
-            this.presentPopover();
+            this.presentRunningApps();
         } else {
             this.popoverController.dismiss();
         }
     }
 
-    async presentPopover() {
+    async presentRunningApps() {
         const popover = await this.popoverController.create({
             component: RunningAppsComponent,
             componentProps: {
                 apps: this.runningList
+            },
+            translucent: true,
+        });
+        popover.onDidDismiss().then(() => { this.popup = false; });
+        return await popover.present();
+    }
+
+    /******************************** Notifications Manager ********************************/
+    popNotifications() {
+        if (!this.popup) {
+            this.popup = true;
+            this.presentNotifications();
+        } else {
+            this.popoverController.dismiss();
+        }
+    }
+
+    async presentNotifications() {
+        const popover = await this.popoverController.create({
+            component: NotificationsComponent,
+            componentProps: {
+                // apps: this.runningList
             },
             translucent: true,
         });

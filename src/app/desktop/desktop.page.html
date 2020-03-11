@@ -1,13 +1,13 @@
 <ion-content>
-  <ion-grid class="container ion-no-padding ion-no-margin" [class.lightMode]="!theme.darkMode">
+  <ion-grid class="container ion-no-padding ion-no-margin" color="light" [class.lightMode]="!theme.darkMode">
 
     <div class="logo-container">
       <ion-img src="/assets/img/elalogo.svg"></ion-img>
     </div>
 
     <!-- Favorites -->
-    <div class="apps-container" *ngIf="appManager.getFavorites().length > 0">
-      <ion-row>
+    <div class="favs-container" *ngIf="appManager.getFavorites().length > 0">
+      <ion-row class="item">
         <div class="fav-container">
           <div class="fav-app" *ngFor="let app of appManager.getFavorites()">
             <div> 
@@ -23,39 +23,42 @@
 
     <!-- Dapp Browser && Native Apps -->
     <div class="apps-container">
-      <ion-row *ngFor="let app of appManager.sections" color="light">
-        <ion-col class="caret-arrow ion-no-padding" size="1.25" (click)="app.active = !app.active">
+      <ion-row class="item" *ngFor="let app of appManager.sections">
+        <ion-col class="caret-arrow-icon ion-no-padding" size="1.25" (click)="app.active = !app.active">
           <ion-img *ngIf="!app.active" src="/assets/icon/caret-arrow.svg"></ion-img>
           <ion-img *ngIf="app.active" [ngStyle]="{ 'fill': app.color }" src="/assets/icon/caret-arrow2.svg"></ion-img>
         </ion-col>
-        <ion-col size="2" class="logo ion-no-padding" (click)="app.active = !app.active"> 
+        <ion-col size="2" class="app-logo ion-no-padding" (click)="app.active = !app.active"> 
           <ion-avatar [ngStyle]="{ 'background': app.active || app.started ? app.color : none }">
-            <ion-img [src]="app.iconDir"></ion-img>
+            <ion-img *ngIf="!app.active && !app.started"[src]="app.iconDir"></ion-img>
+            <ion-img *ngIf="app.active || app.started "[src]="app.iconDir2"></ion-img>
           </ion-avatar>
         </ion-col>
-        <ion-col size="6.5" class="title ion-no-padding" (click)="openNativeApp(app)">
+        <ion-col size="6.5" class="app-title ion-no-padding" (click)="openNativeApp(app)">
           <ion-label [ngStyle]="{ 'font-weight': app.active || app.started ? 700 : none }">{{ app.name.toUpperCase() }}</ion-label>  
         </ion-col>
-        <ion-col class="detail-arrow" size="2.25" (click)="openNativeApp(app)">
+        <ion-col class="detail-arrow-icon" size="2.25" (click)="openNativeApp(app)">
           <ion-img *ngIf="!app.active" src="/assets/icon/detail-arrow.svg"></ion-img>
         </ion-col>
 
-        <div class="description-container" *ngIf="app.active">
-          <ion-row class="description" *ngFor="let info of app.description">
-            <ion-col size="1.5" class="bullet">
+        <div class="info-container" *ngIf="app.active">
+          <ion-row *ngFor="let info of app.description">
+            <ion-col size="1.5" class="bullet-icon">
               <span [ngStyle]="{ 'color': app.color }">•</span>
             </ion-col>
             <ion-col size="9">
               <p>{{ info }}</p>
             </ion-col>
           </ion-row>
-
-          <ion-row class="button">
-            <ion-col>
-              <h5>Open and browse dApps</h5>
+          <ion-row class="link-row">
+            <ion-col class="link-icon" size="1" (click)="openNativeApp(app)">
+              <ion-img src="/assets/icon/link.svg"></ion-img>
+            </ion-col>
+            <ion-col size="11" (click)="openNativeApp(app)">
+              <h5 *ngIf="app.name === 'dapp browser'">Open and browse dApps</h5>
+              <h5 *ngIf="app.name !== 'dapp browser'">Open and manage</h5>
             </ion-col>
           </ion-row>
-
         </div>
       </ion-row>
     </div>

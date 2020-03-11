@@ -1,0 +1,80 @@
+@import "../../functions.scss";
+
+ion-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #6f73fc;
+  width: 25px;
+  height: 25px;
+
+  ion-icon, ion-img {
+    overflow: visible !important;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: space-around;
+  padding: 14px;
+
+  .notification {
+    margin-bottom: 14px;
+    width: 386px;
+    min-height: 59px;
+    border-radius: 9px;
+    background-color: #232bbe;
+    border-bottom: none;
+    box-shadow: none;
+    padding: 5px;
+
+    .app-row {
+      .app-logo {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+  
+      .app-content {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+  
+        ion-label {
+          h2 {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.23;
+            color: #ffffff;
+          }
+        }
+      }
+
+      .close-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        ion-img {
+          width: 13px;
+          height: 13px;
+        }
+      }
+    }
+
+    .message-row {
+      padding: 3px;
+      
+      p {
+        font-size: 11px;
+        line-height: 1.27;
+        letter-spacing: 0.22px;
+        text-align: left;
+        color: #ffffff;
+        margin: 0;
+      }
+    }
+  }
+}

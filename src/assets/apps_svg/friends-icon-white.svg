@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21.288" height="20.66" viewBox="0 0 21.288 20.66">
+    <defs>
+        <style>
+            .prefix__cls-1{stroke:#000;stroke-width:.3px}
+        </style>
+    </defs>
+    <g id="prefix__FRIENDS_ICON_WHITE" data-name="FRIENDS ICON WHITE" transform="translate(.15 .15)">
+        <path id="prefix__Path_13" d="M426.572 9880.278a4.639 4.639 0 1 1 4.639-4.64 4.644 4.644 0 0 1-4.639 4.64zm0-8.437a3.8 3.8 0 1 0 3.8 3.8 3.8 3.8 0 0 0-3.8-3.8z" class="prefix__cls-1" data-name="Path 13" transform="translate(-416.078 -9871)"/>
+        <path id="prefix__Path_14" d="M368.737 9989.552a.464.464 0 0 1-.465-.463 10.4 10.4 0 0 1 6.3-9.528.484.484 0 0 1 .185-.039.469.469 0 0 1 .4.228 4.2 4.2 0 0 0 7.211 0 .468.468 0 0 1 .4-.226.476.476 0 0 1 .184.037 10.4 10.4 0 0 1 6.3 9.528.464.464 0 0 1-.464.463zm5.7-8.91a9.523 9.523 0 0 0-5.213 7.775l-.015.213h19.112l-.015-.213a9.523 9.523 0 0 0-5.212-7.775l-.149-.073-.1.131a5.136 5.136 0 0 1-8.156 0l-.1-.131z" class="prefix__cls-1" data-name="Path 14" transform="translate(-368.272 -9969.192)"/>
+    </g>
+</svg>

@@ -10,34 +10,17 @@ ion-avatar {
 
     ion-icon, ion-img {
         overflow: visible !important;
-        height: 18px;
-        width: 18px;
     }
 }
 
-.running-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    ion-label {
-        margin-top: 0;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 1.63px;
-        color: #ffffff;
-    }
-}
-
-.running-container {
+.container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: space-around;
     padding: 14px;
 
-    .running-app {
+    .app-row {
         margin-bottom: 14px;
         width: 386px;
         height: 59px;
@@ -46,13 +29,13 @@ ion-avatar {
         border-bottom: none;
         box-shadow: none;
 
-        .running-logo {
+        .app-logo {
             display: flex;
             justify-content: flex-end;
             align-items: center;
         }
 
-        .running-content {
+        .app-content {
             display: flex;
             justify-content: flex-start;
             align-items: center;

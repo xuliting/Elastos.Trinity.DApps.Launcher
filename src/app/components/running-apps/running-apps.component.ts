@@ -34,7 +34,7 @@ export class RunningAppsComponent implements OnInit {
           this.runningApps = this.runningApps.concat(app);
         }
       });
-      console.log('Apps running', this.runningApps);
+      console.log('Running apps info', this.runningApps);
     });
   }
 

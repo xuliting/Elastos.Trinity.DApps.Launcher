@@ -8,10 +8,10 @@ header-bar {
 }
 
 .lightMode {
-    background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
+    background: white;
 
     ion-label, ion-icon, ion-img {
-        color: white;
+        color: black;
     }
 }
 
