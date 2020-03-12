@@ -248,7 +248,7 @@ export class AppmanagerService {
 
                         // Add started app to history
                         this.addToHistory(params.id);
-                        this.resetProgress();
+                        // 'launching' app is completed only when 'show' is received (first screen shown) this.resetProgress();
                         break;
                     case 'closed':
                     /*     if (this.popup) {
