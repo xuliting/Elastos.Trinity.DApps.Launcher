@@ -39,9 +39,4 @@ export class AppComponent {
     toggleDarkMode() {
         this.theme.toggleTheme();
     }
-
-    // Reset Favorites, Bookmarks, History and Progress bar - Currently Used Only For Testing
-    resetBrowser() {
-        this.appManager.resetBrowserAlert();
-    }
 }

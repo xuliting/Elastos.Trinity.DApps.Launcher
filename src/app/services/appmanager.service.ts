@@ -457,6 +457,7 @@ export class AppmanagerService {
     }
 
     startApp(id: string) {
+        console.log('Starting app ' + id);
         titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
         appManager.start(id);
     }
@@ -822,51 +823,6 @@ export class AppmanagerService {
 
     print_err(err) {
         console.log("ElastosJS  Error: " + err);
-    }
-
-    /******************************** For Testing ********************************/
-    async resetBrowserAlert() {
-        const alert = await this.alertController.create({
-            mode: 'ios',
-            header: 'Are you sure?',
-            message: 'Resetting your browser will erase your browsing history and favorites',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: () => {}
-                },
-                {
-                  text: 'Proceed',
-                  handler: () => {
-                    this.installedApps.forEach((app) => {
-                        app.isFav = false;
-                    });
-                    this.allApps.forEach((app) => {
-                        app.isFav = false;
-                    });
-                    this.resetProgress();
-                    this.updateApps = [];
-                    this.browsedApps = [];
-                    this.storage.setFavApps([]);
-                    this.storage.setBookmarkedApps([]);
-                    this.storage.setBrowsedApps([]);
-                  }
-                }
-              ]
-        });
-        alert.present();
-    }
-
-    removeApp(app) {
-        appManager.unInstall(
-            app.id,
-            (res) => {
-                console.log('Uninstall Success', app);
-                this.installedApps = this.installedApps.filter(dapp => dapp.id === app.id);
-                this.allApps = this.allApps.filter(dapp => dapp.id === app.id);
-            },
-            (err) => console.log(err)
-        );
     }
 }
 

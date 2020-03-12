@@ -53,7 +53,7 @@ export class ThemeService {
       document.body.classList.remove("dark");
 
       // Remove dark mode to native header
-      titleBarManager.setBackgroundColor("#5a62ff");
+      titleBarManager.setBackgroundColor("#fff");
       TitleBarPlugin.TitleBarForegroundMode.DARK;
     }
   }

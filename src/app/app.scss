@@ -1,94 +1,9 @@
 @import "./functions.scss";
 
-header-bar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-}
-
 .lightMode {
     background: white;
 
     ion-label, ion-icon, ion-img {
         color: black;
-    }
-}
-
-.my-custom-alert {
-    text-align: center;
-    --ion-background-color: white;
-    --ion-text-color: #000000;
-}
-
-.menu-container {
-    height: 896px;
-    // background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
-
-    ion-avatar {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #6f73fc;
-        height: 40px;
-        width: 40px;
-
-        ion-icon, ion-img {
-            // color: white;
-            overflow: visible !important;
-            height: 18px;
-            width: 18px;
-        }
-    }
-
-    ion-label {
-        // color: white;
-        font-size: 14px;
-        letter-spacing: 1.63px;
-        line-height: 52px;
-    }
-
-    .app-logo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .app-title {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    .scan-container {
-        height: 95px;
-        border-bottom: 0.5px solid rgb(55, 55, 55);
-
-        ion-img {
-            height: 13.5px;
-            width: 14.5px;
-        }
-    }
-
-    .fav-container {
-        height: 110px;
-        border-bottom: 0.5px solid rgb(55, 55, 55);
-
-        ion-label {
-            line-height: 0px;
-            padding: 15px 0 15px;
-        }
-
-        ion-slide {
-            width: 80px;
-        }
-    }
-
-    .apps-container {
-        border-bottom: 0.5px solid rgb(55, 55, 55);
-
-        ion-avatar {
-            background-image: linear-gradient(269deg, #5a62ff 99%, #6d56e8 1%);
-        }
     }
 }
