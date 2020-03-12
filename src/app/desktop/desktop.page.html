@@ -25,8 +25,8 @@
     <div class="apps-container">
       <ion-row class="item" *ngFor="let app of appManager.sections">
         <ion-col class="caret-arrow-icon ion-no-padding" size="1.25" (click)="app.active = !app.active">
-          <ion-img *ngIf="!app.active" src="/assets/icon/caret-arrow.svg"></ion-img>
-          <ion-img *ngIf="app.active" [ngStyle]="{ 'fill': app.color }" src="/assets/icon/caret-arrow2.svg"></ion-img>
+          <ion-img *ngIf="!app.active" [src]="app.iconDir3"></ion-img>
+          <ion-img *ngIf="app.active" [src]="app.iconDir4"></ion-img>
         </ion-col>
         <ion-col size="2" class="app-logo ion-no-padding" (click)="app.active = !app.active"> 
           <ion-avatar [ngStyle]="{ 'background': app.active || app.started ? app.color : none }">

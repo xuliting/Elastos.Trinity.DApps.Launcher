@@ -57,6 +57,8 @@ export class AppmanagerService {
             id: null,
             iconDir: '/assets/apps_svg/dapp-browser-icon-white.svg',
             iconDir2: '/assets/apps/dapp-browser-icon-white@2x.png',
+            iconDir3: '/assets/icon/browser/caret-arrow.svg',
+            iconDir4: '/assets/icon/browser/caret-arrow2.svg',
             active: false,
             started: false,
             description: [
@@ -70,6 +72,8 @@ export class AppmanagerService {
             id: 'org.elastos.trinity.dapp.wallet',
             iconDir: '/assets/apps_svg/wallet-icon.svg',
             iconDir2: '/assets/apps/wallet-icon@2x.png',
+            iconDir3: '/assets/icon/wallet/caret-arrow.svg',
+            iconDir4: '/assets/icon/wallet/caret-arrow2.svg',
             active: false,
             started: false,
             description: [
@@ -83,6 +87,8 @@ export class AppmanagerService {
             id: 'org.elastos.trinity.dapp.did',
             iconDir: '/assets/apps_svg/identity-icon.svg',
             iconDir2: '/assets/apps/identity-icon@2x.png',
+            iconDir3: '/assets/icon/identity/caret-arrow.svg',
+            iconDir4: '/assets/icon/identity/caret-arrow2.svg',
             active: false,
             started: false,
             description: [
@@ -96,6 +102,8 @@ export class AppmanagerService {
             id: 'org.elastos.trinity.dapp.friends',
             iconDir: '/assets/apps_svg/friends-icon-white.svg',
             iconDir2: '/assets/apps/friends-icon-white@2x.png',
+            iconDir3: '/assets/icon/contacts/caret-arrow.svg',
+            iconDir4: '/assets/icon/contacts/caret-arrow2.svg',
             active: false,
             started: false,
             description: [
@@ -108,6 +116,8 @@ export class AppmanagerService {
             id: 'org.elastos.trinity.dapp.dposvoting',
             iconDir: '/assets/apps_svg/dpos-voting-icon-white.svg',
             iconDir2: '/assets/apps/dpos-voting-icon-white@2x.png',
+            iconDir3: '/assets/icon/voting/caret-arrow.svg',
+            iconDir4: '/assets/icon/voting/caret-arrow2.svg',
             active: false,
             started: false,
             description: [
