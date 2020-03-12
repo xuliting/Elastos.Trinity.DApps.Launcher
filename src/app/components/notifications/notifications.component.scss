@@ -22,7 +22,7 @@ ion-avatar {
 
   .notification {
     margin-bottom: 14px;
-    width: 386px;
+    width: 92vw;
     min-height: 59px;
     border-radius: 9px;
     background-color: #232bbe;
@@ -36,12 +36,12 @@ ion-avatar {
         justify-content: flex-end;
         align-items: center;
       }
-  
+
       .app-content {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-  
+
         ion-label {
           h2 {
             font-size: 12px;
@@ -66,7 +66,7 @@ ion-avatar {
 
     .message-row {
       padding: 3px;
-      
+
       p {
         font-size: 11px;
         line-height: 1.27;

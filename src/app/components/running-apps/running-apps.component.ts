@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { AppmanagerService } from 'src/app/services/appmanager.service';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -16,6 +15,7 @@ export class RunningAppsComponent implements OnInit {
   runningApps: any[] = [];
 
   constructor(
+    private zone: NgZone,
     private navParams: NavParams,
     private sanitizer: DomSanitizer
   ) { }
@@ -28,13 +28,15 @@ export class RunningAppsComponent implements OnInit {
 
   getAppInfo() {
     appManager.getAppInfos((info) => {
-      const appInfos = Object.values(info);
-      appInfos.map((app) => {
-        if (this.runningList.includes(app.id)) {
-          this.runningApps = this.runningApps.concat(app);
-        }
+      this.zone.run(() => {
+        const appInfos = Object.values(info);
+        appInfos.map((app) => {
+            if (this.runningList.includes(app.id)) {
+            this.runningApps = this.runningApps.concat(app);
+            }
+        });
+        console.log('Running apps info', this.runningApps);
       });
-      console.log('Running apps info', this.runningApps);
     });
   }
 

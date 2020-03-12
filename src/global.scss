@@ -61,13 +61,15 @@ ion-popover{
     ion-backdrop{
       opacity: 0.5 !important;
     }
-  
+
     .popover-wrapper{
         .popover-content{
             top: 0% !important;
             left: 0% !important;
             width: 100%;
-            background: linear-gradient(to bottom, #5b62ff 50%, #909af3 100%);
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            background: linear-gradient(to bottom, #5b62ff 50%, #909af3 100%) !important;
         }
     }
 }
