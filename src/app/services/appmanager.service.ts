@@ -115,7 +115,7 @@ export class AppmanagerService {
                 "Each ELA you have in your wallet gives you a voting power of 1. With this you can vote for 36 nodes. You can still spend it at anytime, but you will have to revote."
             ]
         },
-        {
+        /*{
             name: 'candidate voting',
             color: '#ffde6e',
             id: null,
@@ -127,7 +127,7 @@ export class AppmanagerService {
                 "As part of the Elastos ecosystem, we have a community governance mechanism that drives decisions, disputes and resolutions.",
                 "The Cyber Republic Council (CRC) comprises of 12 seats which are filled by a community election conducted on the blockchain. This is where you can participate."
             ]
-        },
+        },*/
     ];
 
     /* For install progress bar */
@@ -435,7 +435,6 @@ export class AppmanagerService {
     findApp(id: string) {
         console.log('Finding app', id);
         this.zone.run(() => {
-
             // Initial conditions for app load progress
             this.checkingApp = true;
 
