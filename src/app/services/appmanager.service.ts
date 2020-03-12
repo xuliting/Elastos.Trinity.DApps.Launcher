@@ -264,9 +264,8 @@ export class AppmanagerService {
                         break;
                     case 'installed':
                         this.resetProgress();
-
-                        this.genericToast('Installed ' + params.id);
                         this.getAppInfos().then(() => {
+                            titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
                             appManager.start(params.id);
                         });
                         break;
