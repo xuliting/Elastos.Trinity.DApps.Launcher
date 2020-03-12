@@ -4,13 +4,19 @@ ion-segment {
   background: #5a62ff;
 
   ion-segment-button {
+    padding:14px; 
+    border-bottom: 4px solid transparent;
+    --border-color:#5a62ff !important;
+    --border-radius: 0;
+    --border-style: none;
+    
     ion-icon {
       font-size: 33px;
     }
 
     ion-img {
       width: 45px;
-      height: 45px;
+      height: 25px;
     }
 
     ion-label {
@@ -141,7 +147,9 @@ ion-segment {
 }
 
 .activeTab {
-  border-bottom: 4px solid white;
+  background: #5a62ff !important;
+  //border-bottom: 4px solid white;
+  border-color: white !important;
 
   ion-img {
     fill: white !important;

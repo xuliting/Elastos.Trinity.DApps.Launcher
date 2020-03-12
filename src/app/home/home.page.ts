@@ -18,7 +18,7 @@ declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 export class HomePage implements OnInit {
 
-  public favAppsActive = true;
+  public favAppsActive = false;
 
   constructor(
     public translate: TranslateService,
