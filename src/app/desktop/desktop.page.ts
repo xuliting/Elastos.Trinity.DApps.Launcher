@@ -38,8 +38,6 @@ export class DesktopPage implements OnInit {
   ionViewDidEnter() {
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DESKTOP);
     titleBarManager.setTitle("Desktop");
-    titleBarManager.setBackgroundColor("#ffffff");
-    TitleBarPlugin.TitleBarForegroundMode.DARK;
     this.appManager.resetDesktop();
   }
 

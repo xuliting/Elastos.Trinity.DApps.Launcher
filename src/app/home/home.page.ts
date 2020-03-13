@@ -36,8 +36,6 @@ export class HomePage implements OnInit {
     titleBarManager.setTitle('Dapp Browser');
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DEFAULT);
     titleBarManager.setNavigationMode(TitleBarPlugin.TitleBarNavigationMode.BACK);
-    titleBarManager.setBackgroundColor("#5a62ff");
-    TitleBarPlugin.TitleBarForegroundMode.LIGHT;
     this.isBrowsedAppFav();
   }
 
