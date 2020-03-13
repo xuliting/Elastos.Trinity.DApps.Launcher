@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { StorageService } from './storage.service';
+import { AppmanagerService } from './appmanager.service';
 
+declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-
   public darkMode = false;
 
-  constructor(private platform: Platform, private storage: StorageService) {
+  constructor(private platform: Platform) {
     this.platform.ready().then(() => {
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
       prefersDark.addListener(event => {
@@ -24,18 +24,11 @@ export class ThemeService {
   }
 
   getTheme() {
-    this.storage.getTheme().then((res) => {
-      if (res) {
-        this.darkMode = res;
-        this.setTheme(this.darkMode);
-      }
+    appManager.getPreference("ui.darkmode", (value)=>{
+      this.darkMode = value;
+      console.log("this.darkMode",this.darkMode) // BUGGY!! We set a string, we get a boolean....! Appmanager bug
+      this.setTheme(this.darkMode);
     });
-  }
-
-  toggleTheme() {
-    this.darkMode = !this.darkMode;
-    this.setTheme(this.darkMode);
-    this.storage.setTheme(this.darkMode);
   }
 
   setTheme(dark) {

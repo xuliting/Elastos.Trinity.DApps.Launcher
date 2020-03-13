@@ -10,6 +10,7 @@ import { Dapp } from '../models/dapps.model';
 import { StorageService } from './storage.service';
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 import { NotificationsComponent } from '../components/notifications/notifications.component';
+import { ThemeService } from './theme.service';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -163,7 +164,8 @@ export class AppmanagerService {
         private translate: TranslateService,
         private storage: StorageService,
         private navController: NavController,
-        private router: Router
+        private router: Router,
+        private theme: ThemeService
     ) {}
 
     init() {
@@ -289,6 +291,13 @@ export class AppmanagerService {
                         break;
                     case 'launcher_upgraded':
                         break;
+                    case 'preferenceChanged':
+                        console.log("a")
+                        if (params["ui.darkmode"] != undefined) {
+                            console.log("b")
+                            this.handleDarkModeChange(params["ui.darkmode"]=="true");
+                        }
+                        break;
                 }
                 break;
 
@@ -297,6 +306,10 @@ export class AppmanagerService {
                 this.installApp(params.uri, params.id);
                 break;
         }
+    }
+
+    handleDarkModeChange(useDarkMode) {
+        this.theme.setTheme(useDarkMode);
     }
 
     /******************************** Fetch Apps ********************************/

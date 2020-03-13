@@ -35,8 +35,4 @@ export class AppComponent {
             this.router.navigate(["desktop"]);
         });
     }
-
-    toggleDarkMode() {
-        this.theme.toggleTheme();
-    }
 }
