@@ -40,8 +40,10 @@ export class HomePage implements OnInit {
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DEFAULT);
     titleBarManager.setNavigationMode(TitleBarPlugin.TitleBarNavigationMode.BACK);
 
-    titleBarManager.setBackgroundColor("#5a62ff");
-    titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
+    if (!this.theme.darkMode) {
+      titleBarManager.setBackgroundColor("#5a62ff");
+      titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
+    }
 
     this.isBrowsedAppFav();
   }

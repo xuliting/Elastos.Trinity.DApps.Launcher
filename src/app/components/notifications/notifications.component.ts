@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ThemeService } from 'src/app/services/theme.service';
 
 declare let appManager: AppManagerPlugin.AppManager;
 
@@ -11,7 +12,7 @@ declare let appManager: AppManagerPlugin.AppManager;
 export class NotificationsComponent implements OnInit {
 
   public notifications = [
-/*     {
+    {
       message: 'Free 100 ELA! Just send 10 ELA to me :)',
       app: {
         id: "org.elastos.trinity.dapp.did",
@@ -43,11 +44,12 @@ export class NotificationsComponent implements OnInit {
           {src: "icon://org.elastos.trinity.dapp.did/1", sizes: "128x128", type: "image/png"}
         ]
       },
-    } */
+    }
   ];
 
   constructor(
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public theme: ThemeService
   ) { }
 
   ngOnInit() {}

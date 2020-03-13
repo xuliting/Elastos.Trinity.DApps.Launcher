@@ -12,7 +12,7 @@
   </ion-segment>
 
   <!-- Browsed Apps -->
-  <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container">
+  <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container" [class.lightMode]="!theme.darkMode">
     <ion-item lines="none" *ngFor="let app of appManager.browsedApps">
       <ion-grid class="ion-no-padding">
         <ion-row>
@@ -37,7 +37,7 @@
   </div>
 
   <!-- Favorite Apps -->
-  <div *ngIf="favAppsActive && appManager.getFavorites().length > 0" class="ion-margin-top apps-container">
+  <div *ngIf="favAppsActive && appManager.getFavorites().length > 0" class="ion-margin-top apps-container" [class.lightMode]="!theme.darkMode">
     <ion-item *ngFor="let app of appManager.getFavorites()" lines="none">
       <ion-grid class="ion-no-padding">
         <ion-row>

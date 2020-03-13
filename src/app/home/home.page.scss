@@ -33,15 +33,16 @@ ion-segment {
 }
 
 .apps-container {
-  border-top: 1px solid rgb(230, 230, 230);
-  
+  border-top: 1px solid rgba(255, 255, 255, 0.11);
+
   ion-item {
     --padding-start: 0px;
     --inner-padding-end: 0px;
   
     ion-row {
       padding: 5px 0;
-      border-bottom: 1px solid rgb(230, 230, 230);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+      box-shadow: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.11);
     
       .img-container {
         display: flex;
@@ -63,7 +64,6 @@ ion-segment {
   
         h2, p {
           margin: 0;
-          // color: black !important;
         }
   
         h2 {
@@ -147,8 +147,11 @@ ion-segment {
   color: #ffffff;
 }
 
+.lightMode {
+  border-top: 2px solid rgba(0, 0, 0, 0.11);
+}
+
 .activeTab {
-  background: #5a62ff !important;
   border-color: white !important;
 
   ion-img {

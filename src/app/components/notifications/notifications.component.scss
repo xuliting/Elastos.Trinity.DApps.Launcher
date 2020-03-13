@@ -78,3 +78,25 @@ ion-avatar {
     }
   }
 }
+
+.darkMode {
+  background: #121212;
+
+  .popup-header {
+      ion-label {
+          color: #ffffff;
+      }
+  }
+
+  .notification {
+    background: #ffffff;
+
+    h2 {
+        color: #000000 !important;
+    }
+
+    p {
+        color: #000000 !important;
+    }      
+  }
+}

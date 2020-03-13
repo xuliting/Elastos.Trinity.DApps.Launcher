@@ -78,7 +78,7 @@ export class AppmanagerService {
             active: false,
             started: false,
             description: [
-                "As elastOS is a secure environment with all outside communication and network traffic blocked by default, this makes the elastOS wallet one of the most secure.",
+                "As elastOS is a secure environment with all outside communication and network traffic blocked by default, this makes the elastOS wallet one of the most secure!",
                 "This area is a place for wallet widgets. Want to check how much ELA you got? The wallet widget can show you without even opening the applications. Coming soon!"
             ]
         },

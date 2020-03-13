@@ -40,8 +40,10 @@ export class DesktopPage implements OnInit {
     titleBarManager.setTitle("Desktop");
     this.appManager.resetDesktop();
 
-    titleBarManager.setBackgroundColor("#121212");
-    titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
+    if (!this.theme.darkMode) {
+      titleBarManager.setBackgroundColor("#ffffff");
+      titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.DARK);
+    }
   }
 
   drop(event: CdkDragDrop<string[]>) {

@@ -24,7 +24,7 @@ export class ThemeService {
   }
 
   getTheme() {
-    appManager.getPreference("ui.darkmode", (value)=>{
+    appManager.getPreference("ui.darkmode", (value) => {
       this.darkMode = value;
       this.setTheme(this.darkMode);
     });
