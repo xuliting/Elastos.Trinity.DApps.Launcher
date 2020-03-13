@@ -25,7 +25,7 @@ ion-avatar {
         width: 92vw;
         height: 59px;
         border-radius: 9px;
-        background-color: #121212;
+        background: #121212;
         border-bottom: none;
         box-shadow: none;
 
@@ -57,3 +57,30 @@ ion-avatar {
         }
     }
 }
+
+.darkMode {
+    background: #121212;
+
+    .popup-header {
+        ion-label {
+            color: #ffffff;
+        }
+    }
+
+    .app-row {
+        background: #ffffff;
+
+        .app-content {
+            ion-label {
+                h2 {
+                    color: #000000 !important;
+                }
+    
+                p {
+                    color: #000000 !important;
+                }
+            }
+        }
+    }
+}
+

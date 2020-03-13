@@ -1,6 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ThemeService } from 'src/app/services/theme.service';
 
 declare let appManager: AppManagerPlugin.AppManager;
 
@@ -17,7 +18,8 @@ export class RunningAppsComponent implements OnInit {
   constructor(
     private zone: NgZone,
     private navParams: NavParams,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public theme: ThemeService
   ) { }
 
   ngOnInit() {

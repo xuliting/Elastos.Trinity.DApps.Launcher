@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 
+import { TranslateService } from '@ngx-translate/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 import { AppmanagerService } from '../services/appmanager.service';
 import { StorageService } from '../services/storage.service';
-import { TranslateService } from '@ngx-translate/core';
+import { ThemeService } from '../services/theme.service';
 
 import { Dapp } from '../models/dapps.model';
-import { ThemeService } from '../services/theme.service';
+
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -36,7 +39,20 @@ export class HomePage implements OnInit {
     titleBarManager.setTitle('Dapp Browser');
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DEFAULT);
     titleBarManager.setNavigationMode(TitleBarPlugin.TitleBarNavigationMode.BACK);
+
+    titleBarManager.setBackgroundColor("#5a62ff");
+    titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
+
     this.isBrowsedAppFav();
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log('Drag & drop event ', + event);
+    moveItemInArray(
+      this.appManager.getFavorites(),
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 
   /******************************** Handle Favorites ********************************/

@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { HomePage } from './home.page';
 import { DragulaModule } from 'ng2-dragula';
 import { TranslateModule } from '@ngx-translate/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { TranslateModule } from '@ngx-translate/core';
                 path: '',
                 component: HomePage
             }
-        ])
+        ]),
+        DragDropModule
     ],
     entryComponents: [],
     declarations: [HomePage]
