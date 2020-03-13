@@ -39,7 +39,7 @@ export class ThemeService {
 
       // Set dark mode to native header
       titleBarManager.setBackgroundColor("#121212");
-      TitleBarPlugin.TitleBarForegroundMode.LIGHT;
+      titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
 
     } else {
       // Remove dark mode globally
@@ -47,7 +47,7 @@ export class ThemeService {
 
       // Remove dark mode to native header
       titleBarManager.setBackgroundColor("#ffffff");
-      TitleBarPlugin.TitleBarForegroundMode.DARK;
+      titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.DARK);
     }
   }
 }
