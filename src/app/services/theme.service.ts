@@ -26,7 +26,6 @@ export class ThemeService {
   getTheme() {
     appManager.getPreference("ui.darkmode", (value)=>{
       this.darkMode = value;
-      console.log("this.darkMode",this.darkMode) // BUGGY!! We set a string, we get a boolean....! Appmanager bug
       this.setTheme(this.darkMode);
     });
   }

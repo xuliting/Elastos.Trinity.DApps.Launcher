@@ -292,10 +292,8 @@ export class AppmanagerService {
                     case 'launcher_upgraded':
                         break;
                     case 'preferenceChanged':
-                        console.log("a")
-                        if (params["ui.darkmode"] != undefined) {
-                            console.log("b")
-                            this.handleDarkModeChange(params["ui.darkmode"]=="true");
+                        if (params.data.key == "ui.darkmode") {
+                            this.handleDarkModeChange(params.data.value);
                         }
                         break;
                 }
