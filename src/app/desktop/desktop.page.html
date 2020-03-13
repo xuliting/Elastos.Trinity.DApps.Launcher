@@ -19,7 +19,53 @@
           </div>
         </div>
       </ion-row>
-    </div>
+    </div> 
+
+   <!--  <div class="favs-container" *ngIf="appManager.getFavorites().length > 0">
+      <ion-row class="item">
+        <div 
+          class="fav-container" 
+          cdkDropList
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div 
+            class="fav-app" 
+            *ngFor="let app of appManager.getFavorites()" 
+            cdkDrag
+          >
+            <div> 
+              <ion-avatar (click)="openApp(app.id)">
+                <img [src]="appManager.sanitize(app.icons[0].src)">
+              </ion-avatar>
+              <ion-label>{{ app.name.slice(0,10) }}</ion-label>
+            </div>
+          </div>
+        </div>
+      </ion-row>
+    </div> -->
+
+    <!-- <div class="favs-container" *ngIf="appManager._favorites.length > 0">
+      <ion-row class="item">
+        <div 
+          class="fav-container" 
+          cdkDropList
+          (cdkDropListDropped)="dropTest($event)"
+        >
+          <div 
+            class="fav-app" 
+            *ngFor="let app of appManager._favorites" 
+            cdkDrag
+          >
+            <div> 
+              <ion-avatar (click)="openApp(app.id)">
+                <img [src]="appManager.sanitize(app.icons[0].src)">
+              </ion-avatar>
+              <ion-label>{{ app.name.slice(0,10) }}</ion-label>
+            </div>
+          </div>
+        </div>
+      </ion-row>
+    </div> -->
 
     <!-- Dapp Browser && Native Apps -->
     <div class="apps-container">

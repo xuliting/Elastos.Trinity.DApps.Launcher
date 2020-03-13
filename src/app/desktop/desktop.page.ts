@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ThemeService } from '../services/theme.service';
 import { AppmanagerService } from '../services/appmanager.service';
-import { Dapp } from '../models/dapps.model';
 import { Router } from '@angular/router';
 import { IonSlides } from '@ionic/angular';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -24,6 +24,8 @@ export class DesktopPage implements OnInit {
     slidesPerView: 3.5
   };
 
+  favorites = [];
+
   constructor(
     private router: Router,
     public appManager: AppmanagerService,
@@ -36,8 +38,23 @@ export class DesktopPage implements OnInit {
   ionViewDidEnter() {
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DESKTOP);
     titleBarManager.setTitle("Desktop");
-
+    titleBarManager.setBackgroundColor("#ffffff");
+    TitleBarPlugin.TitleBarForegroundMode.DARK;
     this.appManager.resetDesktop();
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log('Drag & drop event ', + event);
+    moveItemInArray(
+      this.appManager.getFavorites(),
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  dropTest(event: CdkDragDrop<string[]>) {
+    console.log('Drag & drop event ', + event);
+    moveItemInArray(this.appManager._favorites, event.previousIndex, event.currentIndex);
   }
 
   /************** Check app if it's installed or needs updating before opening **************/

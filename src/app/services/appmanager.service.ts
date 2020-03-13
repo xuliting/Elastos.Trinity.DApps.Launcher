@@ -578,6 +578,10 @@ export class AppmanagerService {
         return this.installedApps.filter((app) => this.favorites.includes(app.id));
     }
 
+    get _favorites(): Dapp[] {
+        return [...this.installedApps.filter((app) => this.favorites.includes(app.id))];
+    }
+
     storeFavorites() {
         this.favorites = [];
         this.installedApps.map(dapp => {

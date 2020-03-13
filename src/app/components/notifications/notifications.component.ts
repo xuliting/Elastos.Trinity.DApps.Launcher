@@ -11,7 +11,7 @@ declare let appManager: AppManagerPlugin.AppManager;
 export class NotificationsComponent implements OnInit {
 
   public notifications = [
-    /*{
+    {
       message: 'Free 100 ELA! Just send 10 ELA to me :)',
       app: {
         id: "org.elastos.trinity.dapp.did",
@@ -43,7 +43,7 @@ export class NotificationsComponent implements OnInit {
           {src: "icon://org.elastos.trinity.dapp.did/1", sizes: "128x128", type: "image/png"}
         ]
       },
-    }*/
+    }
   ];
 
   constructor(
