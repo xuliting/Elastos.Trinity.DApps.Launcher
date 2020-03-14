@@ -44,87 +44,68 @@ export class HomePage implements OnInit {
       titleBarManager.setBackgroundColor("#5a62ff");
       titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
     }
-
-    this.isBrowsedAppFav();
   }
 
   drop(event: CdkDragDrop<string[]>) {
     console.log('Drag & drop event ', + event);
     moveItemInArray(
-      this.appManager.getFavorites(),
+      this.appManager.favApps,
       event.previousIndex,
       event.currentIndex
     );
+
+    this.storage.setFavApps(this.appManager.favApps);
   }
 
   /******************************** Handle Favorites ********************************/
-  favApp(app: Dapp, section: string) {
-    app.isFav = true;
+  favApp(app: Dapp) {
+    const targetApp = this.appManager.favApps.find((favApp) => favApp.id === app.id);
 
-    // If app is favorited from 'recents' list, fav app in 'favorites' list
-    if (section === 'recent') {
-      this.appManager.installedApps.map((installedApp) => {
-        if (app.id === installedApp.id) {
-          installedApp.isFav = true;
-        }
-      });
-    }
-
-    this.appManager.genericToast(app.name + ' added to favorites');
-    this.appManager.storeFavorites();
-  }
-
-  removeFav(app: Dapp, section: string) {
-    app.isFav = false;
-
-    // If app is unfavorited from 'recents' list, unfavorite app in 'favorites' list
-    if (section === 'recent') {
-      this.appManager.installedApps.map((installedApp) => {
-        if (app.id === installedApp.id) {
-          installedApp.isFav = false;
-        }
-      });
-    }
-
-    // If app is unfavorited from 'favorites' list, unfavorite app in 'recents' list
-    if (section === 'favorites') {
-      this.appManager.browsedApps.map((browsedApp) => {
-        if (app.id === browsedApp.id) {
-          browsedApp.isFav = false;
-        }
-      });
-    }
-
-    this.appManager.genericToast(app.name + ' removed from favorites');
-    this.appManager.storeFavorites();
-  }
-
-  /******************************** Handle Bookmarks ********************************/
-  bookmarkApp(app: Dapp) {
-    if (app.isBookmarked) {
+    if (targetApp) {
       return;
     } else {
-      app.isBookmarked = true;
-      this.appManager.storeBookmarks();
+      this.appManager.favApps.unshift({
+        id: app.id,
+        version: app.version,
+        name: app.name,
+        shortName: app.shortName,
+        description: app.description,
+        startUrl: app.startUrl,
+        icons: app.icons,
+        authorName: app.authorName,
+        authorEmail: app.authorEmail,
+        category: app.category,
+        urls: app.urls,
+        isFav: null
+      });
     }
-  }
-
-  removeBookmark(app: Dapp) {
-    app.isBookmarked = false;
-    this.appManager.storeBookmarks();
-  }
-
-  /******************************** Handle History ********************************/
-  isBrowsedAppFav() {
-    this.appManager.browsedApps.forEach((browsedApp) => {
-      browsedApp.isFav = false;
-    });
 
     this.appManager.browsedApps.map((browsedApp) => {
-      if (this.appManager.favorites.includes(browsedApp.id)) {
+      if (app.id === browsedApp.id) {
         browsedApp.isFav = true;
       }
     });
+
+    this.appManager.genericToast(app.name + ' added to favorites');
+    this.saveApps();
+  }
+
+  removeFav(app: Dapp) {
+    this.appManager.favApps = this.appManager.favApps.filter((favApp) => favApp.id !== app.id);
+
+    this.appManager.browsedApps.map((browsedApp) => {
+      if (app.id === browsedApp.id) {
+        browsedApp.isFav = false;
+      }
+    });
+
+    this.appManager.genericToast(app.name + ' removed from favorites');
+    this.saveApps();
+  }
+
+  saveApps() {
+    this.storage.setFavApps(this.appManager.favApps);
+    this.storage.setBrowsedApps(this.appManager.browsedApps);
   }
 
   /************** Check app if installed or needs updating before opening **************/

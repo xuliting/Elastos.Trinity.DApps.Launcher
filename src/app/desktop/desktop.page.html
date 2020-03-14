@@ -7,10 +7,10 @@
     </div>
 
     <!-- Favorites -->
-    <div class="favs-container" *ngIf="appManager.getFavorites().length > 0">
+    <div class="favs-container" *ngIf="appManager.favApps.length > 0">
       <ion-row class="item">
         <div class="fav-container">
-          <div class="fav-app" *ngFor="let app of appManager.getFavorites()">
+          <div class="fav-app" *ngFor="let app of appManager.favApps">
             <div> 
               <ion-avatar (click)="openApp(app.id)">
                 <img [src]="appManager.sanitize(app.icons[0].src)">
@@ -22,18 +22,10 @@
       </ion-row>
     </div> 
 
-   <!--  <div class="favs-container" *ngIf="appManager.getFavorites().length > 0">
+   <!--  <div class="favs-container" *ngIf="appManager.favApps.length > 0">
       <ion-row class="item">
-        <div 
-          class="fav-container" 
-          cdkDropList
-          (cdkDropListDropped)="drop($event)"
-        >
-          <div 
-            class="fav-app" 
-            *ngFor="let app of appManager.getFavorites()" 
-            cdkDrag
-          >
+        <div class="fav-container" cdkDropList (cdkDropListDropped)="drop($event)">
+          <div class="fav-app" *ngFor="let app of appManager.favApps" cdkDrag>
             <div> 
               <ion-avatar (click)="openApp(app.id)">
                 <img [src]="appManager.sanitize(app.icons[0].src)">
@@ -43,7 +35,7 @@
           </div>
         </div>
       </ion-row>
-    </div> -->
+    </div>  -->
 
     <!-- Dapp Browser && Native Apps -->
     <div class="apps-container">

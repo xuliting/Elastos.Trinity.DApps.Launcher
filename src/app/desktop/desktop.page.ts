@@ -4,6 +4,7 @@ import { AppmanagerService } from '../services/appmanager.service';
 import { Router } from '@angular/router';
 import { IonSlides } from '@ionic/angular';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { StorageService } from '../services/storage.service';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -29,6 +30,7 @@ export class DesktopPage implements OnInit {
   constructor(
     private router: Router,
     public appManager: AppmanagerService,
+    private storage: StorageService,
     public theme: ThemeService
   ) { }
 
@@ -49,15 +51,12 @@ export class DesktopPage implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     console.log('Drag & drop event ', + event);
     moveItemInArray(
-      this.appManager.getFavorites(),
+      this.appManager.favApps,
       event.previousIndex,
       event.currentIndex
     );
-  }
 
-  dropTest(event: CdkDragDrop<string[]>) {
-    console.log('Drag & drop event ', + event);
-    moveItemInArray(this.appManager._favorites, event.previousIndex, event.currentIndex);
+    this.storage.setFavApps(this.appManager.favApps);
   }
 
   /************** Check app if it's installed or needs updating before opening **************/

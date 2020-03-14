@@ -43,8 +43,7 @@ export class AppmanagerService {
     /* 3rd party apps */
     public installedApps: Dapp[] = [];
     public browsedApps: Dapp[] = [];
-    public favorites: string[] = [];
-    public bookmarks: string[] = [];
+    public favApps: Dapp[] = [];
 
     /* Background apps */
     public popup = false;
@@ -313,19 +312,10 @@ export class AppmanagerService {
     /******************************** Fetch Apps ********************************/
 
     // Fetch stored apps
-    getFavApps(): Promise<string[]> {
+    getFavApps(): Promise<Dapp[]> {
         return new Promise((resolve, reject) => {
             this.storage.getFavApps().then(apps => {
                 console.log('Fetched favorite apps', apps);
-                resolve(apps || []);
-            });
-        });
-    }
-
-    getBookmarkedApps(): Promise<string[]> {
-        return new Promise((resolve, reject) => {
-            this.storage.getBookmarkedApps().then(apps => {
-                console.log('Fetched bookmarked apps', apps);
                 resolve(apps || []);
             });
         });
@@ -342,8 +332,7 @@ export class AppmanagerService {
 
     // Get installed app info
     async getAppInfos() {
-        this.favorites = await this.getFavApps();
-        this.bookmarks = await this.getBookmarkedApps();
+        this.favApps = await this.getFavApps();
         this.browsedApps = await this.getBrowsedApps();
 
         this.installedApps = [];
@@ -367,8 +356,7 @@ export class AppmanagerService {
                     authorEmail: app.authorEmail,
                     category: app.category,
                     urls: app.urls,
-                    isFav: this.favorites.includes(app.id) ? true : false,
-                    isBookmarked: this.bookmarks.includes(app.id) ? true : false
+                    isFav: null
                 });
 
                 if (
@@ -392,8 +380,7 @@ export class AppmanagerService {
                         authorEmail: app.authorEmail,
                         category: app.category,
                         urls: app.urls,
-                        isFav: false,
-                        isBookmarked: false,
+                        isFav: null,
                     });
                 } else if (app.id === 'org.elastos.trinity.dapp.installer') {
                     return;
@@ -410,8 +397,7 @@ export class AppmanagerService {
                         authorEmail: app.authorEmail,
                         category: app.category,
                         urls: app.urls,
-                        isFav: this.favorites.includes(app.id) ? true : false,
-                        isBookmarked: this.bookmarks.includes(app.id) ? true : false
+                        isFav: null
                     });
                 }
             });
@@ -585,68 +571,8 @@ export class AppmanagerService {
     }
 
     /******************************** Favorites ********************************/
-    getFavorites(): Dapp[] {
-        return this.installedApps.filter((app) => this.favorites.includes(app.id));
-    }
-
-    get _favorites(): Dapp[] {
-        return [...this.installedApps.filter((app) => this.favorites.includes(app.id))];
-    }
-
     storeFavorites() {
-        this.favorites = [];
-        this.installedApps.map(dapp => {
-          if (dapp.isFav) {
-            this.favorites.push(dapp.id);
-          }
-        });
-        this.storage.setFavApps(this.favorites);
-    }
-
-    /******************************** Bookmarks ********************************/
-    getBookmarks(): Dapp[] {
-        return this.installedApps.filter((app) => this.bookmarks.includes(app.id));
-    }
-
-    findBookmark(id: string) {
-        this.installedApps.map(app => {
-            if (app.id === id && app.isBookmarked === false) {
-                this.addBookmark(app);
-            }
-        });
-    }
-
-    async addBookmark(app: Dapp) {
-        const alert = await this.alertController.create({
-          header: app.name,
-          message: 'Do you want to add this to your bookmarks?',
-          mode: 'ios',
-          buttons: [
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              cssClass: 'secondary',
-            }, {
-              text: 'Okay',
-              handler: () => {
-                app.isBookmarked = true;
-                this.storeBookmarks();
-              }
-            }
-          ]
-        });
-
-        await alert.present();
-    }
-
-    storeBookmarks() {
-        this.bookmarks = [];
-        this.installedApps.map(dapp => {
-          if (dapp.isBookmarked) {
-            this.bookmarks.push(dapp.id);
-          }
-        });
-        this.storage.setBookmarkedApps(this.bookmarks);
+        this.storage.setFavApps(this.favApps);
     }
 
     /******************************** Browsing History ********************************/
@@ -671,6 +597,7 @@ export class AppmanagerService {
         ) {
             return;
         } else {
+            const favApp: Dapp = this.favApps.find(app => app.id === targetApp.id);
             this.browsedApps.unshift({
                 id: targetApp.id,
                 version: targetApp.version,
@@ -683,8 +610,7 @@ export class AppmanagerService {
                 authorEmail: targetApp.authorEmail,
                 category: targetApp.category,
                 urls: targetApp.urls,
-                isFav: this.favorites.includes(targetApp.id) ? true : false,
-                isBookmarked: this.bookmarks.includes(targetApp.id) ? true : false,
+                isFav: favApp ? true : false,
             });
             this.removeDuplicates(this.browsedApps);
         }
@@ -708,7 +634,7 @@ export class AppmanagerService {
     uninstallApp() {
         let uninstallApps: Dapp[] = [];
         this.browsedApps.map(app => {
-            if (app.isFav || app.isBookmarked) {
+            if (app.isFav) {
                 return;
             } else {
                 uninstallApps.push(app);
