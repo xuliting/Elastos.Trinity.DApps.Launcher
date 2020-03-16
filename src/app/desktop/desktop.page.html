@@ -11,7 +11,8 @@
       <ion-row class="item">
         <div class="fav-container">
           <div class="fav-app" *ngFor="let app of appManager.favApps">
-            <div> 
+            {{app}}
+            <div *ngIf="app.icons && app.icons.length > 0"> 
               <ion-avatar (click)="openApp(app.id)">
                 <img [src]="appManager.sanitize(app.icons[0].src)">
               </ion-avatar>
