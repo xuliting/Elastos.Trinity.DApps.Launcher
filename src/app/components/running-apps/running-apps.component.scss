@@ -25,7 +25,7 @@ ion-avatar {
         width: 92vw;
         height: 59px;
         border-radius: 9px;
-        background: #121212;
+        background: #f0f1ff;
         border-bottom: none;
         box-shadow: none;
 
@@ -45,11 +45,11 @@ ion-avatar {
                     font-size: 15px;
                     font-weight: 500;
                     line-height: 1.23;
-                    color: #ffffff;
+                    color: #121212;
                 }
 
                 p {
-                    color: #ffffff !important;
+                    color: #121212 !important;
                     font-size: 10px !important;
                     line-height: 1.29;
                 }
@@ -67,7 +67,7 @@ ion-avatar {
         }
     }
 
-    .app-row {
+/*     .app-row {
         background: #ffffff;
 
         .app-content {
@@ -81,6 +81,6 @@ ion-avatar {
                 }
             }
         }
-    }
+    } */
 }
 

@@ -25,7 +25,7 @@ ion-avatar {
     width: 92vw;
     min-height: 59px;
     border-radius: 9px;
-    background-color: #121212;
+    background-color: #f0f1ff;
     border-bottom: none;
     box-shadow: none;
     padding: 5px;
@@ -47,7 +47,7 @@ ion-avatar {
             font-size: 12px;
             font-weight: 500;
             line-height: 1.23;
-            color: #ffffff;
+            color: #121212;
           }
         }
       }
@@ -72,7 +72,7 @@ ion-avatar {
         line-height: 1.27;
         letter-spacing: 0.22px;
         text-align: left;
-        color: #ffffff;
+        color: #121212;
         margin: 0;
       }
     }
@@ -87,7 +87,7 @@ ion-avatar {
           color: #ffffff;
       }
   }
-
+/* 
   .notification {
     background: #ffffff;
 
@@ -98,5 +98,5 @@ ion-avatar {
     p {
         color: #000000 !important;
     }      
-  }
+  } */
 }

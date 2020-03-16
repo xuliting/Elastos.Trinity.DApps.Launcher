@@ -512,6 +512,7 @@ export class AppmanagerService {
             }, (err) => {
                 console.error(err);
                 this.resetProgress();
+                this.appStartErrToast();
             });
         });
     }
@@ -754,7 +755,7 @@ export class AppmanagerService {
             mode: 'ios',
             header: 'Something went wrong',
             message: 'Can\'t start app at this time, please try again',
-            color: 'primary',
+            color: 'medium',
             duration: 4000,
             position: 'bottom'
         }).then(toast => toast.present());
@@ -764,7 +765,7 @@ export class AppmanagerService {
         this.toastCtrl.create({
             mode: 'ios',
             header: msg,
-            color: 'primary',
+            color: 'medium',
             duration: 4000,
             position: 'bottom'
         }).then(toast => toast.present());
