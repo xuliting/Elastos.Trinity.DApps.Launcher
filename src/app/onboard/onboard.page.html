@@ -1,0 +1,58 @@
+<ion-content>
+  <ion-grid class="onboard-container">
+
+    <div class="logo-container">
+      <img src="assets/icon/dark_mode/elalogo.svg">
+    </div>
+
+    <ion-slides
+      #slide
+      pager="true"
+      [options]="slideOpts"
+    >
+      <ion-slide class="ion-padding">
+        <div class="slide">
+          <h1 class="ion-padding">Welcome to a <br> secure environment</h1>
+          <p class="ion-padding">
+            What you know about the old internet is blocked within elastOS by default.
+            This means you are free to browse decentralized applications, manage a 
+            unique identity, and have your own crypto wallet all in a safe, secure sandboxed
+            environment where network traffic is restricted.
+          </p>
+          <ion-button class="ion-margin-vertical" mode="ios" color="theme.darkMode ? dark : light" (click)="next(slide)">
+            <ion-label>Continue</ion-label>
+          </ion-button>
+        </div>
+      </ion-slide>
+
+      <ion-slide class="ion-padding">
+        <div class="slide">
+          <h1 class="ion-padding">An Operating System or the Elastos Smartweb</h1>
+          <p class="ion-padding">
+            elastOS is similar to the desktop of a computer. You can browse your favorite apps
+            and manage your data but unlike centralized environments, you own your data and the applications 
+            you use cannot be shutdown!
+          </p>
+          <ion-button class="ion-margin-vertical" mode="ios" color="theme.darkMode ? dark : light" (click)="next(slide)">
+            <ion-label>Continue</ion-label>
+          </ion-button>
+        </div>
+      </ion-slide>
+
+      <ion-slide class="ion-padding">
+        <div class="slide">
+          <h1 class="ion-padding">Entire dApp ecosystem!</h1>
+          <p class="ion-padding">
+            Contacts, wallet, dApp browser and identity applications all work together with Elastos core
+            services to provide a safe ecosystem. Along with supernode voting and Cyber Republic elections in which you can 
+            participate and help democratize, power and run the new smart web.
+          </p>
+          <ion-button class="ion-margin-vertical" mode="ios" color="theme.darkMode ? dark : light" (click)="exit()">
+            <ion-label>Enter elastOS</ion-label>
+          </ion-button>
+        </div>
+      </ion-slide>
+  
+    </ion-slides>
+  </ion-grid>
+</ion-content>

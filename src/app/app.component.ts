@@ -32,7 +32,7 @@ export class AppComponent {
             console.log('platform.ready');
             screen.orientation.lock('portrait');
             this.appManager.init();
-            this.router.navigate(["desktop"]);
+            this.router.navigate(['desktop']);
         });
     }
 }

@@ -10,7 +10,6 @@ import { ThemeService } from '../services/theme.service';
 
 import { Dapp } from '../models/dapps.model';
 
-
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 @Component({

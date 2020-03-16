@@ -149,6 +149,9 @@ export class AppmanagerService {
     private currentLang: string = null;
     private supportedLanguage: string[] = ['en', 'zh'];
 
+    /* Onboard */
+    private firstVisit = false;
+
     private handledIntentId: Number;
 
     constructor(
@@ -169,6 +172,7 @@ export class AppmanagerService {
 
     init() {
         this.resetProgress();
+        this.getVisit();
         this.getRunningApps();
         this.getAppInfos();
 
@@ -183,6 +187,17 @@ export class AppmanagerService {
               this.onIntentReceived(ret);
             });
         }
+    }
+
+    getVisit() {
+        this.storage.getVisit().then(data => {
+            if (data || data === true) {
+                this.firstVisit = false;
+                console.log('First visit?', this.firstVisit);
+            } else {
+                this.router.navigate(['onboard']);
+            }
+        });
     }
 
     /******************************** Intent Listener ********************************/
