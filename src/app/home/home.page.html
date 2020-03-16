@@ -45,6 +45,7 @@
     (cdkDropListDropped)="drop($event)"
   >
     <ion-item *ngFor="let app of appManager.favApps" cdkDrag lines="none">
+      <img *cdkDragPreview [src]="appManager.sanitize(app.icons[0].src)">
       <ion-grid class="ion-no-padding">
         <ion-row>
           <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="openApp(app.id)">
