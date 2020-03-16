@@ -37,7 +37,7 @@ export class DesktopPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DESKTOP);
     titleBarManager.setTitle("Desktop");
     this.appManager.resetDesktop();
@@ -46,6 +46,9 @@ export class DesktopPage implements OnInit {
       titleBarManager.setBackgroundColor("#ffffff");
       titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.DARK);
     }
+  }
+
+  ionViewDidEnter() {
   }
 
   drop(event: CdkDragDrop<string[]>) {
