@@ -173,7 +173,7 @@ ion-segment {
 
 /********** Drag & Drop List **********/
 .apps-container.cdk-drop-list-dragging {
-  border: none;
+  border-top: 1px solid transparent;
 }
 
 .cdk-drag-placeholder {
