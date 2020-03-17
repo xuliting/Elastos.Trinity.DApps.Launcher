@@ -13,7 +13,7 @@ declare let appManager: AppManagerPlugin.AppManager;
 })
 export class OnboardPage implements OnInit {
 
-  @ViewChild(IonSlides) private slides: IonSlides;
+  @ViewChild(IonSlides) private slide: IonSlides;
 
   hidden = true
 
@@ -56,7 +56,7 @@ export class OnboardPage implements OnInit {
 
   showSlider() {
     this.hidden = false
-    this.slides.getSwiper().then((swiper)=>{
+    this.slide.getSwiper().then((swiper)=>{
       swiper.init();
     })
   }
