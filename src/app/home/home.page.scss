@@ -36,7 +36,7 @@ ion-segment {
 
 /********** Populated List **********/
 .apps-container {
-  border-top: 1px solid rgba(255, 255, 255, 0.11);
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
 
   ion-item {
     --padding-start: 0px;
@@ -44,9 +44,9 @@ ion-segment {
   
     ion-row {
       padding: 5px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.11);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.11);
-      box-shadow: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.11);
+     // border-top: 1px solid rgba(255, 255, 255, 0.11);
+     // border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+     // box-shadow: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.11);
     
       .img-container {
         display: flex;
@@ -153,10 +153,6 @@ ion-segment {
   ion-label {
     color: #313235 !important;
   }
-}
-
-.lightApps {
-  border-top: 2px solid rgba(0, 0, 0, 0.11);
 }
 
 .darkEmpty {

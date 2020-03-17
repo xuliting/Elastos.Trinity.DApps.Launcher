@@ -22,10 +22,11 @@
       </ion-row>
     </div> 
 
-   <!--  <div class="favs-container" *ngIf="appManager.favApps.length > 0">
+ <!--    <div class="favs-container" *ngIf="appManager.favApps.length > 0">
       <ion-row class="item">
         <div class="fav-container" cdkDropList (cdkDropListDropped)="drop($event)">
           <div class="fav-app" *ngFor="let app of appManager.favApps" cdkDrag>
+            <img *cdkDragPreview [src]="appManager.sanitize(app.icons[0].src)">
             <div> 
               <ion-avatar (click)="openApp(app.id)">
                 <img [src]="appManager.sanitize(app.icons[0].src)">

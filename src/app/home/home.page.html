@@ -14,8 +14,8 @@
   </ion-segment>
 
   <!-- Browsed Apps -->
-  <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container" [class.lightApps]="!theme.darkMode">
-    <ion-item lines="none" *ngFor="let app of appManager.browsedApps">
+  <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container">
+    <ion-item *ngFor="let app of appManager.browsedApps">
       <ion-grid class="ion-no-padding">
         <ion-row>
           <ion-col size="2.5" size-lg="2.5" class="img-container" (click)="openApp(app.id)">
@@ -42,11 +42,10 @@
   <div 
     *ngIf="favAppsActive && appManager.favApps.length > 0" 
     class="ion-margin-top apps-container" 
-    [class.lightApps]="!theme.darkMode"
     cdkDropList
     (cdkDropListDropped)="drop($event)"
   >
-    <ion-item *ngFor="let app of appManager.favApps" cdkDrag lines="none">
+    <ion-item *ngFor="let app of appManager.favApps" cdkDrag>
       <img *cdkDragPreview [src]="appManager.sanitize(app.icons[0].src)">
       <ion-grid class="ion-no-padding">
         <ion-row>
