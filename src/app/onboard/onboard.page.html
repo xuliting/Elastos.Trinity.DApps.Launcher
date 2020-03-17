@@ -6,9 +6,10 @@
     </div>
 
     <ion-slides
-      #slide
+      #slides
       pager="true"
       [options]="slideOpts"
+      [class.hidden]="hidden"
     >
       <ion-slide class="ion-padding">
         <div class="slide">
@@ -25,7 +26,7 @@
         </div>
       </ion-slide>
 
-      <ion-slide class="ion-padding">
+      <!--<ion-slide class="ion-padding">
         <div class="slide">
           <h1 class="ion-padding">An Operating System for the Elastos Smartweb</h1>
           <p class="ion-padding">
@@ -37,7 +38,7 @@
             <ion-label>Continue</ion-label>
           </ion-button>
         </div>
-      </ion-slide>
+      </ion-slide>-->
 
       <ion-slide class="ion-padding">
         <div class="slide">
