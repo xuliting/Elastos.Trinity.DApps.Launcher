@@ -58,7 +58,7 @@ export class OnboardPage implements OnInit {
     this.hidden = false
     this.slide.getSwiper().then((swiper)=>{
       swiper.init();
-    })
+    });
   }
 
   next(slide) {

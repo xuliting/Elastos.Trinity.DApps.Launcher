@@ -20,13 +20,15 @@
             unique identity, and have your own crypto wallet all in a safe, secure sandboxed
             environment where network traffic is restricted.
           </p>
-          <ion-button class="ion-margin-vertical" mode="ios" color="theme.darkMode ? dark : light" (click)="next(slide)">
-            <ion-label>Continue</ion-label>
-          </ion-button>
+          <div class="btn-container">
+            <ion-button mode="ios" color="theme.darkMode ? dark : light" (click)="next(slide)">
+              <ion-label>Continue</ion-label>
+            </ion-button>
+          </div>
         </div>
       </ion-slide>
 
-      <!--<ion-slide class="ion-padding">
+   <!--    <ion-slide class="ion-padding">
         <div class="slide">
           <h1 class="ion-padding">An Operating System for the Elastos Smartweb</h1>
           <p class="ion-padding">
@@ -38,19 +40,21 @@
             <ion-label>Continue</ion-label>
           </ion-button>
         </div>
-      </ion-slide>-->
-
+      </ion-slide>
+ -->
       <ion-slide class="ion-padding">
         <div class="slide">
-          <h1 class="ion-padding">Entire dApp ecosystem!</h1>
+          <h1 class="ion-padding">Entire dApp <br> ecosystem!</h1>
           <p class="ion-padding">
             Contacts, wallet, dApp browser and identity applications all work together with Elastos core
             services to provide a safe ecosystem. There's also DPoS voting and Cyber Republic elections in which you can 
             participate and help democratize, power and run the new smart web.
           </p>
-          <ion-button class="ion-margin-vertical" mode="ios" color="theme.darkMode ? dark : light" (click)="exit()">
-            <ion-label>Enter elastOS</ion-label>
-          </ion-button>
+          <div class="btn-container">
+            <ion-button mode="ios" color="theme.darkMode ? dark : light" (click)="exit()">
+              <ion-label>Enter elastOS</ion-label>
+            </ion-button>
+          </div>
         </div>
       </ion-slide>
   
