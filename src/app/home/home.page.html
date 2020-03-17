@@ -1,18 +1,20 @@
 <ion-content class="ion-no-margin ion-no-padding">
 
-  <ion-segment color="light" [class.darkMode]="theme.darkMode"> 
+  <ion-segment color="light" [class.darkSegment]="theme.darkMode"> 
     <ion-segment-button [class.activeTab]="!favAppsActive" value="!favAppsActive" (click)="favAppsActive = false">
-      <ion-img src="/assets/icon/component-155-1.svg"></ion-img>
+      <ion-img *ngIf="!theme.darkMode" src="/assets/icon/light_mode/recent-tab.svg"></ion-img>
+      <ion-img *ngIf="theme.darkMode" src="/assets/icon/dark_mode/recent-tab.svg"></ion-img>
       <ion-label>Recent</ion-label>
     </ion-segment-button>
     <ion-segment-button [class.activeTab]="favAppsActive" value="favAppsActive" (click)="favAppsActive = true">
-      <ion-img src="/assets/icon/bookmark-icon.svg"></ion-img>
+      <ion-img *ngIf="!theme.darkMode" src="/assets/icon/light_mode/favorite-tab.svg"></ion-img>
+      <ion-img *ngIf="theme.darkMode" src="/assets/icon/dark_mode/favorite-tab.svg"></ion-img>
       <ion-label>Favorites</ion-label>
     </ion-segment-button>
   </ion-segment>
 
   <!-- Browsed Apps -->
-  <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container" [class.lightMode]="!theme.darkMode">
+  <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container" [class.lightApps]="!theme.darkMode">
     <ion-item lines="none" *ngFor="let app of appManager.browsedApps">
       <ion-grid class="ion-no-padding">
         <ion-row>
@@ -40,7 +42,7 @@
   <div 
     *ngIf="favAppsActive && appManager.favApps.length > 0" 
     class="ion-margin-top apps-container" 
-    [class.lightMode]="!theme.darkMode"
+    [class.lightApps]="!theme.darkMode"
     cdkDropList
     (cdkDropListDropped)="drop($event)"
   >
@@ -66,9 +68,10 @@
   </div>
 
   <!-- No Apps -->
-  <div *ngIf="favAppsActive && appManager.favApps.length === 0 || !favAppsActive && appManager.browsedApps.length === 0" class="no-apps-container">
+  <div *ngIf="favAppsActive && appManager.favApps.length === 0 || !favAppsActive && appManager.browsedApps.length === 0" class="no-apps-container" [class.darkEmpty]="theme.darkMode">
     <div class="no-apps-header">
-      <div class="no-apps-head"></div>
+      <ion-img *ngIf="!theme.darkMode" src="/assets/icon/light_mode/elalogo-blue.svg"></ion-img>
+      <ion-img *ngIf="theme.darkMode" src="/assets/icon/dark_mode/elalogo.svg"></ion-img>
     </div>
     <div class="ion-padding-top no-apps-msg" color="primary">
       <h1>No applications yet?</h1>

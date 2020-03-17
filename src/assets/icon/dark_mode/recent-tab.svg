@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="prefix__Component_155_1" width="31.674" height="25.313" data-name="Component 155 – 1" viewBox="0 0 31.674 25.313">
     <defs>
         <style>
-            .prefix__cls-5{fill:none}.prefix__cls-3{fill:#4148c7}.prefix__cls-4{stroke:none}
+            .prefix__cls-5{fill:none}.prefix__cls-3{fill:#313235}.prefix__cls-4{stroke:none}
         </style>
     </defs>
-    <g id="prefix__Ellipse_264" data-name="Ellipse 264" transform="translate(7)" style="stroke-width:3px;stroke:#4148c7;fill:none">
+    <g id="prefix__Ellipse_264" data-name="Ellipse 264" transform="translate(7)" style="stroke-width:3px;stroke:#313235;fill:none">
         <circle cx="10" cy="10" r="10" class="prefix__cls-4"/>
         <circle cx="10" cy="10" r="8.5" class="prefix__cls-5"/>
     </g>
-    <g id="prefix__Ellipse_265" data-name="Ellipse 265" transform="translate(0 9)" style="fill:#5b62ff;stroke-width:2px;stroke:#4148c7">
+    <g id="prefix__Ellipse_265" data-name="Ellipse 265" transform="translate(0 9)" style="fill:#313235;stroke-width:2px;stroke:#313235">
         <circle cx="7.5" cy="7.5" r="7.5" class="prefix__cls-4"/>
         <circle cx="7.5" cy="7.5" r="6.5" class="prefix__cls-5"/>
     </g>

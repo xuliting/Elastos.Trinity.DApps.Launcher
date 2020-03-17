@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__Component_155_1" width="31.674" height="25.313" data-name="Component 155 – 1" viewBox="0 0 31.674 25.313">
+    <defs>
+        <style>
+            .prefix__cls-5{fill:none}.prefix__cls-3{fill:#4148c7}.prefix__cls-4{stroke:none}
+        </style>
+    </defs>
+    <g id="prefix__Ellipse_264" data-name="Ellipse 264" transform="translate(7)" style="stroke-width:3px;stroke:#4148c7;fill:none">
+        <circle cx="10" cy="10" r="10" class="prefix__cls-4"/>
+        <circle cx="10" cy="10" r="8.5" class="prefix__cls-5"/>
+    </g>
+    <g id="prefix__Ellipse_265" data-name="Ellipse 265" transform="translate(0 9)" style="fill:#4148c7;stroke-width:2px;stroke:#4148c7">
+        <circle cx="7.5" cy="7.5" r="7.5" class="prefix__cls-4"/>
+        <circle cx="7.5" cy="7.5" r="6.5" class="prefix__cls-5"/>
+    </g>
+    <path id="prefix__Rectangle_295" d="M0 0H11.911V3.248H0z" class="prefix__cls-3" data-name="Rectangle 295" transform="rotate(45 -5.99 35.363)"/>
+    <rect id="prefix__Rectangle_296" width="1" height="4" class="prefix__cls-3" data-name="Rectangle 296" rx=".5" transform="translate(7 13)"/>
+    <rect id="prefix__Rectangle_297" width="1" height="4" class="prefix__cls-3" data-name="Rectangle 297" rx=".5" transform="rotate(-62.03 17.477 2.516)"/>
+</svg>

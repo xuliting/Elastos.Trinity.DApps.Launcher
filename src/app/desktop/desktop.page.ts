@@ -45,6 +45,9 @@ export class DesktopPage implements OnInit {
     if (!this.theme.darkMode) {
       titleBarManager.setBackgroundColor("#ffffff");
       titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.DARK);
+    } else {
+      titleBarManager.setBackgroundColor("#121212");
+      titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
     }
   }
 

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { IonSlides, Platform } from '@ionic/angular';
 
 declare let appManager: AppManagerPlugin.AppManager;
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 @Component({
   selector: 'app-onboard',
@@ -38,6 +39,8 @@ export class OnboardPage implements OnInit {
 
   ionViewWillEnter() {
     appManager.setVisible("show");
+    titleBarManager.setBackgroundColor("#5a62ff");
+    titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
   }
 
   ionViewDidEnter() {

@@ -107,11 +107,9 @@ ion-segment {
     justify-content: center;
     align-items: center;
 
-    .no-apps-head {
+    ion-img {
       height: 140px;
       width: 140px;
-      border-radius: 100%;
-      background: #5a62ff;
       margin-bottom: 25%;
     }
   }
@@ -148,13 +146,31 @@ ion-segment {
 }
 
 /********** Theme **********/
-.darkMode {
+.darkSegment {
   background: #1A1B1E;
   color: #ffffff;
+
+  ion-label {
+    color: #313235 !important;
+  }
 }
 
-.lightMode {
+.lightApps {
   border-top: 2px solid rgba(0, 0, 0, 0.11);
+}
+
+.darkEmpty {
+  .no-apps-msg {
+    background: #ffffff;
+
+    h1 {
+      color: #000000;
+    }
+
+    p {
+      color: #000000;
+    }
+  }
 }
 
 /********** Segement Buttons **********/
