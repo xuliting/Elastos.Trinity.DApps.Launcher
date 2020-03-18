@@ -2,11 +2,11 @@
 
 /********** Segement Buttons **********/
 ion-segment {
-  background: #5a62ff;
+  background: #646bed;
 
   ion-segment-button {
     border-bottom: 4px solid transparent;
-    --border-color:#5a62ff !important;
+    --border-color:#646bed !important;
     --border-radius: 0;
     --border-style: none;
     --ion-color-base: transparent;
@@ -36,7 +36,9 @@ ion-segment {
 
 /********** Populated List **********/
 .apps-container {
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgba(0, 0, 0, 0.01);
+  min-height: 100%;
+  background: linear-gradient(to bottom, #646bed 50%, #4148c7 100%);
 
   ion-item {
     --padding-start: 0px;
@@ -98,8 +100,9 @@ ion-segment {
 
 /********** Empty List **********/
 .no-apps-container {
+  border-top: 1px solid rgba(0, 0, 0, 0.01);
   height: 100%;
-  background: #5a62ff;
+  background: linear-gradient(to bottom, #646bed 50%, #4148c7 100%);
 
   .no-apps-header {
     height: 50%;
@@ -132,7 +135,7 @@ ion-segment {
       font-weight: 600;
       line-height: 3.71;
       letter-spacing: 1.2px;
-      color: #5a62ff;
+      color: #4148c7;
     }
 
     p {
@@ -141,7 +144,7 @@ ion-segment {
       line-height: 1.29;
       letter-spacing: 0.7px;
       text-align: center;
-      color: #5a62ff;
+      color: #4148c7;
     }
   }
 }
@@ -156,8 +159,15 @@ ion-segment {
   }
 }
 
+.darkList {
+  background: #121212;
+  border-top: 1px solid #313235;
+}
+
 .darkEmpty {
   background: #121212;
+  border-top: 1px solid #313235;
+  
   .no-apps-msg {
     background: #ffffff;
 
@@ -187,7 +197,6 @@ ion-segment {
 
 /********** Drag & Drop List **********/
 .apps-container.cdk-drop-list-dragging {
-  border-top: 1px solid transparent;
 }
 
 .cdk-drag-placeholder {

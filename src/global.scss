@@ -57,6 +57,10 @@
     font-family: 'Raleway' !important;
 }
 
+:focus {
+    outline: none;
+}
+
 ion-popover{
     ion-backdrop{
       opacity: 0.5 !important;

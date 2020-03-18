@@ -14,7 +14,11 @@
   </ion-segment>
 
   <!-- Browsed Apps -->
-  <div *ngIf="!favAppsActive && appManager.browsedApps.length > 0" class="ion-margin-top apps-container">
+  <div 
+    *ngIf="!favAppsActive && appManager.browsedApps.length > 0" 
+    class="ion-padding-top apps-container"
+    [class.darkList]="theme.darkMode"
+  >
     <ion-item *ngFor="let app of appManager.browsedApps">
       <ion-grid class="ion-no-padding">
         <ion-row>
@@ -41,7 +45,8 @@
   <!-- Favorite Apps -->
   <div 
     *ngIf="favAppsActive && appManager.favApps.length > 0" 
-    class="ion-margin-top apps-container" 
+    class="ion-padding-top apps-container" 
+    [class.darkList]="theme.darkMode"
     cdkDropList
     (cdkDropListDropped)="drop($event)"
   >
