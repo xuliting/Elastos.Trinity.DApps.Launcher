@@ -69,7 +69,7 @@
   <!-- No Apps -->
   <div *ngIf="favAppsActive && appManager.favApps.length === 0 || !favAppsActive && appManager.browsedApps.length === 0" class="no-apps-container" [class.darkEmpty]="theme.darkMode">
     <div class="no-apps-header">
-      <ion-img *ngIf="!theme.darkMode" src="/assets/icon/light_mode/elalogo-blue.svg"></ion-img>
+      <ion-img *ngIf="!theme.darkMode" src="/assets/icon/dark_mode/elalogo.svg"></ion-img>
       <ion-img *ngIf="theme.darkMode" src="/assets/icon/dark_mode/elalogo.svg"></ion-img>
     </div>
     <div class="ion-padding-top no-apps-msg" color="primary">

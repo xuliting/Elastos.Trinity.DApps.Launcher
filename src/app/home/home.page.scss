@@ -99,6 +99,7 @@ ion-segment {
 /********** Empty List **********/
 .no-apps-container {
   height: 100%;
+  background: #5a62ff;
 
   .no-apps-header {
     height: 50%;
@@ -120,7 +121,7 @@ ion-segment {
     border-top-right-radius: 50%;
     border-top-left-radius: 50%;
     transform: scale(1.5);
-    background: #5a62ff;
+    background: #ffffff;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -131,7 +132,7 @@ ion-segment {
       font-weight: 600;
       line-height: 3.71;
       letter-spacing: 1.2px;
-      color: #ffffff;
+      color: #5a62ff;
     }
 
     p {
@@ -140,14 +141,14 @@ ion-segment {
       line-height: 1.29;
       letter-spacing: 0.7px;
       text-align: center;
-      color: #ffffff;
+      color: #5a62ff;
     }
   }
 }
 
 /********** Theme **********/
 .darkSegment {
-  background: #1A1B1E;
+  background: #121212;
   color: #ffffff;
 
   ion-label {
@@ -156,15 +157,16 @@ ion-segment {
 }
 
 .darkEmpty {
+  background: #121212;
   .no-apps-msg {
     background: #ffffff;
 
     h1 {
-      color: #000000;
+      color: #121212;
     }
 
     p {
-      color: #000000;
+      color: #121212;
     }
   }
 }
