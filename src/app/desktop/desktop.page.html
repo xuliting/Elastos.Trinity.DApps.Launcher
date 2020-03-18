@@ -47,9 +47,10 @@
         </ion-col>
         <ion-col size="2" class="app-logo ion-no-padding" (click)="app.active = !app.active"> 
           <ion-avatar [ngStyle]="{ 'background': app.active || app.started ? app.color : none }">
+             <!--  <ion-img [src]="app.iconDir5"></ion-img> -->
             <ion-img *ngIf="!app.active && !app.started && !theme.darkMode"[src]="app.iconDir"></ion-img>
             <ion-img *ngIf="app.active || app.started || theme.darkMode" [src]="app.iconDir2"></ion-img>
-          </ion-avatar>
+          </ion-avatar> 
         </ion-col>
         <ion-col size="6.5" class="app-title ion-no-padding" (click)="openNativeApp(app)">
           <ion-label [ngStyle]="{ 'font-weight': app.active || app.started ? 700 : none }">{{ app.name.toUpperCase() }}</ion-label>  

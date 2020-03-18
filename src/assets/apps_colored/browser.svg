@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__Component_225_2" width="500" height="500" data-name="Component 225 – 2" viewBox="0 0 500 500">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#f06666}
+        </style>
+    </defs>
+    <path id="prefix__Rectangle_406" d="M0 0H500V500H0z" data-name="Rectangle 406" style="fill:#fff"/>
+    <g id="prefix__LARGER_DAPP_BORWSER_ICON" data-name="LARGER DAPP BORWSER ICON" transform="translate(146.839 146.887)">
+        <path id="prefix__Path_2171" d="M1167.469 6774.02a103.147 103.147 0 1 0 103.148 103.147 103.148 103.148 0 0 0-103.148-103.147zm0 165.542a62.394 62.394 0 1 1 62.392-62.395 62.393 62.393 0 0 1-62.392 62.395z" class="prefix__cls-2" data-name="Path 2171" transform="translate(-1064.32 -6774.02)"/>
+        <circle id="prefix__Ellipse_316" cx="28.344" cy="28.344" r="28.344" class="prefix__cls-2" data-name="Ellipse 316" transform="translate(74.363 76.772)"/>
+    </g>
+</svg>

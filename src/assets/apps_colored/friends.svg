@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__Component_223_2" width="500" height="500" data-name="Component 223 – 2" viewBox="0 0 500 500">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#6e75f0}
+        </style>
+    </defs>
+    <path id="prefix__Rectangle_406" d="M0 0H500V500H0z" data-name="Rectangle 406" style="fill:#fff"/>
+    <g id="prefix__LARGER_CONTACT_ICON" data-name="LARGER CONTACT ICON" transform="translate(160.994 161.011)">
+        <path id="prefix__Path_2159" d="M6721.569-1747.223a5.567 5.567 0 0 0-6.995 2.26 33.073 33.073 0 0 1-28.678 16.407 33.064 33.064 0 0 1-28.674-16.407 5.558 5.558 0 0 0-7-2.26 89.561 89.561 0 0 0-53.649 82.028 5.689 5.689 0 0 0 5.557 5.7h167.542a5.682 5.682 0 0 0 5.549-5.7 89.548 89.548 0 0 0-53.652-82.028z" class="prefix__cls-2" data-name="Path 2159" transform="translate(-6596.569 1838.446)"/>
+        <path id="prefix__Path_2160" d="M6735.188-1851.859a34.452 34.452 0 0 0 5.365.341 44.473 44.473 0 0 0 44.425-44.444 44.463 44.463 0 0 0-44.408-44.447 34.628 34.628 0 0 0-5.382.342 44.648 44.648 0 0 0-39.023 44.105 44.648 44.648 0 0 0 39.023 44.103z" class="prefix__cls-2" data-name="Path 2160" transform="translate(-6649.264 1940.409)"/>
+    </g>
+</svg>

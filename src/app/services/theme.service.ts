@@ -13,12 +13,6 @@ export class ThemeService {
 
   constructor(private platform: Platform) {
     this.platform.ready().then(() => {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-      prefersDark.addListener(event => {
-        console.log(event);
-        this.setTheme(event.matches);
-      });
-
       this.getTheme();
     });
   }

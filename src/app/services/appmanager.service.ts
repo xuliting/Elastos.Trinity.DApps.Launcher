@@ -59,6 +59,7 @@ export class AppmanagerService {
             iconDir2: '/assets/apps/dapp-browser-icon-white@2x.png',
             iconDir3: '/assets/icon/browser/caret-arrow.svg',
             iconDir4: '/assets/icon/browser/caret-arrow2.svg',
+            iconDir5: '/assets/apps_colored/browser.svg',
             active: false,
             started: false,
             description: [
@@ -74,6 +75,7 @@ export class AppmanagerService {
             iconDir2: '/assets/apps/wallet-icon@2x.png',
             iconDir3: '/assets/icon/wallet/caret-arrow.svg',
             iconDir4: '/assets/icon/wallet/caret-arrow2.svg',
+            iconDir5: '/assets/apps_colored/wallet.svg',
             active: false,
             started: false,
             description: [
@@ -89,6 +91,7 @@ export class AppmanagerService {
             iconDir2: '/assets/apps/identity-icon@2x.png',
             iconDir3: '/assets/icon/identity/caret-arrow.svg',
             iconDir4: '/assets/icon/identity/caret-arrow2.svg',
+            iconDir5: '/assets/apps_colored/did.svg',
             active: false,
             started: false,
             description: [
@@ -104,6 +107,7 @@ export class AppmanagerService {
             iconDir2: '/assets/apps/friends-icon-white@2x.png',
             iconDir3: '/assets/icon/contacts/caret-arrow.svg',
             iconDir4: '/assets/icon/contacts/caret-arrow2.svg',
+            iconDir5: '/assets/apps_colored/friends.svg',
             active: false,
             started: false,
             description: [
@@ -118,6 +122,7 @@ export class AppmanagerService {
             iconDir2: '/assets/apps/dpos-voting-icon-white@2x.png',
             iconDir3: '/assets/icon/voting/caret-arrow.svg',
             iconDir4: '/assets/icon/voting/caret-arrow2.svg',
+            iconDir5: '/assets/apps_colored/node.svg',
             active: false,
             started: false,
             description: [
