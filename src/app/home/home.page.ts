@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ToastController, Platform, IonSlides } from '@ionic/angular';
 
 import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -19,8 +19,19 @@ declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 })
 
 export class HomePage implements OnInit {
+  @ViewChild(IonSlides) private slide: IonSlides;
+  
+  hiddenSlider = true;
+  
+  // slider
+  slideOpts = {
+    initialSlide: 0,
+    speed: 400,
+    init:false
+  };
 
   constructor(
+    private platform: Platform,
     public translate: TranslateService,
     public appManager: AppmanagerService,
     public toastCtrl: ToastController,
@@ -41,6 +52,27 @@ export class HomePage implements OnInit {
     } else {
       titleBarManager.setBackgroundColor("#37477d");
     }
+  }
+
+  ionViewDidEnter() {
+    // Dirty hack because on iOS we are currently unable to understand why the
+    // ion-slides width is sometimes wrong when an app starts. Waiting a few
+    // seconds (DOM fully rendered once...?) seems to solve this problem.
+    if (this.platform.platforms().indexOf('ios') >= 0) {
+      setTimeout(()=>{
+        this.showSlider();
+      }, 3000)
+    }
+    else {
+      this.showSlider();
+    }
+  }
+
+  showSlider() {
+    this.hiddenSlider = false
+    this.slide.getSwiper().then((swiper)=>{
+      swiper.init();
+    })
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -128,10 +160,12 @@ export class HomePage implements OnInit {
     if (this.appManager.checkingApp) {
       console.log('Installation in progress');
       return;
-    } else if (id === 'org.elastos.trinity.blockchain') {
-        this.appManager.start(id);
     } else {
       this.appManager.findApp(id);
     }
+  }
+
+  openDemoApp() {
+    this.openApp("org.elastos.trinity.dapp.diddemo");
   }
 }

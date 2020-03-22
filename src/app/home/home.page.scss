@@ -11,6 +11,10 @@
   top: 0;
   left: 0; 
 
+  .hiddenSlider {
+    display:none
+  }
+
   /******************** Favorite Apps Container ********************/
   .favorites-container {
     
@@ -189,6 +193,10 @@ ion-footer {
     font-size: 7px;
     padding: 3.5px;
     font-weight: 600;
+  }
+
+  .disabled {
+    opacity: 0.3;
   }
 }
 

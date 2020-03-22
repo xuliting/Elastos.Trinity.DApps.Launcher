@@ -6,7 +6,7 @@
       <ion-row class="fav-title">
         <ion-label>Favorites</ion-label>
       </ion-row>
-      <ion-slides pager="true">
+      <ion-slides #slide [options]="slideOpts" pager="true" [class.hidden]="hiddenSlider">
         <ion-slide>
           <ion-row class="fav-row">
             <div class="fav-app" *ngFor="let app of appManager.favApps.slice(0,12)">
@@ -117,22 +117,8 @@
         The more you explore the elastOS ecosystem, 
         the more Capsules you will find
       </p>
-      <p class="ion-text-center second-msg">Start by opening our Identity Demo</p>
+      <p class="ion-text-center second-msg">Start by opening our <span (click)="openDemoApp()"><b>Identity Demo</b></span>.</p>
     </div>
-    <ion-row *ngIf="appManager.demoApp" class="demo-app ion-margin-top">
-      <ion-col size="2.3" size-lg="2.3" class="img-container" (click)="openApp(appManager.demoApp.id)">
-        <img [src]="appManager.sanitize(appManager.demoApp.icons[0].src)"/>
-      </ion-col>
-      <ion-col size="7.5" size-xs="7.5" class="dapp-content" (click)="openApp(appManager.demoApp.id)">
-        <ion-label>
-          <h2>{{ appManager.demoApp.name }}</h2>
-          <p>{{ appManager.demoApp.description }}</p>
-        </ion-label>
-      </ion-col>
-      <ion-col size="2.2" class="icon-container" (click)="favApp(appManager.demoApp)">
-        <ion-img src="assets/icon/bookmark-outline.svg"></ion-img>
-      </ion-col>
-    </ion-row>
   </ion-grid>
 </ion-content>
 
@@ -150,8 +136,9 @@
     <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Contacts</ion-label>
   </div>
 
- <!--  <div>
-    <ion-img src='/assets/tabs/wallet.svg'></ion-img>
-    <ion-label>Wallet</ion-label>
-  </div> -->
+  <div class="disabled">
+    <ion-img *ngIf="theme.darkMode" src='/assets/tabs/wallet-white.png'></ion-img>
+    <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/wallet-blue.png'></ion-img>
+    <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Wallet</ion-label>
+  </div>
 </ion-footer>
