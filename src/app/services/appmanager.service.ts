@@ -45,6 +45,9 @@ export class AppmanagerService {
     public browsedApps: Dapp[] = [];
     public favApps: Dapp[] = [];
 
+    /* Demo App */
+    public demoApp: Dapp;
+
     /* Background apps */
     public popup = false;
     public runningList: any = [];
@@ -398,8 +401,6 @@ export class AppmanagerService {
                         urls: app.urls,
                         isFav: null,
                     });
-                } else if (app.id === 'org.elastos.trinity.dapp.installer') {
-                    return;
                 } else {
                     this.installedApps.unshift({
                         id: app.id,
@@ -415,6 +416,23 @@ export class AppmanagerService {
                         urls: app.urls,
                         isFav: null
                     });
+                }
+
+                if (app.id === 'org.elastos.trinity.dapp.diddemo') {
+                    this.demoApp = {
+                        id: app.id,
+                        version: app.version,
+                        name: app.name,
+                        shortName: app.shortName,
+                        description: app.description,
+                        startUrl: app.startUrl,
+                        icons: app.icons,
+                        authorName: app.authorName,
+                        authorEmail: app.authorEmail,
+                        category: app.category,
+                        urls: app.urls,
+                        isFav: null,
+                    };
                 }
             });
 
@@ -621,12 +639,10 @@ export class AppmanagerService {
         const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === paramsId);
         if (
             !targetApp ||
-            targetApp.id === 'org.elastos.trinity.dapp.installer' ||
             targetApp.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
             targetApp.id === 'org.elastos.trinity.dapp.wallet' ||
             targetApp.id === 'org.elastos.trinity.dapp.did' ||
             targetApp.id === 'org.elastos.trinity.dapp.friends' ||
-            targetApp.id === 'org.elastos.trinity.dapp.dposvoting' ||
             targetApp.id === 'org.elastos.trinity.dapp.settings' ||
             targetApp.id === 'org.elastos.trinity.blockchain'
         ) {

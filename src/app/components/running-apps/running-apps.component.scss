@@ -13,57 +13,85 @@ ion-avatar {
     }
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: space-around;
-    padding: 14px;
+.popup {
+    background: #7a81f1;
 
-    .app-row {
-        margin-bottom: 14px;
-        width: 92vw;
-        height: 59px;
-        border-radius: 9px;
-        background: #f0f1ff;
-        border-bottom: none;
-        box-shadow: none;
-
-        .app-logo {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
+    .popup-header {
+        ion-label {
+            color: #ffffff;
+            font-weight: 600;
         }
+    }
 
-        .app-content {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: space-around;
+        padding: 14px;
+    
+        .app-row {
+            margin-bottom: 14px;
+            width: 92vw;
+            height: 59px;
+            border-radius: 17px;
+            background: #5c63ce;
+            border-bottom: none;
+            box-shadow: none;
+    
+            .app-logo {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+            }
+    
+            .app-content {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+    
+                ion-label {
 
-            ion-label {
-                h2 {
-                    font-size: 14px;
-                    font-weight: 600;
-                    line-height: 1.23;
-                    color: #121212;
+                    h2, p {
+                        color: #ffffff !important;
+                    }
+
+                    h2 {
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 1.23;
+                    }
+    
+                    p {
+                        font-size: 9px !important;
+                        line-height: 1.29;
+                    }
                 }
+            }
 
-                p {
-                    color: #121212 !important;
-                    font-size: 9px !important;
-                    line-height: 1.29;
+            .close-icon {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 15px;
+                padding-right: 15px;
+        
+                ion-img {
+                    width: 10px;
+                    height: 10px;
                 }
             }
         }
     }
 }
 
-.darkMode {
-    background: #272d41;
 
-    .popup-header {
-        ion-label {
-            color: #ffffff;
+.darkMode {
+    background: #37477d;
+
+    .container {
+        .app-row {
+            background: #272d41;
         }
     }
 }

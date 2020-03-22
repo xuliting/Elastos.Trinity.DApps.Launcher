@@ -1,4 +1,6 @@
 <ion-content *ngIf="appManager.browsedApps.length > 0">
+
+  <!-- Favorite Apps -->
   <ion-grid class="container ion-no-padding" [class.dark-container]="theme.darkMode">
     <div class="favorites-container">
       <ion-row class="fav-title">
@@ -15,7 +17,7 @@
                 <ion-label>{{ app.name.slice(0,10) }}</ion-label>
               </div>
               <div *ngIf="app.id === 'emptyFav'"> 
-                <ion-avatar (click)="openApp(app.id)">
+                <ion-avatar>
                   <img *ngIf="theme.darkMode" src="assets/icons/emptyFav-dark.svg">
                   <img *ngIf="!theme.darkMode" src="assets/icons/emptyFav-light.svg">
                 </ion-avatar>
@@ -34,7 +36,7 @@
                 <ion-label>{{ app.name.slice(0,10) }}</ion-label>
               </div>
               <div *ngIf="app.id === 'emptyFav'"> 
-                <ion-avatar (click)="openApp(app.id)">
+                <ion-avatar>
                   <img *ngIf="theme.darkMode" src="assets/icons/emptyFav-dark.svg">
                   <img *ngIf="!theme.darkMode" src="assets/icons/emptyFav-light.svg">
                 </ion-avatar>
@@ -53,7 +55,7 @@
                 <ion-label>{{ app.name.slice(0,10) }}</ion-label>
               </div>
               <div *ngIf="app.id === 'emptyFav'"> 
-                <ion-avatar (click)="openApp(app.id)">
+                <ion-avatar>
                   <img *ngIf="theme.darkMode" src="assets/icons/emptyFav-dark.svg">
                   <img *ngIf="!theme.darkMode" src="assets/icons/emptyFav-light.svg">
                 </ion-avatar>
@@ -66,13 +68,14 @@
     </div> 
   </ion-grid>
 
+  <!-- Browsed Apps -->
   <div class="recent-container" [class.dark-recent-container]="theme.darkMode">
     <ion-row class="recent-drag"><ion-col size="0.75" class="drag-icon"></ion-col></ion-row>
     <ion-row class="recent-title">
       <ion-label>Recent</ion-label>
     </ion-row>
     <ion-list class="recent-list">
-      <ion-item *ngFor="let app of appManager.browsedApps" lines="none">
+      <ion-item class="app" *ngFor="let app of appManager.browsedApps" lines="none">
         <ion-grid class="ion-no-padding">
           <ion-row>
             <ion-col size="2.3" size-lg="2.3" class="img-container" (click)="openApp(app.id)">
@@ -81,7 +84,8 @@
             <ion-col size="7.5" size-xs="7.5" class="dapp-content" (click)="openApp(app.id)">
               <ion-label>
                 <h2>{{ app.name }}</h2>
-                <p>{{ app.description.slice(0,50) }}...</p>
+                <p *ngIf="app.description.length < 50">{{ app.description.slice(0,50) }}</p>
+                <p *ngIf="app.description.length >= 50">{{ app.description.slice(0,50) }}...</p>
               </ion-label>
             </ion-col>
             <ion-col size="2.2" class="icon-container" (click)="removeFav(app)" *ngIf="app.isFav">
@@ -97,6 +101,7 @@
   </div>
 </ion-content>
 
+<!-- No Apps Screen -->
 <ion-content *ngIf="appManager.browsedApps.length === 0">
   <ion-grid class="no-apps-container" [class.dark-container]="theme.darkMode">
     <div class="logo-container">
@@ -105,18 +110,33 @@
     </div>
     <div class="no-fav-message">
       <h1 class="ion-padding ion-text-center">No Capsules?</h1>
-      <p class="ion-text-center">
+      <p class="ion-text-center first-msg">
         You can start by finding elastOS 
         Capsules to browse from your contacts
         or social networks.
         The more you explore the elastOS ecosystem, 
         the more Capsules you will find
       </p>
-      <p class="ion-text-center">Start by opening our Identity Demo</p>
+      <p class="ion-text-center second-msg">Start by opening our Identity Demo</p>
     </div>
+    <ion-row *ngIf="appManager.demoApp" class="demo-app ion-margin-top">
+      <ion-col size="2.3" size-lg="2.3" class="img-container" (click)="openApp(appManager.demoApp.id)">
+        <img [src]="appManager.sanitize(appManager.demoApp.icons[0].src)"/>
+      </ion-col>
+      <ion-col size="7.5" size-xs="7.5" class="dapp-content" (click)="openApp(appManager.demoApp.id)">
+        <ion-label>
+          <h2>{{ appManager.demoApp.name }}</h2>
+          <p>{{ appManager.demoApp.description }}</p>
+        </ion-label>
+      </ion-col>
+      <ion-col size="2.2" class="icon-container" (click)="favApp(appManager.demoApp)">
+        <ion-img src="assets/icon/bookmark-outline.svg"></ion-img>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>
 
+<!-- Bottom Tabs -->
 <ion-footer [ngStyle]="{'background': theme.darkMode ? '#37477d' : '#ffffff' }">
   <div (click)="openApp('org.elastos.trinity.dapp.did')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/identity-white.svg'></ion-img>
