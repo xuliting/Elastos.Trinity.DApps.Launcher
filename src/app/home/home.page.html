@@ -1,5 +1,5 @@
-<ion-content *ngIf="appManager.favApps.length > 0 || appManager.browsedApps.length > 0">
-  <ion-grid class="container ion-no-padding" [ngStyle]="{'background': theme.darkMode ? '#37477d' : '#5a62ff' }">
+<ion-content *ngIf="appManager.browsedApps.length > 0">
+  <ion-grid class="container ion-no-padding" [class.dark-container]="theme.darkMode">
     <div class="favorites-container">
       <ion-row class="fav-title">
         <ion-label>Favorites</ion-label>
@@ -97,8 +97,8 @@
   </div>
 </ion-content>
 
-<ion-content *ngIf="appManager.favApps.length === 0 && appManager.browsedApps.length === 0">
-  <ion-grid class="onboard-container" [ngStyle]="{'background': theme.darkMode ? '#37477d' : '#5a62ff' }">
+<ion-content *ngIf="appManager.browsedApps.length === 0">
+  <ion-grid class="no-apps-container" [class.dark-container]="theme.darkMode">
     <div class="logo-container">
       <img *ngIf="!theme.darkMode" src="assets/icons/capsule-light.svg">
       <img *ngIf="theme.darkMode" src="assets/icons/capsule-dark.svg">

@@ -3,6 +3,9 @@
 .container {
   height: 92%;
   width: 100%;
+  background-image: url("/assets/background/background-light-small.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   position: fixed;
   top: 0;
   left: 0; 
@@ -185,10 +188,13 @@ ion-footer {
   }
 }
 
-.onboard-container {
-  min-height: 100%;
-  margin: 0 auto;
+.no-apps-container {
+  height: 100%;
+  width: 100%;
   padding-top: 45px;
+  background-image: url("/assets/background/background-light-small.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 
   .logo-container {
     display: flex;
@@ -263,4 +269,8 @@ ion-footer {
       }
     }
   }
+}
+
+.dark-container {
+  background-image: url("/assets/background/background-dark-small.jpg");
 }
