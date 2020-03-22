@@ -45,7 +45,7 @@ ion-avatar {
         ion-label {
           h2 {
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 1.23;
             color: #121212;
           }
@@ -80,23 +80,11 @@ ion-avatar {
 }
 
 .darkMode {
-  background: #121212;
+  background: #272d41;
 
   .popup-header {
       ion-label {
           color: #ffffff;
       }
   }
-/* 
-  .notification {
-    background: #ffffff;
-
-    h2 {
-        color: #000000 !important;
-    }
-
-    p {
-        color: #000000 !important;
-    }      
-  } */
 }

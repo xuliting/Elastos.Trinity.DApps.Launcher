@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__Component_222_2" width="500" height="500" data-name="Component 222 – 2" viewBox="0 0 500 500">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#ffb48d}
+        </style>
+    </defs>
+    <path id="prefix__Rectangle_406" d="M0 0H500V500H0z" data-name="Rectangle 406" style="fill:#fff"/>
+    <g id="prefix__LARGER_WALLET_ICON" data-name="LARGER WALLET ICON" transform="translate(139.799 175.451)">
+        <path id="prefix__Path_2152" d="M6780.051-2436.1h44.849a12.757 12.757 0 0 1 3.007.079v-24.614c0-9.424-7.347-17.409-16.563-17.409h-187.7c-9.218 0-16.969 7.985-16.969 17.409v114.9c0 9.422 7.751 17.595 16.969 17.595h187.7c12.744 0 16.563-12.362 16.563-17.595v-25.6a12.828 12.828 0 0 1-3.007.262h-44.852a14.064 14.064 0 0 1-14-14.2v-36.794a13.905 13.905 0 0 1 14.003-14.033z" class="prefix__cls-2" data-name="Path 2152" transform="translate(-6606.682 2478.045)"/>
+        <path id="prefix__Path_2153" d="M6856.794-2366.992a17.082 17.082 0 0 0 17.057 17.109 17.045 17.045 0 0 0 15.626-10.278 17.092 17.092 0 0 0 1.425-6.832 17.08 17.08 0 0 0-4.566-11.626 16.954 16.954 0 0 0-12.484-5.486 17.082 17.082 0 0 0-17.058 17.113z" class="prefix__cls-2" data-name="Path 2153" transform="translate(-6674.794 2441.859)"/>
+    </g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__Capsule_Large_Grpahic" width="243" height="243" data-name="Capsule Large Grpahic" viewBox="0 0 243 243">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#fff}
+        </style>
+    </defs>
+    <circle id="prefix__Ellipse_86" cx="121.5" cy="121.5" r="121.5" data-name="Ellipse 86" style="fill:#37477d;opacity:0"/>
+    <circle id="prefix__Ellipse_317" cx="115.181" cy="115.181" r="115.181" class="prefix__cls-2" data-name="Ellipse 317" transform="translate(6.191 6.363)"/>
+    <g id="prefix__Group_1132" data-name="Group 1132" transform="translate(-3.198 -39.124)">
+        <circle id="prefix__Ellipse_77" cx="1.558" cy="1.558" r="1.558" class="prefix__cls-2" data-name="Ellipse 77" transform="rotate(150 32.27 98.047)"/>
+    </g>
+    <g id="prefix__pill" transform="translate(64.667 65.189)">
+        <path id="prefix__pill-2" d="M106.028 12.062a33.27 33.27 0 0 0-46.991 0L12.063 59.044a33.22 33.22 0 0 0 46.979 46.982l46.987-46.982a33.264 33.264 0 0 0-.001-46.982zM98.2 19.891a22.181 22.181 0 0 1 0 31.325L74.7 74.705 43.382 43.388l23.487-23.493a22.175 22.175 0 0 1 31.327 0z" data-name="pill" transform="translate(-2.347 -2.348)" style="fill:#6d74ef"/>
+    </g>
+</svg>

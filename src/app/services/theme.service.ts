@@ -31,7 +31,7 @@ export class ThemeService {
       document.body.classList.add("dark");
 
       // Set dark mode to native header
-      titleBarManager.setBackgroundColor("#121212");
+      titleBarManager.setBackgroundColor("#37477d");
       titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
 
     } else {
@@ -39,8 +39,8 @@ export class ThemeService {
       document.body.classList.remove("dark");
 
       // Remove dark mode to native header
-      titleBarManager.setBackgroundColor("#ffffff");
-      titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.DARK);
+      titleBarManager.setBackgroundColor("#5a62ff");
+      titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
     }
   }
 }

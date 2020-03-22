@@ -20,8 +20,6 @@ declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 export class HomePage implements OnInit {
 
-  public favAppsActive = false;
-
   constructor(
     public translate: TranslateService,
     public appManager: AppmanagerService,
@@ -35,13 +33,13 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    titleBarManager.setTitle('Dapp Browser');
-    titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DEFAULT);
-    titleBarManager.setNavigationMode(TitleBarPlugin.TitleBarNavigationMode.BACK);
-
+    titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DESKTOP);
+    titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
+    titleBarManager.setTitle("Home");
     if (!this.theme.darkMode) {
       titleBarManager.setBackgroundColor("#5a62ff");
-      titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
+    } else {
+      titleBarManager.setBackgroundColor("#37477d");
     }
   }
 
@@ -63,6 +61,7 @@ export class HomePage implements OnInit {
     if (targetApp) {
       return;
     } else {
+      this.appManager.favApps.pop();
       this.appManager.favApps.unshift({
         id: app.id,
         version: app.version,
@@ -92,6 +91,23 @@ export class HomePage implements OnInit {
   removeFav(app: Dapp) {
     this.appManager.favApps = this.appManager.favApps.filter((favApp) => favApp.id !== app.id);
 
+    if (this.appManager.favApps.length < 36) {
+      this.appManager.favApps.push({
+        id: 'emptyFav',
+        version: null,
+        name: 'Favorite',
+        shortName: null,
+        description: null,
+        startUrl: null,
+        icons: null,
+        authorName: null,
+        authorEmail: null,
+        category: null,
+        urls: null,
+        isFav: null,
+      });
+    }
+
     this.appManager.browsedApps.map((browsedApp) => {
       if (app.id === browsedApp.id) {
         browsedApp.isFav = false;
@@ -112,7 +128,7 @@ export class HomePage implements OnInit {
     if (this.appManager.checkingApp) {
       console.log('Installation in progress');
       return;
-    } else if (id === 'org.elastos.trinity.blockchain' || id === 'org.elastos.trinity.dapp.dappstore1') {
+    } else if (id === 'org.elastos.trinity.blockchain') {
         this.appManager.start(id);
     } else {
       this.appManager.findApp(id);

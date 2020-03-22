@@ -42,15 +42,15 @@ ion-avatar {
 
             ion-label {
                 h2 {
-                    font-size: 15px;
-                    font-weight: 500;
+                    font-size: 14px;
+                    font-weight: 600;
                     line-height: 1.23;
                     color: #121212;
                 }
 
                 p {
                     color: #121212 !important;
-                    font-size: 10px !important;
+                    font-size: 9px !important;
                     line-height: 1.29;
                 }
             }
@@ -59,28 +59,12 @@ ion-avatar {
 }
 
 .darkMode {
-    background: #121212;
+    background: #272d41;
 
     .popup-header {
         ion-label {
             color: #ffffff;
         }
     }
-
-/*     .app-row {
-        background: #ffffff;
-
-        .app-content {
-            ion-label {
-                h2 {
-                    color: #000000 !important;
-                }
-    
-                p {
-                    color: #000000 !important;
-                }
-            }
-        }
-    } */
 }
 

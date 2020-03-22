@@ -16,7 +16,7 @@ export class OnboardPage implements OnInit {
 
   @ViewChild(IonSlides) private slide: IonSlides;
 
-  hidden = true
+  hidden = true;
 
   // Slider options
   slideOpts = {
@@ -24,7 +24,7 @@ export class OnboardPage implements OnInit {
     speed: 400,
     centeredSlides: true,
     slidesPerView: 1,
-    init:false
+    init: false
   };
 
   constructor(
@@ -44,13 +44,13 @@ export class OnboardPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    // Dirty hack because on iOS we are currently unable to understand why the 
-    // ion-slides width is sometimes wrong when an app starts. Waiting a few 
+    // Dirty hack because on iOS we are currently unable to understand why the
+    // ion-slides width is sometimes wrong when an app starts. Waiting a few
     // seconds (DOM fully rendered once...?) seems to solve this problem.
     if (this.platform.platforms().indexOf('ios') >= 0) {
       setTimeout(()=>{
         this.showSlider();
-      }, 3000)
+      }, 3000);
     }
     else {
       this.showSlider();
@@ -58,8 +58,8 @@ export class OnboardPage implements OnInit {
   }
 
   showSlider() {
-    this.hidden = false
-    this.slide.getSwiper().then((swiper)=>{
+    this.hidden = false;
+    this.slide.getSwiper().then((swiper) => {
       swiper.init();
     });
   }
@@ -74,6 +74,6 @@ export class OnboardPage implements OnInit {
 
   exit() {
     this.storage.setVisit(true);
-    this.router.navigate(['desktop']);
+    this.router.navigate(['home']);
   }
 }

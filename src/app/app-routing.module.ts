@@ -3,7 +3,6 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: 'home', loadChildren: './home/home.module#HomePageModule' },
-  { path: 'desktop', loadChildren: './desktop/desktop.module#DesktopPageModule' },
   { path: 'onboard', loadChildren: './onboard/onboard.module#OnboardPageModule' },
 ];
 

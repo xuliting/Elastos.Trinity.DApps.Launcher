@@ -208,8 +208,8 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
 
   --ion-toolbar-background: #0d0d0d;
 
-  --ion-item-background: #1A1B1E;
-  --ion-item-background-activated: #313131;
+  --ion-item-background: #272d41;
+  --ion-item-background-activated: #3d4254;
 }
 
 
@@ -247,7 +247,7 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
   --ion-color-step-900: #e7e7e7;
   --ion-color-step-950: #f3f3f3;
 
-  --ion-item-background: #1A1B1E;
+  --ion-item-background: #272d41;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

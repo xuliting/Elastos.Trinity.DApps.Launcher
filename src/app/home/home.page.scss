@@ -1,281 +1,266 @@
 @import "../functions.scss";
 
-/********** Segement Buttons **********/
-ion-segment {
-  background: #646bed;
+.container {
+  height: 92%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0; 
 
-  ion-segment-button {
-    border-bottom: 5px solid transparent;
-    --border-color:#646bed !important;
-    --border-radius: 0;
-    --border-style: none;
-    --ion-color-base: transparent;
-
-    ion-icon {
-      font-size: 33px;
-    }
-
-    ion-img {
-      margin-top:15px;
-      width: 45px;
-      height: 25px;
-    }
-
-    ion-label {
-      margin-top: 2px;
-      margin-bottom:15px;
-      text-transform: none;
-      font-size: 11px;
-      font-weight: 800;
-      line-height: 14px;
-      letter-spacing: 0.55px;
-      color: #4148c7;
-    }
-  }
-}
-
-/********** Populated List **********/
-.apps-container {
-  border-top: 1px solid rgba(0, 0, 0, 0.01);
-  min-height: 100%;
-  background: linear-gradient(to bottom, #ffffff 50%, #f0f1ff 100%);
-
-  ion-item {
-    --padding-start: 0px;
-    --inner-padding-end: 0px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-
-    ion-row {
-      padding: 5px 0;
+  .favorites-container {
     
-      .img-container {
+    .fav-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 17px;
+      padding-bottom: 17px;
+  
+      ion-label {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.19;
+        letter-spacing: 0.4px;
+        color: #ffffff;
+      }
+    } 
+
+    .fav-row {
+      display: flex;
+      justify-content: space-around;
+      align-items: space-around;
+      flex-wrap: wrap;
+      padding: 0px 34px;
+
+      .fav-app {
         display: flex;
         justify-content: center;
         align-items: center;
-    
-        img {
-          border-radius: 15px !important;
-          overflow: hidden;
-          height: 48px;
-          width: 48px;
-        }
-      }
-    
-      .dapp-content {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-  
-        h2, p {
-          margin: 0;
-        }
-  
-        h2 {
-          font-size: 16px;
-          font-weight: 600;
-        }
-  
-        p {
-          font-size: 9px !important;
-          font-weight: 500;
-        }
-      }
-  
-      .icon-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-  
-        ion-icon, ion-img {
-          height: 24.9px;
-          width: 22.9px;
-          color: #ffde6e;
+        width: 70px;
+        height: 80px;
+
+        div {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          ion-avatar {
+            width: 42px;
+            height: 42px;
+          }
+
+          ion-label {
+            padding-top: 10px;
+            font-size: 8px;
+            font-weight: 600;
+            line-height: 1.27;
+            color: #ffffff;
+          }
         }
       }
     }
   }
 }
 
-/********** Empty List **********/
-.no-apps-container {
-  border-top: 1px solid rgba(0, 0, 0, 0.01);
-  height: 100%;
-  background: linear-gradient(to bottom, #646bed 50%, #4148c7 100%);
+.recent-container {
+  background: #ffffff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 50%;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
 
-  .no-apps-header {
-    height: 50%;
+  .recent-drag {
+    display: flex;
+    justify-content: center;
     width: 100%;
+  
+    .drag-icon {
+      border-bottom: 3px solid #f0f1ff;
+    }
+  }
+
+  .recent-title {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 10px;
 
-    ion-img {
-      height: 140px;
-      width: 140px;
-      margin-bottom: 25%;
+    ion-label {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.19;
+      letter-spacing: 0.4px;
+      color: #37477d;
     }
-  }
+  } 
 
-  .no-apps-msg {
-    height: 50%;
-    width: 100%;
-    border-top-right-radius: 50%;
-    border-top-left-radius: 50%;
-    transform: scale(1.5);
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  .recent-list {
 
-    h1 {
-      margin-bottom: 0;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 3.71;
-      letter-spacing: 1.2px;
-      color: #4148c7;
-    }
-
-    p {
-      font-size: 8px;
-      font-weight: 500;
-      line-height: 1.29;
-      letter-spacing: 0.7px;
-      text-align: center;
-      color: #4148c7;
-    }
-  }
-}
-
-/********** Theme **********/
-.darkSegment {
-  background: #121212;
-  color: #ffffff;
-
-  ion-label {
-    color: #313235 !important;
-  }
-}
-
-.darkList {
-  background: #121212;
-  border-top: 1px solid #313235;
-}
-
-.darkEmpty {
-  background: #121212;
-  border-top: 1px solid #313235;
+    ion-item {
+      --padding-start: 0px;
+      --inner-padding-end: 0px;
   
-  .no-apps-msg {
-    background: #ffffff;
-
-    h1 {
-      color: #121212;
-    }
-
-    p {
-      color: #121212;
+      ion-row {
+        padding: 5px 0;
+      
+        .img-container {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+      
+          img {
+            border-radius: 15px !important;
+            overflow: hidden;
+            height: 48px;
+            width: 48px;
+          }
+        }
+      
+        .dapp-content {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding-left: 10px;
+    
+          h2, p {
+            margin: 0;
+          }
+    
+          h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #37477d;
+          }
+    
+          p {
+            font-size: 9px !important;
+            font-weight: 500;
+            color: #6e75f0 !important;
+          }
+        }
+    
+        .icon-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+    
+          ion-icon, ion-img {
+            height: 24.9px;
+            width: 22.9px;
+            color: #ffde6e;
+          }
+        }
+      }
     }
   }
 }
 
-/********** Segement Buttons **********/
-.activeTab {
-  border-color: white !important;
+ion-footer {
+  height: 8%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
   ion-img {
-    fill: white !important;
-    filter: brightness(0) invert(1);
+    width: 21px;
+    height: 21px;
   }
 
   ion-label {
-    color: white !important;
+    font-size: 7px;
+    padding: 3.5px;
+    font-weight: 600;
   }
 }
 
-/********** Drag & Drop List **********/
-.apps-container.cdk-drop-list-dragging {
-}
+.onboard-container {
+  min-height: 100%;
+  margin: 0 auto;
+  padding-top: 45px;
 
-.cdk-drag-placeholder {
-  opacity: 0;
-}
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 14.4px 0;
+    padding: 0 16px;
+      
+    img {
+      width: 200px;
+      height: 200px;
+    }
+  }
 
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-/********** Drag & Drop Item Row **********/
-/* .cdk-drag-preview {
-  box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow: 
-    0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
-
-  --padding-start: 0px;
-  --inner-padding-end: 0px;
+  .no-fav-message {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   
-  ion-row {
-    padding: 5px 0;
-    
-    .img-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  
-      img {
-        border-radius: 15px !important;
-        overflow: hidden;
-        height: 48px;
-        width: 48px;
-      }
+    h1, p {
+      margin: 14.4px 0;
+      width: 366px;
+      padding: 0 16px;
     }
   
-    .dapp-content {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      h2, p {
-        margin: 0;
-      }
-
-      h2 {
-        font-size: 16px;
-        font-weight: 600;
-      }
-
-      p {
-        font-size: 9px !important;
-        font-weight: 500;
-      }
+    h1 {
+      height: 37px;
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.23;
+      letter-spacing: 0.3px;
+      color: #ffffff;
     }
+      
+    p {
+      height: 125px;
+      font-size: 14.4px;
+      font-weight: 500;
+      line-height: 1.56;
+      letter-spacing: 0.9px;
+      color: #ffffff !important;
+    }
+  }
+}
 
-    .icon-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+/** Dark Mode **/
+.dark-recent-container {
+  background: #272d41;
 
-      ion-icon, ion-img {
-        height: 24.9px;
-        width: 22.9px;
-        color: #ffde6e;
+  .recent-drag {
+    .drag-icon {
+      border-bottom: 3px solid #000000;
+    }
+  }
+
+  .recent-title {
+    ion-label {
+      color: #ffffff;
+    }
+  } 
+
+  .recent-list {
+    ion-item {
+      ion-row {      
+        .dapp-content {
+          h2, p {
+            color: #ffffff !important
+          }
+        }
       }
     }
   }
-} */
-
-/********** Drag & Drop Image **********/
-.cdk-drag-preview {
-  box-sizing: border-box;
-  border-radius: 100%;;
-  height: 72px;
-  width: 72px;
-  box-shadow: 
-    0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
-

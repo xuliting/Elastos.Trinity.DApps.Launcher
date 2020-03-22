@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="41.694" height="41.694" viewBox="0 0 41.694 41.694">
+    <g id="prefix__BOOKMARK_TEMP_ICON" data-name="BOOKMARK TEMP ICON" style="opacity:.332">
+        <g id="prefix__Path_1996" data-name="Path 1996" style="fill:none">
+            <path d="M20.847 0A20.847 20.847 0 1 1 0 20.847 20.847 20.847 0 0 1 20.847 0z" style="stroke:none"/>
+            <path d="M20.847 2C15.813 2 11.08 3.96 7.52 7.52 3.96 11.08 2 15.813 2 20.847c0 5.034 1.96 9.767 5.52 13.327 3.56 3.56 8.293 5.52 13.327 5.52 5.034 0 9.767-1.96 13.327-5.52 3.56-3.56 5.52-8.293 5.52-13.327 0-5.034-1.96-9.767-5.52-13.327C30.614 3.96 25.88 2 20.847 2m0-2C32.36 0 41.694 9.334 41.694 20.847c0 11.513-9.334 20.847-20.847 20.847C9.334 41.694 0 32.36 0 20.847 0 9.334 9.334 0 20.847 0z" style="stroke:none;fill:#272d41"/>
+        </g>
+        <path id="prefix__BOOKMARK_ICON_Inactive" d="M10.117 12.5L5.059 9.026 0 12.5V1.389A1.418 1.418 0 0 1 1.445 0h7.227a1.418 1.418 0 0 1 1.445 1.389z" data-name="BOOKMARK ICON Inactive" transform="translate(16.003 15.56)" style="stroke:#272d41;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-width:1.5px;fill:#272d41"/>
+    </g>
+</svg>
