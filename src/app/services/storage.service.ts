@@ -23,20 +23,6 @@ export class StorageService {
     });
   }
 
-  /*** Bookmarks ***/
-  public setBookmarkedApps(value: any) {
-    return this.storage.set("bookmarks", JSON.stringify(value)).then((data) => {
-      console.log('Stored Bookmarked Apps', data);
-    });
-  }
-
-  public getBookmarkedApps(): Promise<any> {
-    return this.storage.get("bookmarks").then((data) => {
-      console.log(data);
-      return JSON.parse(data);
-    });
-  }
-
   /*** Browsing History ***/
   public setBrowsedApps(value: any) {
     return this.storage.set("history", JSON.stringify(value)).then((data) => {

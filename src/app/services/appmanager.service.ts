@@ -7,9 +7,11 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { Dapp } from '../models/dapps.model';
-import { StorageService } from './storage.service';
+
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 import { NotificationsComponent } from '../components/notifications/notifications.component';
+
+import { StorageService } from './storage.service';
 import { ThemeService } from './theme.service';
 
 declare let appManager: AppManagerPlugin.AppManager;
@@ -45,9 +47,6 @@ export class AppmanagerService {
     public browsedApps: Dapp[] = [];
     public favApps: Dapp[] = [];
 
-    /* Demo App */
-    public demoApp: Dapp;
-
     /* Background apps */
     public popup = false;
     public runningList: any = [];
@@ -64,102 +63,7 @@ export class AppmanagerService {
     /* Onboard */
     private firstVisit = false;
 
-    /* Desktop apps */
-    public sections = [
-        {
-            name: 'dapp browser',
-            color: '#f06666',
-            id: null,
-            iconDir: '/assets/apps_svg/dapp-browser-icon-white.svg',
-            iconDir2: '/assets/apps/dapp-browser-icon-white@2x.png',
-            iconDir3: '/assets/icon/browser/caret-arrow.svg',
-            iconDir4: '/assets/icon/browser/caret-arrow2.svg',
-            iconDir5: '/assets/apps_colored/browser.svg',
-            active: false,
-            started: false,
-            description: [
-                "dApps are Apps that can't be shutdown! This is a perfect environment to not just browse true decentralized applications but also to develop them for all to enjoy.",
-                "Our dApps utilize as much Elastos technology as you want. P2P Networking, Decentralized Identity, Decentralized Storage, Blockchain, Smart Contracts and Tokens. We got it all!"
-            ]
-        },
-        {
-            name: 'wallet',
-            color: '#e853dd',
-            id: 'org.elastos.trinity.dapp.wallet',
-            iconDir: '/assets/apps_svg/wallet-icon.svg',
-            iconDir2: '/assets/apps/wallet-icon@2x.png',
-            iconDir3: '/assets/icon/wallet/caret-arrow.svg',
-            iconDir4: '/assets/icon/wallet/caret-arrow2.svg',
-            iconDir5: '/assets/apps_colored/wallet.svg',
-            active: false,
-            started: false,
-            description: [
-                "As elastOS is a secure environment with all outside communication and network traffic blocked by default, this makes the elastOS wallet one of the most secure!",
-                "This area is a place for wallet widgets. Want to check how much ELA you got? The wallet widget can show you without even opening the applications. Coming soon!"
-            ]
-        },
-        {
-            name: 'identity',
-            color: '#5aacff',
-            id: 'org.elastos.trinity.dapp.did',
-            iconDir: '/assets/apps_svg/identity-icon.svg',
-            iconDir2: '/assets/apps/identity-icon@2x.png',
-            iconDir3: '/assets/icon/identity/caret-arrow.svg',
-            iconDir4: '/assets/icon/identity/caret-arrow2.svg',
-            iconDir5: '/assets/apps_colored/did.svg',
-            active: false,
-            started: false,
-            description: [
-                "Own you identity on elastOS. Manage your decentralized profiles and share with friends and business the data that only you want them to see.",
-                "We call our identity DID's (Decentralized Identifier). It can be autonomous, independent and decentralized - acting as a proof of ownership for digital identities."
-            ]
-        },
-        {
-            name: 'contacts',
-            color: '#5cd552',
-            id: 'org.elastos.trinity.dapp.friends',
-            iconDir: '/assets/apps_svg/friends-icon-white.svg',
-            iconDir2: '/assets/apps/friends-icon-white@2x.png',
-            iconDir3: '/assets/icon/contacts/caret-arrow.svg',
-            iconDir4: '/assets/icon/contacts/caret-arrow2.svg',
-            iconDir5: '/assets/apps_colored/friends.svg',
-            active: false,
-            started: false,
-            description: [
-                "The elastOS ecosystem and network is all about friends! Here we will have contacts widgets (coming soon) where you can see all your contacts without opening the application. Check out what applications they are using and you may find your new favorite dApp.",
-            ]
-        },
-        {
-            name: 'node voting',
-            color: '#9c50ff',
-            id: 'org.elastos.trinity.dapp.dposvoting',
-            iconDir: '/assets/apps_svg/dpos-voting-icon-white.svg',
-            iconDir2: '/assets/apps/dpos-voting-icon-white@2x.png',
-            iconDir3: '/assets/icon/voting/caret-arrow.svg',
-            iconDir4: '/assets/icon/voting/caret-arrow2.svg',
-            iconDir5: '/assets/apps_colored/node.svg',
-            active: false,
-            started: false,
-            description: [
-                "As part of our ecosystem, we have nodes which secure our network. These are called DPoS Supernodes and validate transactions.",
-                "Each ELA you have in your wallet gives you a voting power of 1. With this you can vote for 36 nodes. You can still spend it at anytime, but you will have to revote."
-            ]
-        },
-        /*{
-            name: 'candidate voting',
-            color: '#ffde6e',
-            id: null,
-            iconDir: '/assets/apps_svg/crc-voting-icon-white.svg',
-            iconDir2: '/assets/apps/crc-voting-icon-white@2x.png',
-            active: false,
-            started: false,
-            description: [
-                "As part of the Elastos ecosystem, we have a community governance mechanism that drives decisions, disputes and resolutions.",
-                "The Cyber Republic Council (CRC) comprises of 12 seats which are filled by a community election conducted on the blockchain. This is where you can participate."
-            ]
-        },*/
-    ];
-
+    /* Intent */
     private handledIntentId: Number;
 
     constructor(
@@ -241,7 +145,6 @@ export class AppmanagerService {
                         break;
                     case 'minimize':
                         this.resetProgress();
-                        this.resetDesktop();
                         break;
                 }
                 switch (params.visible) {
@@ -287,7 +190,6 @@ export class AppmanagerService {
                             this.popoverController.dismiss();
                         } */
                         this.resetProgress();
-                        this.resetDesktop();
                         break;
                     case 'unInstalled':
                         break;
@@ -416,23 +318,6 @@ export class AppmanagerService {
                         urls: app.urls,
                         isFav: null
                     });
-                }
-
-                if (app.id === 'org.elastos.trinity.dapp.diddemo') {
-                    this.demoApp = {
-                        id: app.id,
-                        version: app.version,
-                        name: app.name,
-                        shortName: app.shortName,
-                        description: app.description,
-                        startUrl: app.startUrl,
-                        icons: app.icons,
-                        authorName: app.authorName,
-                        authorEmail: app.authorEmail,
-                        category: app.category,
-                        urls: app.urls,
-                        isFav: null,
-                    };
                 }
             });
 
@@ -612,15 +497,6 @@ export class AppmanagerService {
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.UPLOAD);
         titleBarManager.hideActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
-    }
-
-    resetDesktop() {
-        this.zone.run(() => {
-            console.log('Resetting desktop');
-            this.sections.forEach((section) => {
-                section.started = false;
-            });
-        });
     }
 
     /******************************** Favorites ********************************/

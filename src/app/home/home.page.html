@@ -18,8 +18,8 @@
               </div>
               <div *ngIf="app.id === 'emptyFav'"> 
                 <ion-avatar>
-                  <img *ngIf="theme.darkMode" src="assets/icons/emptyFav-dark.svg">
-                  <img *ngIf="!theme.darkMode" src="assets/icons/emptyFav-light.svg">
+                  <img *ngIf="theme.darkMode" src="assets/icons/dark_mode/emptyFav-dark.svg">
+                  <img *ngIf="!theme.darkMode" src="assets/icons/light_mode/emptyFav-light.svg">
                 </ion-avatar>
                 <ion-label>{{ app.name }} {{ appManager.favApps.indexOf(app) + 1}}</ion-label>
               </div>
@@ -37,8 +37,8 @@
               </div>
               <div *ngIf="app.id === 'emptyFav'"> 
                 <ion-avatar>
-                  <img *ngIf="theme.darkMode" src="assets/icons/emptyFav-dark.svg">
-                  <img *ngIf="!theme.darkMode" src="assets/icons/emptyFav-light.svg">
+                  <img *ngIf="theme.darkMode" src="assets/icons/dark_mode/emptyFav-dark.svg">
+                  <img *ngIf="!theme.darkMode" src="assets/icons/light_mode/emptyFav-light.svg">
                 </ion-avatar>
                 <ion-label>{{ app.name }} {{ appManager.favApps.indexOf(app) + 1}}</ion-label>
               </div>
@@ -56,8 +56,8 @@
               </div>
               <div *ngIf="app.id === 'emptyFav'"> 
                 <ion-avatar>
-                  <img *ngIf="theme.darkMode" src="assets/icons/emptyFav-dark.svg">
-                  <img *ngIf="!theme.darkMode" src="assets/icons/emptyFav-light.svg">
+                  <img *ngIf="theme.darkMode" src="assets/icons/dark_mode/emptyFav-dark.svg">
+                  <img *ngIf="!theme.darkMode" src="assets/icons/light_mode/emptyFav-light.svg">
                 </ion-avatar>
                 <ion-label>{{ app.name }} {{ appManager.favApps.indexOf(app) + 1}}</ion-label>
               </div>
@@ -92,7 +92,7 @@
               <ion-icon name="bookmark"></ion-icon>
             </ion-col>
             <ion-col size="2.2" class="icon-container" (click)="favApp(app)" *ngIf="!app.isFav">
-              <ion-img src="assets/icon/bookmark-outline.svg"></ion-img>
+              <ion-img src="assets/icons/bookmark-outline.svg"></ion-img>
             </ion-col>
           </ion-row>
         </ion-grid>

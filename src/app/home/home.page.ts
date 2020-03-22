@@ -20,14 +20,14 @@ declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 export class HomePage implements OnInit {
   @ViewChild(IonSlides) private slide: IonSlides;
-  
-  hiddenSlider = true;
-  
-  // slider
+
+  public hiddenSlider = true;
+
+  // Slider
   slideOpts = {
     initialSlide: 0,
     speed: 400,
-    init:false
+    init: false
   };
 
   constructor(
@@ -59,20 +59,19 @@ export class HomePage implements OnInit {
     // ion-slides width is sometimes wrong when an app starts. Waiting a few
     // seconds (DOM fully rendered once...?) seems to solve this problem.
     if (this.platform.platforms().indexOf('ios') >= 0) {
-      setTimeout(()=>{
+      setTimeout( () => {
         this.showSlider();
-      }, 3000)
-    }
-    else {
+      }, 3000);
+    } else {
       this.showSlider();
     }
   }
 
   showSlider() {
-    this.hiddenSlider = false
-    this.slide.getSwiper().then((swiper)=>{
+    this.hiddenSlider = false;
+    this.slide.getSwiper().then((swiper) => {
       swiper.init();
-    })
+    });
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -155,7 +154,7 @@ export class HomePage implements OnInit {
     this.storage.setBrowsedApps(this.appManager.browsedApps);
   }
 
-  /************** Check app if installed or needs updating before opening **************/
+  /************** Check app if installed before opening **************/
   openApp(id: string) {
     if (this.appManager.checkingApp) {
       console.log('Installation in progress');
