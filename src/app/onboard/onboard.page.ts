@@ -39,8 +39,12 @@ export class OnboardPage implements OnInit {
 
   ionViewWillEnter() {
     appManager.setVisible("show");
-    titleBarManager.setBackgroundColor("#5a62ff");
     titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
+    if (!this.theme.darkMode) {
+      titleBarManager.setBackgroundColor("#5a62ff");
+    } else {
+      titleBarManager.setBackgroundColor("#37477d");
+    }
   }
 
   ionViewDidEnter() {

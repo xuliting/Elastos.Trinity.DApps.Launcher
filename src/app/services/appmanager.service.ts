@@ -692,7 +692,7 @@ export class AppmanagerService {
             mode: 'ios',
             header: msg,
             color: 'medium',
-            duration: 4000,
+            duration: 1000,
             position: 'bottom'
         }).then(toast => toast.present());
     }
