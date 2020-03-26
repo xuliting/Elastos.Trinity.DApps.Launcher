@@ -78,21 +78,6 @@ ion-popover{
     }
 }
 
-.popup-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    ion-label {
-        margin-top: 0;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 1.63px;
-        color: #121212;
-    }
-}
-
 /** Slider pager **/
 .swiper-pagination {
     position: relative;

@@ -117,28 +117,36 @@
         The more you explore the elastOS ecosystem, 
         the more Capsules you will find
       </p>
-      <p class="ion-text-center second-msg">Start by opening our <span (click)="openDemoApp()"><b>Identity Demo</b></span>.</p>
+      <p class="ion-text-center second-msg">
+        Start by opening our 
+        <span (click)="openDemoApp()">
+          <b>Identity Demo</b>
+        </span>.
+      </p>
     </div>
   </ion-grid>
 </ion-content>
 
 <!-- Bottom Tabs -->
 <ion-footer [ngStyle]="{'background': theme.darkMode ? '#37477d' : '#ffffff' }">
-  <div (click)="openApp('org.elastos.trinity.dapp.did')">
+  <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.did')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/identity-white.svg'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/identity-blue.svg'></ion-img>
     <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Identity</ion-label>
+    <ion-ripple-effect ></ion-ripple-effect>
   </div>
 
-  <div (click)="openApp('org.elastos.trinity.dapp.friends')">
+  <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.friends')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/contacts-white.svg'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/contacts-blue.svg'></ion-img>
     <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Contacts</ion-label>
+    <ion-ripple-effect></ion-ripple-effect>
   </div>
 
-  <div class="disabled">
+  <div class="ion-activatable ripple-tab disabled">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/wallet-white.png'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/wallet-blue.png'></ion-img>
     <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Wallet</ion-label>
+    <ion-ripple-effect></ion-ripple-effect>
   </div>
 </ion-footer>

@@ -1,9 +1,16 @@
 @import "./functions.scss";
 
-.lightMode {
-    background: white;
+.popup-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    ion-label, ion-icon, ion-img {
-        color: black;
+    ion-label {
+        margin-top: 0;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1.63px;
+        color: #ffffff;
     }
 }
