@@ -143,7 +143,7 @@
     <ion-ripple-effect></ion-ripple-effect>
   </div>
 
-  <div class="ion-activatable ripple-tab disabled">
+  <div class="ion-activatable ripple-tab disabled" (click)="openApp('org.elastos.trinity.dapp.wallet')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/wallet-white.png'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/wallet-blue.png'></ion-img>
     <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Wallet</ion-label>

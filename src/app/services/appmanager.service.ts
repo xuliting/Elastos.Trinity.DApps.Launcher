@@ -155,7 +155,8 @@ export class AppmanagerService {
                 switch (ret.message) {
                     case 'navback':
                         // Navigate to desktop
-                        this.router.navigate(['home']);
+                        // this.router.navigate(['home']);
+                        this.navController.back();
                         break;
                     case 'notifications-toggle':
                         // Toggles the notifications panel on/off

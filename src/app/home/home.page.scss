@@ -198,11 +198,6 @@ ion-footer {
   .disabled {
     opacity: 0.3;
   }
-
-  .ripple-tab {
-    position: relative;
-    overflow: hidden;
-  }
 }
 
 /******************** No Apps Screen ********************/
@@ -312,6 +307,11 @@ ion-footer {
       }
     }
   }
+}
+
+.ripple-tab {
+  position: relative;
+  overflow: hidden;
 }
 
 /******************** Dark Mode ********************/
