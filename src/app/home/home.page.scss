@@ -87,10 +87,16 @@
   .recent-drag {
     display: flex;
     justify-content: center;
+    position: relative;
+    top: -25px;
     width: 100%;
   
     .drag-icon {
       border-bottom: 3px solid #f0f1ff;
+    }
+
+    .no-scroll {
+      border-bottom: none;
     }
   }
 
@@ -124,7 +130,7 @@
           align-items: center;
       
           img {
-            border-radius: 15px !important;
+            border-radius: 100%;
             overflow: hidden;
             height: 48px;
             width: 48px;
@@ -144,12 +150,14 @@
           h2 {
             font-size: 14px;
             font-weight: 600;
+            // margin-bottom: 5px;
             color: #37477d;
           }
     
           p {
             font-size: 9px !important;
             font-weight: 500;
+            // line-height: 1.22;
             color: #6e75f0 !important;
           }
         }
@@ -160,9 +168,8 @@
           align-items: center;
     
           ion-icon, ion-img {
-            height: 24.9px;
-            width: 22.9px;
-            color: #ffde6e;
+            height: 22px;
+            width: 20px;
           }
         }
       }
@@ -321,6 +328,10 @@ ion-footer {
   .recent-drag {
     .drag-icon {
       border-bottom: 3px solid #000000;
+    }
+
+    .no-scroll {
+      border-bottom: none;
     }
   }
 
