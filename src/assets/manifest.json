@@ -1,43 +1,43 @@
 {
-  "id": "org.elastos.trinity.launcher",
-  "version": "1.0.2",
-  "version_code": 4,
-  "name": "launcher",
-  "description": "trinity launcher",
-  "start_url": "index.html",
-  "author": {
-      "name": "ChenDongxiao",
-      "email": "chendongxiao@elastos.org"
-  },
-  "default_locale": "en",
-  "framework": [
-    "ionic@4.12.0"
-  ],
-  "platform": [
-    "android",
-    "ios"
-  ],
-  "icons": [
-    {
-      "src": "assets/img/logo.png",
-      "sizes": "512x512",
-      "type": "image/png"
+    "id": "org.elastos.trinity.launcher",
+    "version": "1.0.3",
+    "version_code": 5,
+    "name": "launcher",
+    "description": "trinity launcher",
+    "start_url": "index.html",
+    "author": {
+        "name": "ChenDongxiao",
+        "email": "chendongxiao@elastos.org"
     },
-    {
-      "src": "assets/img/logo.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    }
-  ],
-  "urls": [
-    "http://www.baidu.com/*",
-    "https://www.google.com",
-    "http://192.168.31.103:21636/*",
-    "https://dapp-store.elastos.org/apps/*"
-  ],
-  "intent_filters": [
-    {
-      "action": "app"
-    }
-  ]
+    "default_locale": "en",
+    "framework": [
+        "ionic@4.12.0"
+    ],
+    "platform": [
+        "android",
+        "ios"
+    ],
+    "icons": [
+        {
+            "src": "assets/img/logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/img/logo.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        }
+    ],
+    "urls": [
+        "http://www.baidu.com/*",
+        "https://www.google.com",
+        "http://192.168.31.103:21636/*",
+        "https://dapp-store.elastos.org/apps/*"
+    ],
+    "intent_filters": [
+        {
+            "action": "app"
+        }
+    ]
 }
