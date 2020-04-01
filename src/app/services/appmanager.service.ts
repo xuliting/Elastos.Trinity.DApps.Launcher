@@ -260,7 +260,6 @@ export class AppmanagerService {
 
         this.installedApps = [];
         this.nativeApps = [];
-        this.updateApps = [];
 
         appManager.getAppInfos((info) => {
             console.log('App infos', info);
@@ -347,6 +346,7 @@ export class AppmanagerService {
 
     checkForUpdates() {
         if (!this.storeChecked) {
+            this.updateApps = [];
             this.storeChecked = true;
             this.appInfos.forEach((app) => {
                 this.http.get<any>('https://dapp-store.elastos.org/apps/' + app.id + '/manifest').subscribe((storeApp: any) => {
@@ -380,6 +380,7 @@ export class AppmanagerService {
     /******************************** App Install ********************************/
     findApp(id: string) {
         console.log('Finding app', id);
+        console.log('Apps that needs update', this.updateApps);
         this.zone.run(() => {
             // Initial conditions for app load progress
             this.checkingApp = true;
@@ -392,7 +393,9 @@ export class AppmanagerService {
                 this.startApp(id);
             } else if (targetApp && this.updateApps.includes(id)) {
                 console.log(id + 'is installed but needs update');
-                this.intentInstall(id);
+                this.intentInstall(id).then(() => {
+                    this.updateApps = this.updateApps.filter((appId) => appId !== id);
+                });
             } else {
                 console.log(id + ' is not installed');
                 this.intentInstall(id);
@@ -558,7 +561,7 @@ export class AppmanagerService {
         this.uninstallApp();
     }
 
-    /******************************** Uninstall Last Browsed App  ********************************/
+    /******************************** Uninstall Apps  ********************************/
     uninstallApp() {
         let uninstallApps: Dapp[] = [];
         this.browsedApps.map(app => {
@@ -582,6 +585,21 @@ export class AppmanagerService {
                 },
                 (err) => console.log(err));
         }
+    }
+
+    deleteApp(id: string) {
+        console.log('Deleting app ', id);
+        appManager.unInstall(
+            id,
+            (res) => {
+                console.log('Uninstall Success', id);
+                this.favApps = this.favApps.filter((app) => app.id !== id);
+                this.browsedApps = this.browsedApps.filter((app) => app.id !== id);
+                this.installedApps = this.installedApps.filter((app) => app.id !== id);
+                this.storage.setFavApps(this.favApps);
+                this.storage.setBrowsedApps(this.browsedApps);
+            },
+            (err) => console.log(err));
     }
 
     /******************************** Running Apps ********************************/

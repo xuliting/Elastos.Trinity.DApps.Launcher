@@ -77,29 +77,38 @@
       <ion-label>Recent</ion-label>
     </ion-row>
     <ion-list class="recent-list">
-      <ion-item class="app" *ngFor="let app of appManager.browsedApps" lines="none">
-        <ion-grid class="ion-no-padding">
-          <ion-row>
-            <ion-col size="2.3" size-lg="2.3" class="img-container" (click)="openApp(app.id)">
-              <img [src]="appManager.sanitize(app.icons[0].src)"/>
-            </ion-col>
-            <ion-col size="7.5" size-xs="7.5" class="dapp-content" (click)="openApp(app.id)">
-              <ion-label>
-                <h2>{{ app.name }}</h2>
-                <p *ngIf="app.description.length < 50">{{ app.description.slice(0,50) }}</p>
-                <p *ngIf="app.description.length >= 50">{{ app.description.slice(0,50) }}..</p>
-               <!--  <p>{{ app.description.slice(0,50) }}.. <br> {{ app.description.slice(50,100) }}  </p> -->
-              </ion-label>
-            </ion-col>
-            <ion-col size="2.2" class="icon-container" (click)="removeFav(app)" *ngIf="app.isFav">
-              <ion-img src="assets/icons/bookmark-icon.svg"></ion-img>
-            </ion-col>
-            <ion-col size="2.2" class="icon-container" (click)="favApp(app)" *ngIf="!app.isFav">
-              <ion-img src="assets/icons/bookmark-outline.svg"></ion-img>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
+      <ion-item-sliding *ngFor="let app of appManager.browsedApps">
+        <ion-item class="app" lines="none">
+          <ion-grid class="ion-no-padding">
+            <ion-row>
+              <ion-col size="2.3" size-lg="2.3" class="img-container" (click)="openApp(app.id)">
+                <img [src]="appManager.sanitize(app.icons[0].src)"/>
+              </ion-col>
+              <ion-col size="7.5" size-xs="7.5" class="dapp-content" (click)="openApp(app.id)">
+                <ion-label>
+                  <h2>{{ app.name }}</h2>
+                  <p *ngIf="app.description.length < 50">{{ app.description.slice(0,50) }}</p>
+                  <p *ngIf="app.description.length >= 50">{{ app.description.slice(0,50) }}..</p>
+                <!--  <p>{{ app.description.slice(0,50) }}.. <br> {{ app.description.slice(50,100) }}  </p> -->
+                </ion-label>
+              </ion-col>
+              <ion-col size="2.2" class="icon-container" (click)="removeFav(app)" *ngIf="app.isFav">
+                <ion-img src="assets/icons/bookmark-icon.svg"></ion-img>
+              </ion-col>
+              <ion-col size="2.2" class="icon-container" (click)="favApp(app)" *ngIf="!app.isFav">
+                <ion-img src="assets/icons/bookmark-outline.svg"></ion-img>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item-options side="start">
+          <ion-item-option class="itemOption" color="danger">
+            <div class="ion-padding" (click)="appManager.deleteApp(app.id)">
+              <ion-icon name="trash"></ion-icon>
+            </div>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
   </div>
 </ion-content>

@@ -358,6 +358,14 @@ ion-footer {
   background-image: url("/assets/background/background-dark-small.jpg");
 }
 
+/******************** Ion-item option ********************/
+.itemOption {
+  ion-icon {
+    height: 22px;
+    width: 20px
+  }
+}
+
 /******************** Smaller Screens ********************/
 @media screen and (max-width: 380px) and (max-height: 640px) {
   .no-apps-container {  
