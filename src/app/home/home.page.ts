@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
     if (!this.theme.darkMode) {
       titleBarManager.setBackgroundColor("#7a81f1");
     } else {
-      titleBarManager.setBackgroundColor("#37477d");
+      titleBarManager.setBackgroundColor("#495788");
     }
   }
 
