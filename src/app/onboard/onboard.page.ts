@@ -41,9 +41,9 @@ export class OnboardPage implements OnInit {
     appManager.setVisible("show");
     titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
     if (!this.theme.darkMode) {
-      titleBarManager.setBackgroundColor("#5a62ff");
+      titleBarManager.setBackgroundColor("#7a81f1");
     } else {
-      titleBarManager.setBackgroundColor("#37477d");
+      titleBarManager.setBackgroundColor("#495788");
     }
   }
 
