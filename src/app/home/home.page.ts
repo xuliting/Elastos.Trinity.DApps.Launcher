@@ -52,7 +52,7 @@ export class HomePage implements OnInit {
     titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
     titleBarManager.setTitle("Home");
     if (!this.theme.darkMode) {
-      titleBarManager.setBackgroundColor("#5a62ff");
+      titleBarManager.setBackgroundColor("#7a81f1");
     } else {
       titleBarManager.setBackgroundColor("#37477d");
     }
