@@ -16,8 +16,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { DragulaModule } from 'ng2-dragula';
 import { SafePipe } from './pipes/safe.pipe';
 
-import { zh } from './../assets/i18n/zh';
-import { en } from './../assets/i18n/en';
+import { zh } from './../assets/languages/zh';
+import { en } from './../assets/languages/en';
+import { fr } from './../assets/languages/fr';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,14 +32,15 @@ export class CustomTranslateLoader implements TranslateLoader {
         return Observable.create(observer => {
             switch (lang) {
                 case 'zh':
-                    observer.next(zh);
-                    break;
+                  observer.next(zh);
+                  break;
+                case 'fr':
+                  observer.next(fr);
+                  break;
                 case 'en':
                 default:
-                    observer.next(en);
-                    break;
+                  observer.next(en);
             }
-
             observer.complete();
         });
     }
