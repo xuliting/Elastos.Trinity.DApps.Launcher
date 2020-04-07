@@ -141,21 +141,21 @@
 
 <!-- Bottom Tabs -->
 <ion-footer [ngStyle]="{'background': theme.darkMode ? '#37477d' : '#ffffff' }">
-  <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.did')" [ngStyle]="{'width': showWallet ? '33.3%' : '50%' }">
+  <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.did')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/identity-white.svg'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/identity-blue.svg'></ion-img>
     <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Identity</ion-label>
     <ion-ripple-effect ></ion-ripple-effect>
   </div>
 
-  <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.friends')" [ngStyle]="{'width': showWallet ? '33.3%' : '50%' }">
+  <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.friends')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/contacts-white.svg'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/contacts-blue.svg'></ion-img>
     <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Contacts</ion-label>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
 
-  <div *ngIf="showWallet" class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.wallet')">
+  <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.wallet')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/wallet-white.png'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/wallet-blue.png'></ion-img>
     <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Wallet</ion-label>

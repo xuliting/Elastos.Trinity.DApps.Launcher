@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
   @ViewChild(IonSlides) private slide: IonSlides;
 
   public hiddenSlider = true;
-  public showWallet = true; // no wallet in ios
+//   public showWallet = true; // no wallet in ios
 
   // Slider
   slideOpts = {
@@ -42,9 +42,9 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    if (this.platform.platforms().indexOf('android') < 0) {
-        this.showWallet = false;
-    }
+    // if (this.platform.platforms().indexOf('android') < 0) {
+    //     this.showWallet = false;
+    // }
   }
 
   ionViewWillEnter() {
