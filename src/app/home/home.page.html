@@ -9,7 +9,7 @@
       <ion-slides #slide [options]="slideOpts" pager="true" [class.hidden]="hiddenSlider">
         <ion-slide>
           <ion-row class="fav-row">
-            <div class="fav-app" *ngFor="let app of appManager.favApps.slice(0,12)">
+            <ion-col size="3" class="fav-app" *ngFor="let app of appManager.favApps.slice(0,12)">
               <div *ngIf="app.icons && app.icons.length > 0">
                 <ion-avatar (click)="openApp(app.id)">
                   <img [src]="appManager.sanitize(app.icons[0].src)">
@@ -23,12 +23,12 @@
                 </ion-avatar>
                 <ion-label>{{ app.name }} {{ appManager.favApps.indexOf(app) + 1}}</ion-label>
               </div>
-            </div>
+            </ion-col>
           </ion-row>
         </ion-slide>
         <ion-slide>
           <ion-row class="fav-row">
-            <div class="fav-app" *ngFor="let app of appManager.favApps.slice(12,24)">
+            <ion-col size="3" class="fav-app" *ngFor="let app of appManager.favApps.slice(12,24)">
               <div *ngIf="app.icons && app.icons.length > 0">
                 <ion-avatar (click)="openApp(app.id)">
                   <img [src]="appManager.sanitize(app.icons[0].src)">
@@ -42,12 +42,12 @@
                 </ion-avatar>
                 <ion-label>{{ app.name }} {{ appManager.favApps.indexOf(app) + 1}}</ion-label>
               </div>
-            </div>
+            </ion-col>
           </ion-row>
         </ion-slide>
         <ion-slide>
           <ion-row class="fav-row">
-            <div class="fav-app" *ngFor="let app of appManager.favApps.slice(24,36)">
+            <ion-col size="3" class="fav-app" *ngFor="let app of appManager.favApps.slice(24,36)">
               <div *ngIf="app.icons && app.icons.length > 0">
                 <ion-avatar (click)="openApp(app.id)">
                   <img [src]="appManager.sanitize(app.icons[0].src)">
@@ -61,7 +61,7 @@
                 </ion-avatar>
                 <ion-label>{{ app.name }} {{ appManager.favApps.indexOf(app) + 1}}</ion-label>
               </div>
-            </div>
+            </ion-col>
           </ion-row>
         </ion-slide>
       </ion-slides>
