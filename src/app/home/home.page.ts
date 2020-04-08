@@ -118,7 +118,7 @@ export class HomePage implements OnInit {
       }
     });
 
-    this.appManager.genericToast(app.name + ' added to favorites');
+    this.appManager.genericToast(app.name + ' ' + this.translate.instant('added-fav'));
     this.saveApps();
   }
 
@@ -148,7 +148,7 @@ export class HomePage implements OnInit {
       }
     });
 
-    this.appManager.genericToast(app.name + ' removed from favorites');
+    this.appManager.genericToast(app.name + ' ' + this.translate.instant('removed-fav'));
     this.saveApps();
   }
 

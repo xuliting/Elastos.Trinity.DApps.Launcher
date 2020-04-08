@@ -85,6 +85,7 @@ export class AppmanagerService {
     init() {
         this.resetProgress();
         this.getVisit();
+        this.getLanguage();
         this.getRunningApps();
         this.getAppInfos();
 
@@ -206,6 +207,7 @@ export class AppmanagerService {
                         this.getAppInfos();
                         break;
                     case 'currentLocaleChanged':
+                        this.getLanguage();
                         break;
                     case 'launcher_upgraded':
                         break;
@@ -677,6 +679,22 @@ export class AppmanagerService {
         return await popover.present();
     }
 
+    /******************************** Language  ********************************/
+    getLanguage() {
+        appManager.getLocale(
+          (defaultLang, currentLang, systemLang) => {
+            this.setCurLang(currentLang);
+          }
+        );
+    }
+
+    setCurLang(lang: string) {
+        console.log('Setting current language to ' + lang);
+        this.zone.run(() => {
+          this.translate.use(lang);
+        });
+    }
+
     /******************************** Intent Actions ********************************/
     launcher() {
         appManager.launcher();
@@ -692,22 +710,6 @@ export class AppmanagerService {
 
     close(id: string) {
         appManager.closeApp(id);
-    }
-
-    /******************************** Language  ********************************/
-    getLanguage() {
-        appManager.getLocale((defaultLang, currentLang, systemLang) => {
-            console.log('defaultLangL', defaultLang, ' currentLang:', currentLang, ' systemLang:', systemLang);
-            if (!this.isSupportedLanguage(systemLang)) {
-                systemLang = 'en';
-            }
-            // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setDefaultLang(systemLang);
-            // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setSystemLang(systemLang);
-        });
-    }
-
-    isSupportedLanguage(lang: string) {
-        return this.supportedLanguage.indexOf(lang) === -1 ? false : true;
     }
 
     /******************************** Alerts/Toasts ********************************/

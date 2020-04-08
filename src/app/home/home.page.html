@@ -4,7 +4,7 @@
   <ion-grid class="container ion-no-padding" [class.dark-container]="theme.darkMode">
     <div class="favorites-container">
       <ion-row class="fav-title">
-        <ion-label>Favorites</ion-label>
+        <ion-label>{{ 'favorites' | translate }}</ion-label>
       </ion-row>
       <ion-slides #slide [options]="slideOpts" pager="true" [class.hidden]="hiddenSlider">
         <ion-slide>
@@ -74,7 +74,7 @@
       <ion-col size="1" class="drag-icon" [class.no-scroll]="appManager.browsedApps.length <= 3"></ion-col>
     </ion-row>
     <ion-row class="recent-title">
-      <ion-label>Recent</ion-label>
+      <ion-label>{{ 'recent' | translate }}</ion-label>
     </ion-row>
     <ion-list class="recent-list">
       <ion-item-sliding *ngFor="let app of appManager.browsedApps">
@@ -121,19 +121,10 @@
       <img *ngIf="theme.darkMode" src="assets/icons/capsule-dark.svg">
     </div>
     <div class="no-fav-message">
-      <h1 class="ion-padding ion-text-center">No Capsules?</h1>
-      <p class="ion-text-center first-msg">
-        You can start by finding elastOS
-        Capsules to browse from your contacts
-        or social networks.
-        The more you explore the elastOS ecosystem,
-        the more Capsules you will find
-      </p>
-      <p class="ion-text-center second-msg">
-        Start by opening our
-        <span (click)="openDemoApp()">
-          <b>Identity Demo</b>
-        </span>.
+      <h1 class="ion-padding ion-text-center">{{ 'no-apps-title' | translate }}</h1>
+      <p class="ion-text-center first-msg">{{ 'no-apps-message' | translate }}</p>
+      <p class="ion-text-center second-msg">{{ 'open-our-app' | translate }} <br>
+        <span (click)="openDemoApp()"><b>{{ 'identity-demo' | translate }}</b></span>
       </p>
     </div>
   </ion-grid>
@@ -144,14 +135,14 @@
   <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.did')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/identity-white.svg'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/identity-blue.svg'></ion-img>
-    <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Identity</ion-label>
+    <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">{{ 'identity' | translate }}</ion-label>
     <ion-ripple-effect ></ion-ripple-effect>
   </div>
 
   <div class="ion-activatable ripple-tab" (click)="openApp('org.elastos.trinity.dapp.friends')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/contacts-white.svg'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/contacts-blue.svg'></ion-img>
-    <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Contacts</ion-label>
+    <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">{{ 'contacts' | translate }}</ion-label>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
 
@@ -159,7 +150,7 @@
   <div class="ion-activatable ripple-tab" (click)="appManager.start('org.elastos.trinity.dapp.wallet')">
     <ion-img *ngIf="theme.darkMode" src='/assets/tabs/wallet-white.png'></ion-img>
     <ion-img *ngIf="!theme.darkMode" src='/assets/tabs/wallet-blue.png'></ion-img>
-    <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">Wallet</ion-label>
+    <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#ffffff' }">{{ 'wallet' | translate }}</ion-label>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
 </ion-footer>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ThemeService } from 'src/app/services/theme.service';
+import { TranslateService } from '@ngx-translate/core';
 
 declare let appManager: AppManagerPlugin.AppManager;
 
@@ -49,7 +50,8 @@ export class NotificationsComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
-    public theme: ThemeService
+    public theme: ThemeService,
+    public translate: TranslateService
   ) { }
 
   ngOnInit() {}
