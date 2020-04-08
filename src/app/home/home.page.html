@@ -14,7 +14,7 @@
                 <ion-avatar (click)="openApp(app.id)">
                   <img [src]="appManager.sanitize(app.icons[0].src)">
                 </ion-avatar>
-                <ion-label>{{ app.name.slice(0,10) }}</ion-label>
+                <ion-label>{{ app.name }}</ion-label>
               </div>
               <div *ngIf="app.id === 'emptyFav'">
                 <ion-avatar>
