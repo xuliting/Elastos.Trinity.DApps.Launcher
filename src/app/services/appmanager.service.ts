@@ -154,8 +154,7 @@ export class AppmanagerService {
                 }
                 switch (ret.message) {
                     case 'navback':
-                        // Navigate to desktop
-                        // this.router.navigate(['home']);
+                        // Navigate back in opened app
                         this.navController.back();
                         break;
                     case 'notifications-toggle':
@@ -184,7 +183,6 @@ export class AppmanagerService {
 
                         // Add started app to history
                         this.addToHistory(params.id);
-                        // 'launching' app is completed only when 'show' is received (first screen shown) this.resetProgress();
                         break;
                     case 'closed':
                     /*     if (this.popup) {
@@ -215,6 +213,27 @@ export class AppmanagerService {
                         if (params.data.key === "ui.darkmode") {
                             this.zone.run(() => {
                                 this.handleDarkModeChange(params.data.value);
+                            });
+                        }
+                        if (params.data.key === "chain.network.type") {
+                            this.zone.run(() => {
+                              /*   if (params.data.value === 'MainNet') {
+                                    titleBarManager.setTitle('Home');
+                                } else {
+                                    titleBarManager.setTitle(params.data.value);
+                                } */
+                                if (params.data.value === 'MainNet') {
+                                    titleBarManager.setTitle('Home');
+                                }
+                                if (params.data.value === 'TestNet') {
+                                    titleBarManager.setTitle('Test Net Active');
+                                }
+                                if (params.data.value === 'RegTest') {
+                                    titleBarManager.setTitle('Regression Net Active');
+                                }
+                                if (params.data.value === 'PrvNet') {
+                                    titleBarManager.setTitle('Private Net Active');
+                                }
                             });
                         }
                         break;
@@ -677,17 +696,14 @@ export class AppmanagerService {
 
     /******************************** Language  ********************************/
     getLanguage() {
-        var me = this;
-        appManager.getLocale(
-            (defaultLang, currentLang, systemLang) => {
-                console.log('defaultLangL', defaultLang, ' currentLang:', currentLang, ' systemLang:', systemLang);
-                if (!this.isSupportedLanguage(systemLang)) {
-                    systemLang = 'en';
-                }
-                // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setDefaultLang(systemLang);
-                // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setSystemLang(systemLang);
+        appManager.getLocale((defaultLang, currentLang, systemLang) => {
+            console.log('defaultLangL', defaultLang, ' currentLang:', currentLang, ' systemLang:', systemLang);
+            if (!this.isSupportedLanguage(systemLang)) {
+                systemLang = 'en';
             }
-        );
+            // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setDefaultLang(systemLang);
+            // TODO - RE-FIX ME - SETTINGS MOVED - me.setting.setSystemLang(systemLang);
+        });
     }
 
     isSupportedLanguage(lang: string) {

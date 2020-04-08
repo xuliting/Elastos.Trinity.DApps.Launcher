@@ -43,14 +43,13 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     // if (this.platform.platforms().indexOf('android') < 0) {
-    //     this.showWallet = false;
+    //   this.showWallet = false;
     // }
   }
 
   ionViewWillEnter() {
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DESKTOP);
     titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
-    titleBarManager.setTitle("Home");
     if (!this.theme.darkMode) {
       titleBarManager.setBackgroundColor("#7a81f1");
     } else {
