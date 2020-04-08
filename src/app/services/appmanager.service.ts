@@ -86,6 +86,7 @@ export class AppmanagerService {
         this.resetProgress();
         this.getVisit();
         this.getLanguage();
+        this.getCurrentNet();
         this.getRunningApps();
         this.getAppInfos();
 
@@ -218,25 +219,7 @@ export class AppmanagerService {
                             });
                         }
                         if (params.data.key === "chain.network.type") {
-                            this.zone.run(() => {
-                              /*   if (params.data.value === 'MainNet') {
-                                    titleBarManager.setTitle('Home');
-                                } else {
-                                    titleBarManager.setTitle(params.data.value);
-                                } */
-                                if (params.data.value === 'MainNet') {
-                                    titleBarManager.setTitle('Home');
-                                }
-                                if (params.data.value === 'TestNet') {
-                                    titleBarManager.setTitle('Test Net Active');
-                                }
-                                if (params.data.value === 'RegTest') {
-                                    titleBarManager.setTitle('Regression Net Active');
-                                }
-                                if (params.data.value === 'PrvNet') {
-                                    titleBarManager.setTitle('Private Net Active');
-                                }
-                            });
+                            this.getCurrentNet();
                         }
                         break;
                 }
@@ -247,10 +230,6 @@ export class AppmanagerService {
                 this.installApp(params.uri, params.id);
                 break;
         }
-    }
-
-    handleDarkModeChange(useDarkMode) {
-        this.theme.setTheme(useDarkMode);
     }
 
     /******************************** Fetch Apps ********************************/
@@ -679,7 +658,7 @@ export class AppmanagerService {
         return await popover.present();
     }
 
-    /******************************** Language  ********************************/
+    /******************************** Preferences ********************************/
     getLanguage() {
         appManager.getLocale(
           (defaultLang, currentLang, systemLang) => {
@@ -693,6 +672,29 @@ export class AppmanagerService {
         this.zone.run(() => {
           this.translate.use(lang);
         });
+    }
+
+    getCurrentNet() {
+        appManager.getPreference("chain.network.type", (networkCode) => {
+            this.zone.run(() => {
+                if (networkCode === 'MainNet') {
+                    titleBarManager.setTitle('Home');
+                }
+                if (networkCode === 'TestNet') {
+                    titleBarManager.setTitle('Test Net Active');
+                }
+                if (networkCode === 'RegTest') {
+                    titleBarManager.setTitle('Regression Net Active');
+                }
+                if (networkCode === 'PrvNet') {
+                    titleBarManager.setTitle('Private Net Active');
+                }
+            });
+        });
+    }
+
+    handleDarkModeChange(useDarkMode) {
+        this.theme.setTheme(useDarkMode);
     }
 
     /******************************** Intent Actions ********************************/
