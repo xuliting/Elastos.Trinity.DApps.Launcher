@@ -83,3 +83,9 @@ ion-popover{
     position: relative;
     padding-top: 10px;
 }
+
+@media screen and (max-height: 640px) {
+    .swiper-pagination {
+        padding-top: 5px;
+    }
+}

@@ -367,7 +367,7 @@ ion-footer {
 }
 
 /******************** Smaller Screens ********************/
-@media screen and (max-width: 380px) and (max-height: 640px) {
+@media screen and (max-height: 640px) {
   .no-apps-container {  
 
     .logo-container {
@@ -389,6 +389,69 @@ ion-footer {
   
       .first-message {
         height: 83.25px;
+      }
+    }
+  }
+
+  .container {
+    .favorites-container {
+      .fav-title {
+        padding-bottom: 8.5px;
+      }
+  
+      .fav-row {
+        .fav-app {
+          width: 60px;
+          height: 70px;
+  
+          div {
+            ion-avatar {
+              width: 30px;
+              height: 30px;
+            }
+  
+            ion-label {
+              padding-top: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .recent-container {
+    .recent-drag {
+      top: -20px;
+    }
+
+    .recent-list {
+  
+      ion-item {
+        ion-row {
+          .img-container {
+            img {
+              height: 35px;
+              width: 35px;
+            }
+          }
+        
+          .dapp-content {    
+            h2 {
+              font-size: 12px;
+            }
+      
+            p {
+              font-size: 8px !important;
+            }
+          }
+      
+          .icon-container {
+            ion-icon, ion-img {
+              height: 16.5px;
+              width: 15px;
+            }
+          }
+        }
       }
     }
   }
