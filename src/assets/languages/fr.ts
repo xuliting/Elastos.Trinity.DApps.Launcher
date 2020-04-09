@@ -17,7 +17,7 @@ export const fr = {
 
     // Empty Home Pg
     'no-apps-title': 'Aucune Application?',
-    'no-apps-message': "Vous pouvez commencer à trouver des applications elastOS à partir de vos contacts ou réseaux sociaux. Plus vous explorez l'écosystème elastOS, plus vous trouverez d'applications",
+    'no-apps-message': "Vous pouvez commencer à trouver des applications elastOS à partir de vos contacts ou des réseaux sociaux. Plus vous explorez l'écosystème elastOS, plus vous trouverez d'applications",
     'open-our-app': "Vous pouvez commencer par ouvrir notre",
     'identity-demo': "Démo d'identité",
 };
