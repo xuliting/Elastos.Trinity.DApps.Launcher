@@ -17,7 +17,9 @@ export const fr = {
 
     // Empty Home Pg
     'no-apps-title': 'Aucune Application?',
-    'no-apps-message': "Vous pouvez commencer à trouver des applications elastOS à partir de vos contacts ou des réseaux sociaux. Plus vous explorez l'écosystème elastOS, plus vous trouverez d'applications",
-    'open-our-app': "Vous pouvez commencer par ouvrir notre",
+    'no-apps-message': "Vous pouvez trouver des applications elastOS à partir de vos contacts ou des réseaux sociaux. Plus vous explorez l'écosystème elastOS, plus vous trouverez d'applications",
+    'open-our-app': "Vous pouvez commencer par ouvrir la",
+    'open-our-app2': "Vous pouvez commencer par ouvrir le",
     'identity-demo': "Démo d'identité",
+    'capsule-marketplace': 'Marché des capsules'
 };

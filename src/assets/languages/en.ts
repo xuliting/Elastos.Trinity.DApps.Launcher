@@ -17,7 +17,9 @@ export const en = {
 
     // Empty Home Pg
     'no-apps-title': 'No Capsules?',
-    'no-apps-message': 'You can start finding elastOS Capsules to browse from your contacts or social networks. The more you explore the elastOS ecosystem, the more Capsules you will find',
-    'open-our-app': 'You can start by opening our',
+    'no-apps-message': 'You can find elastOS Capsules to browse from your contacts or social networks. The more you explore the elastOS ecosystem, the more Capsules you will find',
+    'open-our-app': 'You can start by opening the',
+    'open-our-app2': 'You can start by opening the',
     'identity-demo': 'Identity Demo',
+    'capsule-marketplace': 'Capsule Marketplace'
 };

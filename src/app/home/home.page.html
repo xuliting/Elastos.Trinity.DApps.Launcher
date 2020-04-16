@@ -122,10 +122,25 @@
     </div>
     <div class="no-fav-message">
       <h1 class="ion-padding ion-text-center">{{ 'no-apps-title' | translate }}</h1>
-      <p class="ion-text-center first-msg">{{ 'no-apps-message' | translate }}</p>
-      <p class="ion-text-center second-msg">{{ 'open-our-app' | translate }} <br>
-        <span (click)="openDemoApp()"><b>{{ 'identity-demo' | translate }}</b></span>
-      </p>
+
+      <div *ngIf="!isAndroid">
+        <p class="ion-text-center">{{ 'no-apps-message' | translate }}</p>
+        <p class="ion-text-center second-msg">{{ 'open-our-app' | translate }}</p>
+        <ion-row class="demo-app" (click)="openStarterApp('org.elastos.trinity.dapp.diddemo')">
+          <img src='/assets/apps/identitydemo.svg'/>
+          <h2>{{ 'identity-demo' | translate }}</h2>
+        </ion-row>
+      </div>
+
+      <div *ngIf="isAndroid">
+        <p class="ion-text-center">{{ 'no-apps-message' | translate }}</p> 
+        <p class="ion-text-center second-msg">{{ 'open-our-app2' | translate }}</p>
+        <ion-row class="demo-app" (click)="openStarterApp('org.elastos.trinity.dapp.dappstore')">
+          <img src='/assets/apps/dappstore.svg'/>
+          <h2>{{ 'capsule-marketplace' | translate }}</h2>
+        </ion-row>
+      </div>
+     
     </div>
   </ion-grid>
 </ion-content>
