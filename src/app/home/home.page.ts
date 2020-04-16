@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
   @ViewChild(IonSlides) private slide: IonSlides;
 
   public hiddenSlider = true;
-  public isAndroid = true;
+  public isAndroid = false;
 
   // Slider
   slideOpts = {
@@ -42,8 +42,8 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    if (this.platform.platforms().indexOf('android') < 0) {
-      this.isAndroid = false;
+    if (this.platform.platforms().indexOf('android') === 0) {
+      this.isAndroid = true;
     }
   }
 
