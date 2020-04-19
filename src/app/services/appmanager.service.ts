@@ -80,7 +80,7 @@ export class AppmanagerService {
         private navController: NavController,
         private router: Router,
         private theme: ThemeService
-    ) {}
+    ) { }
 
     init() {
         this.resetProgress();
@@ -98,7 +98,7 @@ export class AppmanagerService {
         if (this.platform.platforms().indexOf('cordova') >= 0) {
             console.log('Listening to intent events');
             appManager.setIntentListener((ret) => {
-              this.onIntentReceived(ret);
+                this.onIntentReceived(ret);
             });
         }
     }
@@ -187,7 +187,7 @@ export class AppmanagerService {
                         this.addToHistory(params.id);
                         break;
                     case 'closed':
-                    /*     if (this.popup) {
+                        /* if (this.popup) {
                             this.popoverController.dismiss();
                         } */
                         this.resetProgress();
@@ -227,7 +227,9 @@ export class AppmanagerService {
 
             // EPK installation from the CLI - Message received by the runtime.
             case MessageType.EX_INSTALL:
-                this.installApp(params.uri, params.id);
+                appManager.askPrompt('', 'Install this dapp for development?', () => {
+                    this.installApp(params.uri, params.id);
+                });
                 break;
         }
     }
@@ -282,7 +284,7 @@ export class AppmanagerService {
                 });
 
                 if (
-                    app.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
+                    app.id === 'org.elastos.trinity.dapp.qrcodescanner' ||
                     app.id === 'org.elastos.trinity.dapp.wallet' ||
                     app.id === 'org.elastos.trinity.dapp.did' ||
                     app.id === 'org.elastos.trinity.dapp.friends' ||
@@ -430,7 +432,7 @@ export class AppmanagerService {
             (err) => {
                 this.resetProgress();
                 this.appStartErrToast();
-                console.log('Error', err);
+                console.log('installApp Error', err);
             }
         );
     }
@@ -519,7 +521,7 @@ export class AppmanagerService {
         const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === paramsId);
         if (
             !targetApp ||
-            targetApp.id ===  'org.elastos.trinity.dapp.qrcodescanner' ||
+            targetApp.id === 'org.elastos.trinity.dapp.qrcodescanner' ||
             targetApp.id === 'org.elastos.trinity.dapp.wallet' ||
             targetApp.id === 'org.elastos.trinity.dapp.did' ||
             targetApp.id === 'org.elastos.trinity.dapp.friends' ||
@@ -661,16 +663,16 @@ export class AppmanagerService {
     /******************************** Preferences ********************************/
     getLanguage() {
         appManager.getLocale(
-          (defaultLang, currentLang, systemLang) => {
-            this.setCurLang(currentLang);
-          }
+            (defaultLang, currentLang, systemLang) => {
+                this.setCurLang(currentLang);
+            }
         );
     }
 
     setCurLang(lang: string) {
         console.log('Setting current language to ' + lang);
         this.zone.run(() => {
-          this.translate.use(lang);
+            this.translate.use(lang);
         });
     }
 
@@ -703,7 +705,7 @@ export class AppmanagerService {
     }
 
     start(id: string) {
-        appManager.start(id, () => {});
+        appManager.start(id, () => { });
     }
 
     sendIntent(action: string, params: any) {
