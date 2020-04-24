@@ -1,13 +1,14 @@
 {
     "id": "org.elastos.trinity.launcher",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "version_code": 5,
     "name": "launcher",
     "description": "trinity launcher",
     "start_url": "index.html",
     "author": {
-        "name": "ChenDongxiao",
-        "email": "chendongxiao@elastos.org"
+        "name": "Trinity Tech Co., Ltd.",
+        "email": "contact@trinity-tech.io",
+        "website": "https://www.trinity-tech.io"
     },
     "default_locale": "en",
     "framework": [
@@ -30,9 +31,6 @@
         }
     ],
     "urls": [
-        "http://www.baidu.com/*",
-        "https://www.google.com",
-        "http://192.168.31.103:21636/*",
         "https://dapp-store.elastos.org/apps/*"
     ],
     "intent_filters": [
