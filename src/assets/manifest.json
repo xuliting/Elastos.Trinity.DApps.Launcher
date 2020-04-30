@@ -1,7 +1,7 @@
 {
     "id": "org.elastos.trinity.launcher",
-    "version": "1.1.0",
-    "version_code": 5,
+    "version": "1.1.1",
+    "version_code": 6,
     "name": "launcher",
     "description": "trinity launcher",
     "start_url": "index.html",
