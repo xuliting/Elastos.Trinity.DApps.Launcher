@@ -431,7 +431,12 @@ export class AppmanagerService {
             },
             (err) => {
                 this.resetProgress();
-                this.appStartErrToast();
+                // the epk deployed by trinity-cli has no signature.
+                if (err && err.includes('Failed to verify EPK')) {
+                  appManager.alertPrompt('Failed to verify EPK', 'You can turn on developer mode in Settings.');
+                } else {
+                  this.appStartErrToast();
+                }
                 console.log('installApp Error', err);
             }
         );
