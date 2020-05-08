@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import { AppmanagerService } from '../services/appmanager.service';
+import { NotificationManagerService } from '../services/notificationmanager.service'
 import { StorageService } from '../services/storage.service';
 import { ThemeService } from '../services/theme.service';
 
@@ -35,6 +36,7 @@ export class HomePage implements OnInit {
     private platform: Platform,
     public translate: TranslateService,
     public appManager: AppmanagerService,
+    public nitification: NotificationManagerService,
     public toastCtrl: ToastController,
     public storage: StorageService,
     public theme: ThemeService
@@ -74,6 +76,9 @@ export class HomePage implements OnInit {
       key: "settings",
       iconPath: TitleBarPlugin.BuiltInIcon.SETTINGS
     });
+
+    // show Badge if there have notifications.
+    this.nitification.getNotifications();
   }
 
   ionViewDidEnter() {
