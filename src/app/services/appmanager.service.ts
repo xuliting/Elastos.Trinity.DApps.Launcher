@@ -16,6 +16,7 @@ import { ThemeService } from './theme.service';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
+declare let notificationManager;
 
 let managerService = null;
 
@@ -50,6 +51,9 @@ export class AppmanagerService {
     /* Background apps */
     public popup = false;
     public runningList: any = [];
+
+    /* notifications */
+    public notificationList: any = [];
 
     /* For install progress bar */
     public checkingApp = false;
@@ -89,6 +93,8 @@ export class AppmanagerService {
         this.getCurrentNet();
         this.getRunningApps();
         this.getAppInfos();
+        this.getNotifications();
+        this.setNotificationListener();
 
         console.log('AppmanagerService init');
         appManager.setListener((ret) => {
@@ -651,7 +657,31 @@ export class AppmanagerService {
     }
 
     /******************************** Notifications Manager ********************************/
-    popNotifications() {
+    setNotificationListener() {
+      notificationManager.setNotificationListener((notification) => {
+        console.log('new notification:', notification);
+        this.notificationList.push(notification);
+      });
+    }
+
+    async getNotifications() {
+      const notifications = await notificationManager.getNotifications();
+      this.notificationList = notifications.notifications;
+      console.log('getNotifications:', this.notificationList);
+    }
+
+    fillAppInfoToNotification() {
+      this.notificationList.forEach(notification => {
+        console.log(notification);
+        notification.app = this.allApps.find(app => app.id === notification.appId);
+      });
+    }
+
+    async popNotifications() {
+        await this.getNotifications();
+
+        this.fillAppInfoToNotification();
+
         if (!this.popup) {
             this.popup = true;
             this.presentNotifications();
@@ -664,7 +694,7 @@ export class AppmanagerService {
         const popover = await this.popoverController.create({
             component: NotificationsComponent,
             componentProps: {
-                // apps: this.runningList
+              notifications: this.notificationList
             },
             translucent: true,
         });

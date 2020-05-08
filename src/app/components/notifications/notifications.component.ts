@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ThemeService } from 'src/app/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
+import { NavParams } from '@ionic/angular';
 
 declare let appManager: AppManagerPlugin.AppManager;
+declare let notificationManager;
 
 @Component({
   selector: 'app-notifications',
@@ -50,11 +52,14 @@ export class NotificationsComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
+    private navParams: NavParams,
     public theme: ThemeService,
     public translate: TranslateService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.notifications = this.navParams.get('notifications');
+  }
 
   sanitize(url: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -64,7 +69,8 @@ export class NotificationsComponent implements OnInit {
     appManager.start(id);
   }
 
-  close(id: string) {
-    this.notifications = this.notifications.filter((notification) => notification.app.id !== id);
+  close(notificationId) {
+    notificationManager.clearNotification(notificationId);
+    this.notifications = this.notifications.filter((notification) => notification.notificationId !== notificationId);
   }
 }

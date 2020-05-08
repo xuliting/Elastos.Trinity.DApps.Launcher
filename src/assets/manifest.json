@@ -11,6 +11,9 @@
         "website": "https://www.trinity-tech.io"
     },
     "default_locale": "en",
+    "plugins": [
+      "NotificationManagerPlugin"
+    ],
     "framework": [
         "ionic@4.12.0"
     ],
