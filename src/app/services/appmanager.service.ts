@@ -11,14 +11,13 @@ import { Dapp } from '../models/dapps.model';
 import { RunningAppsComponent } from '../components/running-apps/running-apps.component';
 import { NotificationsComponent } from '../components/notifications/notifications.component';
 
+import { NotificationManagerService } from './notificationmanager.service';
 import { StorageService } from './storage.service';
 import { ThemeService } from './theme.service';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 declare let notificationManager;
-
-let managerService = null;
 
 enum MessageType {
     INTERNAL = 1,
@@ -52,9 +51,6 @@ export class AppmanagerService {
     public popup = false;
     public runningList: any = [];
 
-    /* notifications */
-    public notificationList: any = [];
-
     /* For install progress bar */
     public checkingApp = false;
     private storeChecked = false;
@@ -83,7 +79,8 @@ export class AppmanagerService {
         private storage: StorageService,
         private navController: NavController,
         private router: Router,
-        private theme: ThemeService
+        private theme: ThemeService,
+        private notification: NotificationManagerService
     ) { }
 
     init() {
@@ -94,8 +91,6 @@ export class AppmanagerService {
         this.getCurrentNet();
         this.getRunningApps();
         this.getAppInfos();
-        this.getNotifications();
-        this.setNotificationListener();
 
         console.log('AppmanagerService init');
         appManager.setListener((ret) => {
@@ -661,30 +656,8 @@ export class AppmanagerService {
     }
 
     /******************************** Notifications Manager ********************************/
-    setNotificationListener() {
-      notificationManager.setNotificationListener((notification) => {
-        console.log('new notification:', notification);
-        this.notificationList.push(notification);
-      });
-    }
-
-    async getNotifications() {
-      const notifications = await notificationManager.getNotifications();
-      this.notificationList = notifications.notifications;
-      console.log('getNotifications:', this.notificationList);
-    }
-
-    fillAppInfoToNotification() {
-      this.notificationList.forEach(notification => {
-        console.log(notification);
-        notification.app = this.allApps.find(app => app.id === notification.appId);
-      });
-    }
-
     async popNotifications() {
-        await this.getNotifications();
-
-        this.fillAppInfoToNotification();
+        this.notification.fillAppInfoToNotification(this.allApps);
 
         if (!this.popup) {
             this.popup = true;
@@ -701,9 +674,9 @@ export class AppmanagerService {
     async presentNotifications() {
         const popover = await this.popoverController.create({
             component: NotificationsComponent,
-            componentProps: {
-              notifications: this.notificationList
-            },
+            // componentProps: {
+            //   notifications: this.notificationList
+            // },
             translucent: true,
         });
         popover.onDidDismiss().then(() => { this.popup = false; });

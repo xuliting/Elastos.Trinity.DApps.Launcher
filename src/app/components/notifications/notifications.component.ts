@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ThemeService } from 'src/app/services/theme.service';
+import { NotificationManagerService } from 'src/app/services/notificationmanager.service';
 import { TranslateService } from '@ngx-translate/core';
-import { NavParams } from '@ionic/angular';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let notificationManager;
@@ -16,7 +16,7 @@ export class NotificationsComponent implements OnInit {
 
   public notifications = [
    /*  {
-      message: 'Free 100 ELA! Just send 10 ELA to me :)',
+      title: 'Free 100 ELA! Just send 10 ELA to me :)',
       app: {
         id: "org.elastos.trinity.dapp.did",
         name: "DID",
@@ -27,7 +27,7 @@ export class NotificationsComponent implements OnInit {
       },
     },
     {
-      message: 'Free 100 ELA! Just send 10 ELA to me :)',
+      title: 'Free 100 ELA! Just send 10 ELA to me :)',
       app: {
         id: "org.elastos.trinity.dapp.did2",
         name: "DID",
@@ -38,7 +38,7 @@ export class NotificationsComponent implements OnInit {
       },
     },
     {
-      message: 'Free 100 ELA! Just send 10 ELA to me :)',
+      title: 'Free 100 ELA! Just send 10 ELA to me :)',
       app: {
         id: "org.elastos.trinity.dapp.did3",
         name: "DID",
@@ -52,14 +52,10 @@ export class NotificationsComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private navParams: NavParams,
+    public notificationService: NotificationManagerService,
     public theme: ThemeService,
     public translate: TranslateService
-  ) { }
-
-  ngOnInit() {
-    this.notifications = this.navParams.get('notifications');
-  }
+  ) {}
 
   sanitize(url: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -67,10 +63,12 @@ export class NotificationsComponent implements OnInit {
 
   start(id: string) {
     appManager.start(id);
+    // if url != null, then sendIntentUrl
+
+    //
   }
 
   close(notificationId) {
-    notificationManager.clearNotification(notificationId);
-    this.notifications = this.notifications.filter((notification) => notification.notificationId !== notificationId);
+    this.notificationService.deleteNotification(notificationId);
   }
 }
