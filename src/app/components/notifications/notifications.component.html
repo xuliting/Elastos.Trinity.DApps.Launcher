@@ -26,13 +26,13 @@
               <h2>{{ notification.app.name }}</h2>
             </ion-label>
           </ion-col>
-          <ion-col class="close-icon" size="1.2" (click)="close(notification.app.id)">
-            <img src="/assets/icons/light_mode/close-icon.svg"/> 
+          <ion-col class="close-icon" size="1.2" (click)="close(notification.notificationId)">
+            <img src="/assets/icons/light_mode/close-icon.svg"/>
           </ion-col>
         </ion-row>
         <ion-row class="message-row">
           <ion-col>
-            <p>{{ notification.message }}</p>
+            <p>{{ notification.title }}</p>
           </ion-col>
         </ion-row>
       </div>
