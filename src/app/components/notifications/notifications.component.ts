@@ -57,6 +57,10 @@ export class NotificationsComponent implements OnInit {
     public translate: TranslateService
   ) {}
 
+  ngOnInit() {
+
+  }
+
   sanitize(url: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
@@ -64,8 +68,6 @@ export class NotificationsComponent implements OnInit {
   start(id: string) {
     appManager.start(id);
     // if url != null, then sendIntentUrl
-
-    //
   }
 
   close(notificationId) {
