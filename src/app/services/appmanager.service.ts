@@ -96,12 +96,14 @@ export class AppmanagerService {
             this.onMessageReceived(ret);
         });
 
-        if (this.platform.platforms().indexOf('cordova') >= 0) {
-            console.log('Listening to intent events');
-            appManager.setIntentListener((ret) => {
-                this.onIntentReceived(ret);
-            });
-        }
+        console.log('Listening to intent events');
+        appManager.setIntentListener((ret) => {
+            this.onIntentReceived(ret);
+        });
+
+        titleBarManager.setOnItemClickedListener((menuItem) => {
+            this.onTitleBarItemClicked(menuItem);
+        });
     }
 
     getVisit() {
@@ -160,22 +162,6 @@ export class AppmanagerService {
                         // Navigate back in opened app
                         this.navController.back();
                         break;
-                    case 'notifications-toggle':
-                        // Toggles the notifications panel on/off
-                        this.popNotifications();
-                        break;
-                    case 'runningapps-toggle':
-                        // Launch the running list
-                        this.popRunningApps();
-                        break;
-                    case 'scan-clicked':
-                        // Launch the scanner app
-                        this.findApp("org.elastos.trinity.dapp.qrcodescanner");
-                        break;
-                    case 'settings-clicked':
-                        // Launch the settings app
-                        this.findApp("org.elastos.trinity.dapp.settings");
-                        break;
                 }
                 break;
 
@@ -231,6 +217,27 @@ export class AppmanagerService {
                 appManager.askPrompt('', 'Install this dapp for development?', () => {
                     this.installApp(params.uri, params.id);
                 });
+                break;
+        }
+    }
+
+    onTitleBarItemClicked(icon: TitleBarPlugin.TitleBarIcon) {
+        switch (icon.key) {
+            case 'notifications':
+                // Toggles the notifications panel on/off
+                this.popNotifications();
+                break;
+            case 'runningapps':
+                // Launch the running list
+                this.popRunningApps();
+                break;
+            case 'scan':
+                // Launch the scanner app
+                this.findApp("org.elastos.trinity.dapp.qrcodescanner");
+                break;
+            case 'settings':
+                // Launch the settings app
+                this.findApp("org.elastos.trinity.dapp.settings");
                 break;
         }
     }

@@ -56,6 +56,25 @@ export class HomePage implements OnInit {
     } else {
       titleBarManager.setBackgroundColor("#495788");
     }
+
+    // Customize title bar icons
+    titleBarManager.setNavigationIconVisibility(false);
+    titleBarManager.setIcon(TitleBarPlugin.TitleBarIconSlot.OUTER_LEFT, {
+      key: "notifications",
+      iconPath: "assets/icons/ic_notifications.png"
+    });
+    titleBarManager.setIcon(TitleBarPlugin.TitleBarIconSlot.INNER_LEFT, {
+      key: "runningapps",
+      iconPath: "assets/icons/ic_running_apps.png"
+    });
+    titleBarManager.setIcon(TitleBarPlugin.TitleBarIconSlot.INNER_RIGHT, {
+      key: "scan",
+      iconPath: TitleBarPlugin.BuiltInIcon.SCAN
+    });
+    titleBarManager.setIcon(TitleBarPlugin.TitleBarIconSlot.OUTER_RIGHT, {
+      key: "settings",
+      iconPath: TitleBarPlugin.BuiltInIcon.SETTINGS
+    });
   }
 
   ionViewDidEnter() {
