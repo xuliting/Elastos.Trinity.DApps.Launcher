@@ -470,7 +470,7 @@ export class AppmanagerService {
         let fileName = 'appinstall.epk';
 
         return new Promise((resolve, reject) => {
-            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dirEntry: DirectoryEntry) => {
+            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dirEntry: CordovaFilePlugin.DirectoryEntry) => {
                 dirEntry.getFile(fileName, { create: true, exclusive: false }, (fileEntry) => {
                     console.log('Downloaded file entry', fileEntry);
                     fileEntry.createWriter((fileWriter) => {
@@ -627,7 +627,10 @@ export class AppmanagerService {
             this.popup = true;
             this.presentRunningApps();
         } else {
-            this.popoverController.dismiss();
+            this.popoverController.dismiss().then(() => {
+                this.popup = true;
+                this.presentRunningApps();
+            });
         }
     }
 
@@ -649,7 +652,11 @@ export class AppmanagerService {
             this.popup = true;
             this.presentNotifications();
         } else {
-            this.popoverController.dismiss();
+            this.popoverController.dismiss().then(() => {
+                this.popup = true;
+                this.presentNotifications();
+            });
+
         }
     }
 
