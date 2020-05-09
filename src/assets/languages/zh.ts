@@ -4,8 +4,10 @@ export const zh = {
     'no-running': '暂无运行应用',
     'notifications': '消息通知',
     'no-notif': '没有新的消息!',
-    'added-fav': '添加到收藏夹',
-    'removed-fav': '移除收藏夹',
+    'added-fav': '添加到收藏',
+    'removed-fav': '取消收藏',
+    'system-notification': '系统消息',
+    'contact-notification': '来自好友的消息',
 
     // Home Pg
     'dapp-browser': '胶囊浏览器',

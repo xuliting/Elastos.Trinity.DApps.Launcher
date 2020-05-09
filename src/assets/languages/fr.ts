@@ -6,6 +6,8 @@ export const fr = {
     'no-notif': 'Aucune Notification!',
     'added-fav': 'ajoutée aux favoris',
     'removed-fav': 'supprimée des favoris',
+    'system-notification': 'System notification',
+    'contact-notification': 'From one of your contacts',
 
     // Home Pg
     'dapp-browser': "Navigateur de capsules",

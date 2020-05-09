@@ -6,6 +6,8 @@ export const en = {
     'no-notif': 'No notifications at the moment!',
     'added-fav': 'added to favorites',
     'removed-fav': 'removed from favorites',
+    'system-notification': 'System notification',
+    'contact-notification': 'From one of your contacts',
 
     // Home Pg
     'dapp-browser': 'Capsule Browser',

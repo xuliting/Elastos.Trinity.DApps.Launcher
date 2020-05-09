@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import { AppmanagerService } from '../services/appmanager.service';
-import { NotificationManagerService } from '../services/notificationmanager.service'
+import { NotificationManagerService } from '../services/notificationmanager.service';
 import { StorageService } from '../services/storage.service';
 import { ThemeService } from '../services/theme.service';
 
