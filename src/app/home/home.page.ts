@@ -211,7 +211,7 @@ export class HomePage implements OnInit {
 
             console.log("Sending remote share notification to the contact");
             contact.sendRemoteNotification({
-                key: "sharedapp",
+                key: "sharedapp-"+app.id,
                 title: "Try this app: "+app.name+" - "+app.description,
                 url: "https://scheme.elastos.org/app?id="+app.id
             })
