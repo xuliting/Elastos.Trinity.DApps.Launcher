@@ -12,6 +12,8 @@ import { ThemeService } from '../services/theme.service';
 import { Dapp } from '../models/dapps.model';
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
+declare let appManager: AppManagerPlugin.AppManager;
+declare let contactNotifier: any;
 
 @Component({
   selector: 'app-home',
@@ -193,5 +195,37 @@ export class HomePage implements OnInit {
 
   openStarterApp(appId: string) {
     this.openApp(appId);
+  }
+
+  shareApp(app: Dapp) {
+    appManager.sendIntent("pickfriend", {}, null, async (ret)=>{
+      if (ret.result) {
+        if (ret.result.friends) {
+          let friends = ret.result.friends;
+          if (friends.length > 0) {
+            let friend = friends[0];
+
+            console.log("Resolving contact from his DID");
+            let contact = await contactNotifier.resolveContact(friend.did);
+
+            console.log("Sending remote share notification to the contact");
+            contact.sendRemoteNotification({
+                key: "sharedapp",
+                title: "Try this app: "+app.name+" - "+app.description,
+                url: "https://scheme.elastos.org/app?id="+app.id
+            })
+          }
+          else {
+            console.warn("Empty pick friend intent result (no friend selected)");
+          }
+        }
+        else {
+          console.warn("Empty pick friend intent result (no friends object)");
+        }
+      }
+      else {
+        console.warn("Empty pick friend intent result");
+      }
+    });
   }
 }
