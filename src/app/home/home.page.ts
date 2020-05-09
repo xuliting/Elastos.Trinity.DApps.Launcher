@@ -198,6 +198,10 @@ export class HomePage implements OnInit {
   }
 
   shareApp(app: Dapp) {
+    // TODO: The below code is for debug only. We need to use the "share" intent here, 
+    // and when the friends app handles the share intent, it should itself show the "pick friend" 
+    // screen and send a remote notification to this friend, all of that in the friends app.
+
     appManager.sendIntent("pickfriend", {}, null, async (ret)=>{
       if (ret.result) {
         if (ret.result.friends) {
@@ -205,15 +209,20 @@ export class HomePage implements OnInit {
           if (friends.length > 0) {
             let friend = friends[0];
 
-            console.log("Resolving contact from his DID");
+            console.log("Resolving contact from his DID - "+friend.did);
             let contact = await contactNotifier.resolveContact(friend.did);
 
-            console.log("Sending remote share notification to the contact");
-            contact.sendRemoteNotification({
-                key: "sharedapp-"+app.id,
-                title: "Try this app: "+app.name+" - "+app.description,
-                url: "https://scheme.elastos.org/app?id="+app.id
-            })
+            if (contact) {
+              console.log("Sending remote share notification to the contact");
+              contact.sendRemoteNotification({
+                  key: "sharedapp-"+app.id,
+                  title: "Try this app: "+app.name+" - "+app.description,
+                  url: "https://scheme.elastos.org/app?id="+app.id
+              })
+            }
+            else {
+              console.warn("Failed to resolve contact from his DID. Was not added to the contact notifier?");
+            }
           }
           else {
             console.warn("Empty pick friend intent result (no friend selected)");
