@@ -4,14 +4,16 @@ export const zh = {
     'no-running': '暂无运行应用',
     'notifications': '消息通知',
     'no-notif': '没有新的消息!',
-    'added-fav': 'added to favorites',
-    'removed-fav': 'removed from favorites',
+    'added-fav': '添加到收藏',
+    'removed-fav': '取消收藏',
+    'system-notification': '系统消息',
+    'contact-notification': '来自好友的消息',
 
     // Home Pg
     'dapp-browser': 'Capsule Browser',
-    'wallet': 'Wallet',
+    'wallet': '钱包',
     'identity': 'Identity',
-    'contacts': 'Contacts',
+    'contacts': '联系人',
     'recent': '最近使用',
     'favorites': '收藏',
 

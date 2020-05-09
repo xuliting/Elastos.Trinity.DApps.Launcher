@@ -57,17 +57,25 @@ export class NotificationsComponent implements OnInit {
     public translate: TranslateService
   ) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   sanitize(url: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  start(id: string) {
-    appManager.start(id);
-    // if url != null, then sendIntentUrl
+  start(notification) {
+    if (notification.type === 'normal') {
+      if (notification.url && (notification.url !== '')) {
+        console.log('NotificationsComponent sendUrlIntent');
+        appManager.sendUrlIntent(notification.url,
+          () => {console.log('sendUrlIntent success'); },
+          (error) => {console.log('NotificationsComponent sendUrlIntent failed, ', error); });
+      } else {
+        appManager.start(notification.app.id);
+      }
+
+      this.notificationService.deleteNotification(notification.notificationId);
+    }
   }
 
   close(notificationId) {

@@ -18,12 +18,16 @@
         <ion-row class="app-row">
           <ion-col size="1.2" class="app-logo">
             <ion-avatar>
-              <img [src]="sanitize(notification.app.icons[0].src)"/>
+              <img src="assets/icons/elalogo.svg" *ngIf="notification.type ==='system'"/>
+              <img src="assets/tabs/contacts-white.svg" *ngIf="notification.type ==='contact'"/>
+              <img [src]="sanitize(notification.app.icons[0].src)" *ngIf="notification.type ==='normal'"/>
             </ion-avatar>
           </ion-col>
-          <ion-col class="app-content" size="9.6" (click)="start(notification.app.id)">
+          <ion-col class="app-content" size="9.6" (click)="start(notification)">
             <ion-label>
-              <h2>{{ notification.app.name }}</h2>
+              <h2 *ngIf="notification.type ==='system'">{{ 'system-notification' | translate }}</h2>
+              <h2 *ngIf="notification.type ==='contact'">{{ 'contact-notification' | translate }}</h2>
+              <h2 *ngIf="notification.type ==='normal'">{{ notification.app.name }}</h2>
             </ion-label>
           </ion-col>
           <ion-col class="close-icon" size="1.2" (click)="close(notification.notificationId)">

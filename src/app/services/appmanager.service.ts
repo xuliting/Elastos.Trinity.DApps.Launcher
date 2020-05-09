@@ -653,7 +653,7 @@ export class AppmanagerService {
 
     /******************************** Notifications Manager ********************************/
     async popNotifications() {
-        this.notification.fillAppInfoToNotification(this.allApps);
+      this.notification.fillAppInfoToNotification(this.allApps);
 
         if (!this.popup) {
             this.popup = true;
