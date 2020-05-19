@@ -83,6 +83,7 @@ export class AppmanagerService {
     ) { }
 
     init() {
+        this.initTranslateConfig();
         this.resetProgress();
         this.getVisit();
         this.getLanguage();
@@ -752,6 +753,25 @@ export class AppmanagerService {
 
     print_err(err) {
         console.log("ElastosJS  Error: " + err);
+    }
+
+    initTranslateConfig() {
+        this.translate.addLangs(["zh", "en"]);
+        appManager.getLocale((defaultLang: string, currentLang: string, systemLang: string)=>{
+                if(currentLang === 'zh'){
+                    this.translate.setDefaultLang(currentLang);
+                    this.translate.use(currentLang);
+                }else if(currentLang === 'en'){
+                    this.translate.setDefaultLang(currentLang);
+                    this.translate.use(currentLang);
+                }else if(currentLang === 'fr'){
+                    this.translate.setDefaultLang(currentLang);
+                    this.translate.use(currentLang);
+                }else{
+                    this.translate.setDefaultLang('en');
+                    this.translate.use('en');
+                }
+        });
     }
 }
 

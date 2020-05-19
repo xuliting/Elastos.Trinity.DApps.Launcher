@@ -48,6 +48,7 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    titleBarManager.setTitle(this.translate.instant("dapp-browser"));
     titleBarManager.setBehavior(TitleBarPlugin.TitleBarBehavior.DESKTOP);
     titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
     if (!this.theme.darkMode) {

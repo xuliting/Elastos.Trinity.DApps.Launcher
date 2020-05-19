@@ -13,16 +13,13 @@
     >
       <ion-slide class="ion-padding">
         <div class="slide">
-          <h1 class="ion-padding">Welcome to a <br> secure environment</h1>
+          <h1 class="ion-padding">{{'welcome-to-a'|translate}} <br> {{'secure-environment'| translate}}</h1>
           <p class="ion-padding">
-            What you know about the old internet is blocked within elastOS by default.
-            This means you are free to browse decentralized applications, manage a 
-            unique identity, and have your own crypto wallet all in a safe, secure sandboxed
-            environment where network traffic is restricted.
+              {{'introduction-0'|translate}}
           </p>
           <div class="btn-container">
             <ion-button mode="ios" color="theme.darkMode ? dark : light" (click)="next(slide)">
-              <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#37477d' }">Continue</ion-label>
+              <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#37477d' }">{{'continue' | translate}}</ion-label>
             </ion-button>
           </div>
         </div>
@@ -30,15 +27,13 @@
 
       <ion-slide class="ion-padding">
         <div class="slide">
-          <h1 class="ion-padding">Entire ecosystem that <br> we call 'Capsules'</h1>
+          <h1 class="ion-padding">{{'entire-ecosystem-that'|translate}} <br> {{'we-call-capsules'|translate}}</h1>
           <p class="ion-padding">
-            You can browse your favorite Capsules which could be anything from digital assets to mini-websites.
-            Keep your favorites on the home screen for easy access and explore more capsules by looking at what 
-            your contacts have.
+            {{'introduction-1'|translate}}
           </p>
           <div class="btn-container">
             <ion-button mode="ios" color="theme.darkMode ? dark : light" (click)="exit()">
-              <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#37477d' }">Enter elastOS</ion-label>
+              <ion-label [ngStyle]="{'color': !theme.darkMode ? '#6d74ef' : '#37477d' }">{{'enter-elastos'| translate}}</ion-label>
             </ion-button>
           </div>
         </div>

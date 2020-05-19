@@ -21,5 +21,15 @@ export const en = {
     'open-our-app': 'You can start by opening the',
     'open-our-app2': 'You can start by opening the',
     'identity-demo': 'Identity Demo',
-    'capsule-marketplace': 'Capsule Marketplace'
+    'capsule-marketplace': 'Capsule Marketplace',
+
+      // onboard
+    'welcome-to-a':'Welcome to a',
+    'secure-environment':'secure environment',
+    'introduction-0':'What you know about the old internet is blocked within elastOS by default. This means you are free to browse decentralized applications, manage a unique identity, and have your own crypto wallet all in a safe, secure sandboxed environment where network traffic is restricted.',
+    'continue':'Continue',
+    'entire-ecosystem-that':'Entire ecosystem that',
+    'we-call-capsules':"we call 'Capsuules'",
+    'introduction-1':'You can browse your favorite Capsules which could be anything from digital assets to mini-websites.Keep your favorites on the home screen for easy access and explore more capsules by looking at what your contacts have.',
+    'enter-elastos':'Enter elastOS',
 };

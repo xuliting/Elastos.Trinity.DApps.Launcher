@@ -3,7 +3,7 @@ import { ThemeService } from '../services/theme.service';
 import { StorageService } from '../services/storage.service';
 import { Router } from '@angular/router';
 import { IonSlides, Platform } from '@ionic/angular';
-
+import { TranslateService } from '@ngx-translate/core';
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -31,13 +31,15 @@ export class OnboardPage implements OnInit {
     public theme: ThemeService,
     private storage: StorageService,
     private router: Router,
-    private platform: Platform
+    private platform: Platform,
+    public translate: TranslateService,
   ) { }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
+    titleBarManager.setTitle(this.translate.instant("dapp-browser"));
     appManager.setVisible("show");
     titleBarManager.setForegroundMode(TitleBarPlugin.TitleBarForegroundMode.LIGHT);
     if (!this.theme.darkMode) {
