@@ -766,7 +766,7 @@ export class AppmanagerService {
     }
 
     initTranslateConfig() {
-        this.translate.addLangs(["zh", "en"]);
+        this.translate.addLangs(["zh", "en","fr"]);
         appManager.getLocale((defaultLang: string, currentLang: string, systemLang: string)=>{
                 if(currentLang === 'zh'){
                     this.translate.setDefaultLang(currentLang);
