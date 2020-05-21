@@ -4,3 +4,6 @@ www/
 .DS_Store
 package-lock.json
 resources/
+.vscode/
+typings/
+

@@ -102,7 +102,7 @@ export class AppmanagerService {
             this.onIntentReceived(ret);
         });
 
-        titleBarManager.setOnItemClickedListener((menuItem) => {
+        titleBarManager.addOnItemClickedListener((menuItem) => {
             this.onTitleBarItemClicked(menuItem);
         });
     }
