@@ -185,7 +185,7 @@ export class AppmanagerService {
                     case 'installed':
                         this.resetProgress();
                         this.getAppInfos().then(() => {
-                            titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
+                            titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH, "Starting");
                             appManager.start(params.id);
                         });
                         break;
@@ -416,14 +416,14 @@ export class AppmanagerService {
 
     startApp(id: string) {
         console.log('Starting app ' + id);
-        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH);
+        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH, "Starting");
         appManager.start(id);
     }
 
     // Test Install
     async intentInstall(id: string) {
         console.log('Downloading...' + id);
-        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD);
+        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD, "Downloading");
         const epkPath = await this.downloadDapp(id);
 
         console.log('EPK file downloaded and saved to ' + epkPath);
@@ -432,7 +432,7 @@ export class AppmanagerService {
 
     installApp(epk: any, id: string) {
         console.log('Installing...' + id);
-        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.UPLOAD);
+        titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.UPLOAD, "Getting ready");
         appManager.install(
             epk, true,
             (ret) => {
