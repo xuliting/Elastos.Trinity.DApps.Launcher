@@ -132,7 +132,7 @@ export class AppmanagerService {
     }
 
     // Message
-    onMessageReceived(ret: AppManagerPlugin.ReceivedMessage) {
+    async onMessageReceived(ret: AppManagerPlugin.ReceivedMessage) {
         console.log('Elastos launcher received message:' + ret.message + '. type: ' + ret.type + '. from: ' + ret.from);
 
         let params: any = ret.message;
@@ -143,7 +143,7 @@ export class AppmanagerService {
                 console.log('Params are not JSON format: ', params);
             }
         }
-        console.log(params);
+        console.log(JSON.stringify(params));
         switch (ret.type) {
             case MessageType.INTERNAL:
                 switch (params.action) {
@@ -184,10 +184,10 @@ export class AppmanagerService {
                         break;
                     case 'installed':
                         this.resetProgress();
-                        this.getAppInfos().then(() => {
-                            titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.LAUNCH, "Starting");
-                            appManager.start(params.id);
-                        });
+                        await this.getAppInfos();
+                        // Note: we don't launch CLI apps automatically any more, so developers can wait until
+                        // ionic serve is ready then only launch apps manually at that time.
+                        this.genericToast("Capsule added: "+params.id, 5000);
                         break;
                     case 'initiated':
                         this.getAppInfos();
@@ -199,6 +199,7 @@ export class AppmanagerService {
                         this.getLanguage();
                         break;
                     case 'launcher_upgraded':
+                        this.genericToast("Launcher capsule has been upgraded. PLEASE RESTART", 5000);
                         break;
                     case 'preferenceChanged':
                         if (params.data.key === "ui.darkmode") {
@@ -751,12 +752,12 @@ export class AppmanagerService {
         }).then(toast => toast.present());
     }
 
-    genericToast(msg) {
+    genericToast(msg, duration = 1000) {
         this.toastCtrl.create({
             mode: 'ios',
             header: msg,
             color: 'medium',
-            duration: 1000,
+            duration: duration,
             position: 'bottom'
         }).then(toast => toast.present());
     }
