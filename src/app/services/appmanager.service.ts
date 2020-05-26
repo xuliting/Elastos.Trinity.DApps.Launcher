@@ -668,10 +668,9 @@ export class AppmanagerService {
                 this.popup = true;
                 this.presentNotifications();
             });
-
         }
     }
-
+ 
     async presentNotifications() {
         const popover = await this.popoverController.create({
             component: NotificationsComponent,

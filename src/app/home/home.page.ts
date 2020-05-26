@@ -199,43 +199,43 @@ export class HomePage implements OnInit {
   }
 
   shareApp(app: Dapp) {
-    // TODO: The below code is for debug only. We need to use the "share" intent here, 
-    // and when the friends app handles the share intent, it should itself show the "pick friend" 
-    // screen and send a remote notification to this friend, all of that in the friends app.
+    appManager.sendIntent("share",
+      {
+        title: "Add me as a friend in elastOS",
+        url: "https://scheme.elastos.org/addfriend?did=did:elastos:abcdef"
+      }, null, async (ret) => {
+        if (ret.result) {
+          if (ret.result.friends) {
+            let friends = ret.result.friends;
+            if (friends.length > 0) {
+              let friend = friends[0];
 
-    appManager.sendIntent("pickfriend", {}, null, async (ret)=>{
-      if (ret.result) {
-        if (ret.result.friends) {
-          let friends = ret.result.friends;
-          if (friends.length > 0) {
-            let friend = friends[0];
+              console.log("Resolving contact from his DID - " + friend.did);
+              let contact = await contactNotifier.resolveContact(friend.did);
 
-            console.log("Resolving contact from his DID - "+friend.did);
-            let contact = await contactNotifier.resolveContact(friend.did);
-
-            if (contact) {
-              console.log("Sending remote share notification to the contact");
-              contact.sendRemoteNotification({
-                  key: "sharedapp-"+app.id,
-                  title: "Try this app: "+app.name+" - "+app.description,
-                  url: "https://scheme.elastos.org/app?id="+app.id
-              })
+              if (contact) {
+                console.log("Sending remote share notification to the contact");
+                contact.sendRemoteNotification({
+                    key: "sharedapp-" + app.id,
+                    title: "Try this app: " + app.name + " - " + app.description,
+                    url: "https://scheme.elastos.org/app?id=" + app.id
+                });
+              }
+              else {
+                console.warn("Failed to resolve contact from his DID. Was not added to the contact notifier?");
+              }
             }
             else {
-              console.warn("Failed to resolve contact from his DID. Was not added to the contact notifier?");
+              console.warn("Empty pick friend intent result (no friend selected)");
             }
           }
           else {
-            console.warn("Empty pick friend intent result (no friend selected)");
+            console.warn("Empty pick friend intent result (no friends object)");
           }
         }
         else {
-          console.warn("Empty pick friend intent result (no friends object)");
+          console.warn("Empty pick friend intent result");
         }
-      }
-      else {
-        console.warn("Empty pick friend intent result");
-      }
     });
   }
 }
