@@ -14,6 +14,7 @@ import { NotificationsComponent } from '../components/notifications/notification
 import { NotificationManagerService } from './notificationmanager.service';
 import { StorageService } from './storage.service';
 import { ThemeService } from './theme.service';
+import { resolve } from 'dns';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -183,11 +184,7 @@ export class AppmanagerService {
                     case 'unInstalled':
                         break;
                     case 'installed':
-                        this.resetProgress();
-                        await this.getAppInfos();
-                        // Note: we don't launch CLI apps automatically any more, so developers can wait until
-                        // ionic serve is ready then only launch apps manually at that time.
-                        this.genericToast("Capsule added: "+params.id, 5000);
+                        this.genericToast("Capsule added: " + params.id, 5000);
                         break;
                     case 'initiated':
                         this.getAppInfos();
@@ -217,7 +214,7 @@ export class AppmanagerService {
             // EPK installation from the CLI - Message received by the runtime.
             case MessageType.EX_INSTALL:
                 appManager.askPrompt('', 'Install this dapp for development?', () => {
-                    this.installApp(params.uri, params.id);
+                    this.installApp(params.uri, params.id, false);
                 });
                 break;
         }
@@ -405,12 +402,12 @@ export class AppmanagerService {
                 this.startApp(id);
             } else if (targetApp && this.updateApps.includes(id)) {
                 console.log(id + 'is installed but needs update');
-                this.intentInstall(id).then(() => {
+                this.intentInstall(id, true).then(() => {
                     this.updateApps = this.updateApps.filter((appId) => appId !== id);
                 });
             } else {
                 console.log(id + ' is not installed');
-                this.intentInstall(id);
+                this.intentInstall(id, false);
             }
         });
     }
@@ -422,22 +419,27 @@ export class AppmanagerService {
     }
 
     // Test Install
-    async intentInstall(id: string) {
+    async intentInstall(id: string, isUpdate: boolean) {
         console.log('Downloading...' + id);
         titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.DOWNLOAD, "Downloading");
         const epkPath = await this.downloadDapp(id);
 
         console.log('EPK file downloaded and saved to ' + epkPath);
-        this.installApp(epkPath, id);
+        this.installApp(epkPath, id, isUpdate);
     }
 
-    installApp(epk: any, id: string) {
+    installApp(epk: any, id: string, isUpdate: boolean) {
         console.log('Installing...' + id);
         titleBarManager.showActivityIndicator(TitleBarPlugin.TitleBarActivityType.UPLOAD, "Getting ready");
         appManager.install(
             epk, true,
             (ret) => {
                 console.log('Install success', ret);
+                console.log('is update?', isUpdate);
+                this.resetProgress();
+                if (!isUpdate) {
+                    this.addToHistory(id);
+                }
             },
             (err) => {
                 this.resetProgress();
@@ -527,41 +529,39 @@ export class AppmanagerService {
 
     /******************************** Browsing History ********************************/
     addToHistory(paramsId: string) {
-        console.log('Adding to browsing history', paramsId);
-
         appManager.getAppInfos((info) => {
             this.appInfos = Object.values(info);
+            const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === paramsId);
+            if (
+                !targetApp ||
+                targetApp.id === 'org.elastos.trinity.dapp.qrcodescanner' ||
+                targetApp.id === 'org.elastos.trinity.dapp.wallet' ||
+                targetApp.id === 'org.elastos.trinity.dapp.did' ||
+                targetApp.id === 'org.elastos.trinity.dapp.friends' ||
+                targetApp.id === 'org.elastos.trinity.dapp.settings' ||
+                targetApp.id === 'org.elastos.trinity.blockchain'
+            ) {
+                return;
+            } else {
+                console.log('Adding to browsing history', targetApp);
+                const favApp: Dapp = this.favApps.find(app => app.id === targetApp.id);
+                this.browsedApps.unshift({
+                    id: targetApp.id,
+                    version: targetApp.version,
+                    name: targetApp.name,
+                    shortName: targetApp.shortName,
+                    description: targetApp.description,
+                    startUrl: targetApp.startUrl,
+                    icons: targetApp.icons,
+                    authorName: targetApp.authorName,
+                    authorEmail: targetApp.authorEmail,
+                    category: targetApp.category,
+                    urls: targetApp.urls,
+                    isFav: favApp ? true : false,
+                });
+                this.removeDuplicates(this.browsedApps);
+            }
         });
-
-        const targetApp: AppManagerPlugin.AppInfo = this.appInfos.find(app => app.id === paramsId);
-        if (
-            !targetApp ||
-            targetApp.id === 'org.elastos.trinity.dapp.qrcodescanner' ||
-            targetApp.id === 'org.elastos.trinity.dapp.wallet' ||
-            targetApp.id === 'org.elastos.trinity.dapp.did' ||
-            targetApp.id === 'org.elastos.trinity.dapp.friends' ||
-            targetApp.id === 'org.elastos.trinity.dapp.settings' ||
-            targetApp.id === 'org.elastos.trinity.blockchain'
-        ) {
-            return;
-        } else {
-            const favApp: Dapp = this.favApps.find(app => app.id === targetApp.id);
-            this.browsedApps.unshift({
-                id: targetApp.id,
-                version: targetApp.version,
-                name: targetApp.name,
-                shortName: targetApp.shortName,
-                description: targetApp.description,
-                startUrl: targetApp.startUrl,
-                icons: targetApp.icons,
-                authorName: targetApp.authorName,
-                authorEmail: targetApp.authorEmail,
-                category: targetApp.category,
-                urls: targetApp.urls,
-                isFav: favApp ? true : false,
-            });
-            this.removeDuplicates(this.browsedApps);
-        }
     }
 
     // Remove any duplicated objects and sort list by latest viewed app
