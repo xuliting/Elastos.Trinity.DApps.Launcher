@@ -1,7 +1,7 @@
 export const fr = {
     // Popups
-    'running': 'Applications',
-    'no-running': 'Aucune Application!',
+    'running': 'Applications actives',
+    'no-running': 'Aucune Application active!',
     'notifications': 'Notifications',
     'no-notif': 'Aucune Notification!',
     'added-fav': 'ajoutée aux favoris',
